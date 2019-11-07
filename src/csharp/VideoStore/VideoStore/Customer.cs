@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 
 namespace VideoStore
 {
@@ -19,32 +19,39 @@ namespace VideoStore
             _rentals.Add(rental);
         }
 
-        public string Statement()
+        public string GetStatement()
         {
-            decimal totalAmount = 0;
-            var frequentRenterPoints = 0;
-            var result = "Rental Record for " + Name + "\n";
-            
+            return new StatementCreator(this)
+                .GetStatement();
+        }
+
+        public decimal GetTotalAmount()
+        {
+            decimal amount = 0;
+
             foreach (var rental in _rentals)
+                amount += rental.GetAmount();
+
+            return amount;
+        }
+
+        public int GetFrequentRenterPoints()
+        {
+            var points = 0;
+
+            foreach (var r in _rentals)
+                points += r.GetFrequentRenterPoints();
+
+            return points;
+        }
+
+        public void ForEachRental(
+            Action<Rental> act)
+        {
+            foreach (var r in _rentals)
             {
-                var thisAmount = rental.GetAmount();
-
-                // add frequent renter points
-                frequentRenterPoints++;
-                // add bonus for a two day new release rental
-                if ((rental.Movie.PriceCode == Movie.NewRelease) &&
-                    rental.DaysRented > 1)
-                    frequentRenterPoints++;
-
-                // show figures for this rental
-                result += $"\t{rental.Movie.Title}\t" + $"{thisAmount:F1}\n";
-                totalAmount += thisAmount;
+                act(r);
             }
-
-            // add footer lines
-            result += $"Amount owed is {totalAmount:F1}\n";
-            result += $"You earned {frequentRenterPoints} frequent renter points";
-            return result;
         }
     }
 }

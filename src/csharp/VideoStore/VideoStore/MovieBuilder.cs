@@ -3,13 +3,10 @@
     public class MovieBuilder
     {
         private static int _movieCounter = 1;
-
-        private int _priceCode;
         private string _title;
 
         public MovieBuilder()
         {
-            _priceCode = Movie.Regular;
             _title = "Movie" + _movieCounter.ToString("D3");
             _movieCounter++;
         }
@@ -22,32 +19,21 @@
             return this;
         }
 
-        public MovieBuilder WithPriceCodeAsRegular()
+        public RegularMovie CreateRegular()
         {
-            _priceCode = Movie.Regular;
-
-            return this;
+            return new RegularMovie(_title);
         }
 
-        public MovieBuilder WithPriceCodeAsNewRelease()
+        public NewReleaseMovie CreateNewRelease()
         {
-            _priceCode = Movie.NewRelease;
-
-            return this;
+            return new NewReleaseMovie(_title);
         }
 
-        public MovieBuilder WithPriceCodeAsChildrens()
+        public ChildrensMovie CreateChildrens()
         {
-            _priceCode = Movie.Childrens;
-
-            return this;
+            return new ChildrensMovie(_title);
         }
 
-        public Movie Create()
-        {
-            var movie = new Movie(_title, _priceCode);
 
-            return movie;
-        }
     }
 }

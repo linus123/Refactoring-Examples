@@ -12,12 +12,11 @@ namespace VideoStore
                 .Create();
 
             var newRelease = new MovieBuilder()
-                .WithPriceCodeAsNewRelease()
-                .Create();
+                .CreateNewRelease();
 
             customer.AddRental(new Rental(newRelease, 3));
 
-            var statement = customer.Statement();
+            var statement = customer.GetStatement();
 
             AssertAmountAndPoints(statement, 9.0, 2);
         }
@@ -29,17 +28,15 @@ namespace VideoStore
                 .Create();
 
             var newRelease1 = new MovieBuilder()
-                .WithPriceCodeAsNewRelease()
-                .Create();
+                .CreateNewRelease();
 
             var newRelease2 = new MovieBuilder()
-                .WithPriceCodeAsNewRelease()
-                .Create();
+                .CreateNewRelease();
 
             customer.AddRental(new Rental(newRelease1, 3));
             customer.AddRental(new Rental(newRelease2, 3));
 
-            var statement = customer.Statement();
+            var statement = customer.GetStatement();
 
             AssertAmountAndPoints(statement, 18.0, 4);
         }
@@ -51,12 +48,11 @@ namespace VideoStore
                 .Create();
 
             var childrens = new MovieBuilder()
-                .WithPriceCodeAsChildrens()
-                .Create();
+                .CreateChildrens();
 
             customer.AddRental(new Rental(childrens, 3));
 
-            var statement = customer.Statement();
+            var statement = customer.GetStatement();
 
             AssertAmountAndPoints(statement, 1.5, 1);
         }
@@ -68,22 +64,19 @@ namespace VideoStore
                 .Create();
 
             var regular1 = new MovieBuilder()
-                .WithPriceCodeAsRegular()
-                .Create();
+                .CreateRegular();
 
             var regular2 = new MovieBuilder()
-                .WithPriceCodeAsRegular()
-                .Create();
+                .CreateRegular();
 
             var regular3 = new MovieBuilder()
-                .WithPriceCodeAsRegular()
-                .Create();
+                .CreateRegular();
 
             customer.AddRental(new Rental(regular1, 1));
             customer.AddRental(new Rental(regular2, 2));
             customer.AddRental(new Rental(regular3, 3));
 
-            var statement = customer.Statement();
+            var statement = customer.GetStatement();
 
             AssertAmountAndPoints(statement, 7.5, 3);
         }
@@ -97,18 +90,15 @@ namespace VideoStore
 
             var regular1 = new MovieBuilder()
                 .WithTitle("Regular 1")
-                .WithPriceCodeAsRegular()
-                .Create();
+                .CreateRegular();
 
             var regular2 = new MovieBuilder()
                 .WithTitle("Regular 2")
-                .WithPriceCodeAsRegular()
-                .Create();
+                .CreateRegular();
 
             var regular3 = new MovieBuilder()
                 .WithTitle("Regular 3")
-                .WithPriceCodeAsRegular()
-                .Create();
+                .CreateRegular();
 
             customer.AddRental(new Rental(regular1, 1));
             customer.AddRental(new Rental(regular2, 2));
@@ -121,7 +111,7 @@ namespace VideoStore
                                              "Amount owed is 7.5\n" +
                                              "You earned 3 frequent renter points";
 
-            var statement = customer.Statement();
+            var statement = customer.GetStatement();
 
             statement.Should().Be(expectedStatement);
         }
