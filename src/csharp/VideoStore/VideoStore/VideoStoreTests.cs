@@ -5,7 +5,8 @@ namespace VideoStore
 {
     public class VideoStoreTests
     {
-        private Customer _customer;
+        private readonly Customer _customer;
+
         private readonly Movie _newRelease1 = new Movie("New Release 1", Movie.NewRelease);
         private readonly Movie _newRelease2 = new Movie("New Release 2", Movie.NewRelease);
         private readonly Movie _childrens = new Movie("Childrens", Movie.Childrens);
