@@ -5,13 +5,7 @@ namespace VideoStore
 {
     public class VideoStoreTests
     {
-        private Customer _customer;
-        private readonly Movie _newRelease1 = new Movie("New Release 1", Movie.NewRelease);
-        private readonly Movie _newRelease2 = new Movie("New Release 2", Movie.NewRelease);
-        private readonly Movie _childrens = new Movie("Childrens", Movie.Childrens);
-        private readonly Movie _regular1 = new Movie("Regular 1", Movie.Regular);
-        private readonly Movie _regular2 = new Movie("Regular 2", Movie.Regular);
-        private readonly Movie _regular3 = new Movie("Regular 3", Movie.Regular);
+        private readonly Customer _customer;
 
         public VideoStoreTests()
         {
@@ -28,40 +22,84 @@ namespace VideoStore
         [Fact]
         public void TestSingleNewReleaseStatement()
         {
-            _customer.AddRental(new Rental(_newRelease1, 3));
+            var newRelease = new MovieBuilder()
+                .WithPriceCodeAsNewRelease()
+                .Create();
+
+            _customer.AddRental(new Rental(newRelease, 3));
             AssertAmountAndPointsForStatement(9.0, 2);
         }
 
         [Fact]
         public void TestDualNewReleaseStatement()
         {
-            _customer.AddRental(new Rental(_newRelease1, 3));
-            _customer.AddRental(new Rental(_newRelease2, 3));
+            var newRelease1 = new MovieBuilder()
+                .WithPriceCodeAsNewRelease()
+                .Create();
+
+            var newRelease2 = new MovieBuilder()
+                .WithPriceCodeAsNewRelease()
+                .Create();
+
+            _customer.AddRental(new Rental(newRelease1, 3));
+            _customer.AddRental(new Rental(newRelease2, 3));
             AssertAmountAndPointsForStatement(18.0, 4);
         }
 
         [Fact]
         public void TestSingleChildrensStatement()
         {
-            _customer.AddRental(new Rental(_childrens, 3));
+            var childrens = new MovieBuilder()
+                .WithPriceCodeAsChildrens()
+                .Create();
+
+            _customer.AddRental(new Rental(childrens, 3));
             AssertAmountAndPointsForStatement(1.5, 1);
         }
 
         [Fact]
         public void TestMultipleRegularStatement()
         {
-            _customer.AddRental(new Rental(_regular1, 1));
-            _customer.AddRental(new Rental(_regular2, 2));
-            _customer.AddRental(new Rental(_regular3, 3));
+            var regular1 = new MovieBuilder()
+                .WithPriceCodeAsRegular()
+                .Create();
+
+            var regular2 = new MovieBuilder()
+                .WithPriceCodeAsRegular()
+                .Create();
+
+            var regular3 = new MovieBuilder()
+                .WithPriceCodeAsRegular()
+                .Create();
+
+            _customer.AddRental(new Rental(regular1, 1));
+            _customer.AddRental(new Rental(regular2, 2));
+            _customer.AddRental(new Rental(regular3, 3));
+
             AssertAmountAndPointsForStatement(7.5, 3);
         }
 
         [Fact]
         public void TestRentalStatementFormat()
         {
-            _customer.AddRental(new Rental(_regular1, 1));
-            _customer.AddRental(new Rental(_regular2, 2));
-            _customer.AddRental(new Rental(_regular3, 3));
+            var regular1 = new MovieBuilder()
+                .WithTitle("Regular 1")
+                .WithPriceCodeAsRegular()
+                .Create();
+
+            var regular2 = new MovieBuilder()
+                .WithTitle("Regular 2")
+                .WithPriceCodeAsRegular()
+                .Create();
+
+            var regular3 = new MovieBuilder()
+                .WithTitle("Regular 3")
+                .WithPriceCodeAsRegular()
+                .Create();
+
+            _customer.AddRental(new Rental(regular1, 1));
+            _customer.AddRental(new Rental(regular2, 2));
+            _customer.AddRental(new Rental(regular3, 3));
 
             const string expectedStatement = "Rental Record for Customer Name\n" +
                                              "\tRegular 1\t2.0\n" +
