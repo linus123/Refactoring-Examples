@@ -16,7 +16,10 @@ namespace VideoStore
                 .Create();
 
             customer.AddRental(new Rental(newRelease, 3));
-            AssertAmountAndPoints(customer.Statement(), 9.0, 2);
+
+            var statement = customer.Statement();
+
+            AssertAmountAndPoints(statement, 9.0, 2);
         }
 
         [Fact]
