@@ -2,7 +2,7 @@
 {
     public class MovieBuilder
     {
-        private static int _moveCounter = 1;
+        private static int _movieCounter = 1;
 
         private int _priceCode;
         private string _title;
@@ -10,8 +10,8 @@
         public MovieBuilder()
         {
             _priceCode = Movie.Regular;
-            _title = "Movie" + _moveCounter.ToString("D3");
-            _moveCounter++;
+            _title = "Movie" + _movieCounter.ToString("D3");
+            _movieCounter++;
         }
 
         public MovieBuilder WithTitle(
