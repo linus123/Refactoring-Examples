@@ -1,11 +1,12 @@
-﻿using System.Collections;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace VideoStore
 {
     public class Customer
     {
-        private readonly ArrayList _rentals = new ArrayList();
+        private readonly List<Rental> _rentals = new List<Rental>();
+
         public string Name { get; }
 
         public Customer(string name)
@@ -23,27 +24,10 @@ namespace VideoStore
             decimal totalAmount = 0;
             var frequentRenterPoints = 0;
             var result = "Rental Record for " + Name + "\n";
-            foreach (var rental in _rentals.Cast<Rental>())
+            
+            foreach (var rental in _rentals)
             {
-                decimal thisAmount = 0;
-                switch (rental.Movie.PriceCode)
-                {
-                    case Movie.Regular:
-                        thisAmount += 2;
-                        if (rental.DaysRented > 2)
-                            thisAmount += (rental.DaysRented - 2) * 1.5m;
-                        break;
-                    case Movie.NewRelease:
-                        thisAmount += rental.DaysRented * 3;
-                        break;
-                    case Movie.Childrens:
-                        thisAmount += 1.5m;
-                        if (rental.DaysRented > 3)
-                            thisAmount += (rental.DaysRented - 3) * 1.5m;
-                        break;
-                    default:
-                        break;
-                }
+                var thisAmount = rental.GetAmount();
 
                 // add frequent renter points
                 frequentRenterPoints++;
@@ -58,7 +42,7 @@ namespace VideoStore
             }
 
             // add footer lines
-            result += $"Amount owed is " + $"{totalAmount:F1}\n";
+            result += $"Amount owed is {totalAmount:F1}\n";
             result += $"You earned {frequentRenterPoints} frequent renter points";
             return result;
         }
