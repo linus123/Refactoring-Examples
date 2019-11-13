@@ -58,8 +58,8 @@ namespace VideoStore
             }
 
             // add footer lines
-            result += $"Amount owed is " + $"{totalAmount:F1}\n";
-            result += $"You earned {frequentRenterPoints} frequent renter points";
+            result += $"You owed " + $"{totalAmount:F1}\n";
+            result += $"You earned {frequentRenterPoints} frequent renter points\n";
             return result;
         }
     }
