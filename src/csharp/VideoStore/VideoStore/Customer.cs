@@ -6,8 +6,9 @@ namespace VideoStore
     public class Customer
     {
         private readonly ArrayList _rentals = new ArrayList();
+        public decimal TotalAmount;
         public string Name { get; }
-
+        public int FrequentRenterPoints { get; set; }
         public Customer(string name)
         {
             Name = name;
@@ -20,8 +21,7 @@ namespace VideoStore
 
         public string Statement()
         {
-            decimal totalAmount = 0;
-            var frequentRenterPoints = 0;
+            TotalAmount = 0;
             var result = "Rental Record for " + Name + "\n";
             foreach (var rental in _rentals.Cast<Rental>())
             {
@@ -38,6 +38,8 @@ namespace VideoStore
                         break;
                     case Movie.Childrens:
                         thisAmount += 1.5m;
+
+                        // No test coverage on this condition
                         if (rental.DaysRented > 3)
                             thisAmount += (rental.DaysRented - 3) * 1.5m;
                         break;
@@ -46,20 +48,21 @@ namespace VideoStore
                 }
 
                 // add frequent renter points
-                frequentRenterPoints++;
+
+                FrequentRenterPoints++;
                 // add bonus for a two day new release rental
                 if ((rental.Movie.PriceCode == Movie.NewRelease) &&
                     rental.DaysRented > 1)
-                    frequentRenterPoints++;
+                    FrequentRenterPoints++;
 
                 // show figures for this rental
                 result += $"\t{rental.Movie.Title}\t" + $"{thisAmount:F1}\n";
-                totalAmount += thisAmount;
+                TotalAmount += thisAmount;
             }
 
             // add footer lines
-            result += $"You owed " + $"{totalAmount:F1}\n";
-            result += $"You earned {frequentRenterPoints} frequent renter points\n";
+            result += $"You owed " + $"{TotalAmount:F1}\n";
+            result += $"You earned {FrequentRenterPoints} frequent renter points\n";
             return result;
         }
     }
