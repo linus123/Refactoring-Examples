@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
+using FluentAssertions;
 using Xunit;
 
 namespace VideoStore
@@ -12,11 +14,17 @@ namespace VideoStore
             _customer = new Customer("Fred");
         }
 
+        private Movie CreateRelease(int movieRelease)
+        {
+            return new Movie("SomeMovie", movieRelease);
+        }
+
         [Fact]
         public void SingleNewReleaseStatement()
         {
-            var movie = new Movie("The Cell", Movie.NewRelease);
+            var movie = CreateRelease(Movie.NewRelease);
             _customer.AddRental(new Rental(movie, 3));
+            _customer.Statement();
             _customer.TotalAmount.Should().BeApproximately(9.0m, 0.0001m);
             _customer.FrequentRenterPoints.Should().Be(2);
         }
@@ -24,28 +32,31 @@ namespace VideoStore
         [Fact]
         public void DualNewReleaseStatement()
         {
-            var movie1 = new Movie("The Cell", Movie.NewRelease);
+            var movie1 = CreateRelease(Movie.NewRelease);
             _customer.AddRental(new Rental(movie1, 3));
-            var movie2 = new Movie("The Tigger Movie", Movie.NewRelease);
+            var movie2 = CreateRelease(Movie.NewRelease);
             _customer.AddRental(new Rental(movie2, 3));
-            Assert.Equal("Rental Record for Fred\n" +
-                         "\tThe Cell\t9.0\n" +
-                         "\tThe Tigger Movie\t9.0\n" +
-                         "You owed 18.0\n" +
-                         "You earned 4 frequent renter points\n",
-                _customer.Statement());
+            _customer.Statement();
+            _customer.TotalAmount.Should().BeApproximately( 18.0m, 0.0001m);
+            _customer.FrequentRenterPoints.Should().Be(4);
         }
 
-        [Fact]
-        public void SingleChildrensStatement()
+        [Fact (DisplayName = "SingleChildrens Should Create Correct FrequentRenterPoints")]
+        public void Test1()
         {
-            var movie = new Movie("The Tigger Movie", Movie.Childrens);
+            var movie = CreateRelease(Movie.Childrens);
             _customer.AddRental(new Rental(movie, 3));
-            Assert.Equal("Rental Record for Fred\n" +
-                         "\tThe Tigger Movie\t1.5\n" +
-                         "You owed 1.5\n" +
-                         "You earned 1 frequent renter points\n",
-                _customer.Statement());
+            _customer.Statement();
+            _customer.FrequentRenterPoints.Should().Be(1);
+        }
+
+        [Fact(DisplayName = "SingleChildrens Should Create Correct TotalAmount")]
+        public void Test2()
+        {
+            var movie = CreateRelease(Movie.Childrens);
+            _customer.AddRental(new Rental(movie, 3));
+            _customer.Statement();
+            _customer.TotalAmount.Should().BeApproximately(1.5m, 0.0001m);
         }
 
         [Fact]
