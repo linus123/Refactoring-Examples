@@ -1,5 +1,10 @@
 ﻿using System.Collections;
 using System.Linq;
+//TODO: Separate Calculation from Printing out
+//TODO: GetFrequentRenterPoints
+//TODO: GetTotalAmount
+//TODO: Convert Switch to Polymorphism
+//TODO: Convert Array to Generic
 
 namespace VideoStore
 {

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Xunit;
 
 namespace VideoStore
@@ -19,14 +17,34 @@ namespace VideoStore
             return new Movie("SomeMovie", movieRelease);
         }
 
-        [Fact]
-        public void SingleNewReleaseStatement()
+        [Theory]
+        [InlineData(1, 3, 1)]
+        [InlineData(3, 9, 2)]
+        public void SingleNewReleaseStatement(
+            int daysRented, 
+            decimal expectedTotalAmount,
+            int expectedFrequentRenterPoints)
         {
             var movie = CreateRelease(Movie.NewRelease);
-            _customer.AddRental(new Rental(movie, 3));
+            _customer.AddRental(new Rental(movie, daysRented));
             _customer.Statement();
-            _customer.TotalAmount.Should().BeApproximately(9.0m, 0.0001m);
-            _customer.FrequentRenterPoints.Should().Be(2);
+            _customer.TotalAmount.Should().BeApproximately(expectedTotalAmount, 0.0001m);
+            _customer.FrequentRenterPoints.Should().Be(expectedFrequentRenterPoints);
+        }
+
+        [Theory]
+        [InlineData(1, 2, 1)]
+        [InlineData(2, 2, 1)]
+        [InlineData(3, 3.5, 1)]
+        public void SingleRegularStatement(int daysRented,
+            decimal expectedTotalAmount,
+            int expectedFrequentRenterPoints)
+        {
+            var movie = CreateRelease(Movie.Regular);
+            _customer.AddRental(new Rental(movie, daysRented));
+            _customer.Statement();
+            _customer.TotalAmount.Should().BeApproximately(expectedTotalAmount, 0.0001m);
+            _customer.FrequentRenterPoints.Should().Be(expectedFrequentRenterPoints);
         }
 
         [Fact]
@@ -41,22 +59,20 @@ namespace VideoStore
             _customer.FrequentRenterPoints.Should().Be(4);
         }
 
-        [Fact (DisplayName = "SingleChildrens Should Create Correct FrequentRenterPoints")]
-        public void Test1()
+        [Theory(DisplayName = "SingleChildrens Should Create Correct TotalAmount")]
+        [InlineData(1, 1.5, 1)]
+        [InlineData(3, 1.5, 1)]
+        [InlineData(4, 3, 1)]
+        public void Test2(
+            int daysRented, 
+            decimal totalAmount,
+            int frequentRenterPoints)
         {
             var movie = CreateRelease(Movie.Childrens);
-            _customer.AddRental(new Rental(movie, 3));
+            _customer.AddRental(new Rental(movie, daysRented));
             _customer.Statement();
-            _customer.FrequentRenterPoints.Should().Be(1);
-        }
-
-        [Fact(DisplayName = "SingleChildrens Should Create Correct TotalAmount")]
-        public void Test2()
-        {
-            var movie = CreateRelease(Movie.Childrens);
-            _customer.AddRental(new Rental(movie, 3));
-            _customer.Statement();
-            _customer.TotalAmount.Should().BeApproximately(1.5m, 0.0001m);
+            _customer.TotalAmount.Should().BeApproximately(totalAmount, 0.0001m);
+            _customer.FrequentRenterPoints.Should().Be(frequentRenterPoints);
         }
 
         [Fact]
