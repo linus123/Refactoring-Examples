@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace SharedKernel.Constraints
+namespace SharedKernel.Filters
 {
     public class Filter
     {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace SharedKernel.Constraints
+namespace SharedKernel.Filters
 {
     [Description("Encumbered")]
     public class EncumberedFilter : Filter

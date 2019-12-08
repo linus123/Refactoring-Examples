@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace SharedKernel.Constraints
+namespace SharedKernel.Filters
 {
     [Description("Primary Limit")]
     public class PrimaryLimitFilter : Filter

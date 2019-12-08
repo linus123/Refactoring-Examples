@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using SharedKernel.Constraints;
+using SharedKernel.Filters;
 
 namespace SharedKernel
 {
