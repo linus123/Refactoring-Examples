@@ -16,10 +16,10 @@ namespace SharedKernel.Constraints
             FilteredQuantity = 0;
             if (tradeFilterPreference.IsBlockHeavilyTradeConstraintActive)
             {
-                if (tradeRequest.Block.IsHeavilyTradedNameConstraintChecked == true)
+                if (tradeRequest.Stock.IsHeavilyTradedNameConstraintChecked == true)
                 {
-                    //Block has been checked by Heavily Traded Name
-                    if (tradeRequest.Block.ConstrainedByHeavilyTradedName)
+                    //Stock has been checked by Heavily Traded Name
+                    if (tradeRequest.Stock.ConstrainedByHeavilyTradedName)
                     {
                         //Constrained by Name
                         FilteredQuantity = AvailQuantity;
@@ -30,15 +30,15 @@ namespace SharedKernel.Constraints
                     //First-time Check
                     var dayNo = (int)tradeFilterPreference.BlockHeavilyTradeDay;
                     var volumePercentage = tradeFilterPreference.BlockHeavilyTradeVolume;
-                    var tradedVolume = tradeRequest.Block.GetAccumulatedDayTradeVolume(dayNo);
-                    var marketVolume = tradeRequest.Block.GetAccumulatedDayMarketVolume(dayNo);
+                    var tradedVolume = tradeRequest.Stock.GetAccumulatedDayTradeVolume(dayNo);
+                    var marketVolume = tradeRequest.Stock.GetAccumulatedDayMarketVolume(dayNo);
 
                     if (tradedVolume > volumePercentage * marketVolume)
                     {
                         FilteredQuantity = AvailQuantity;
-                        tradeRequest.Block.ConstrainedByHeavilyTradedName = true;
+                        tradeRequest.Stock.ConstrainedByHeavilyTradedName = true;
                     }
-                    tradeRequest.Block.IsHeavilyTradedNameConstraintChecked = true;
+                    tradeRequest.Stock.IsHeavilyTradedNameConstraintChecked = true;
 
                 }
             }

@@ -31,7 +31,7 @@ namespace ConsoleApplication
                 IsCapacityEncumberedSharesConstraintActive = true,
             };
 
-            var block01 = new Block()
+            var block01 = new Stock()
             {
                 StockId = "0001",
                 PriceInUsd = 600
@@ -41,7 +41,7 @@ namespace ConsoleApplication
                 new decimal[] { 2000, 2100, 2200, 2300, 2400 },
                 new decimal[] { 1000, 1100, 1200, 1300, 1400 });
 
-            var block02 = new Block()
+            var block02 = new Stock()
             {
                 StockId = "0002",
                 PriceInUsd = 54
@@ -54,7 +54,7 @@ namespace ConsoleApplication
                     TradeSide = TradeSide.Buy,
                     TradeRequestId = 500,
                     OriginalCapacityQuantity = 600,
-                    Block = block01,
+                    Stock = block01,
                     TradeFilterPreference = profilePrimaryOnly
                 },
                 new TradeRequest()
@@ -62,9 +62,9 @@ namespace ConsoleApplication
                     TradeSide = TradeSide.Sell,
                     TradeRequestId = 501,
                     OriginalCapacityQuantity = 100,
-                    HoldingsQty = 30,
-                    EncumberedQty = 20,
-                    Block = block01,
+                    HoldingsQuantity = 30,
+                    EncumberedQuantity = 20,
+                    Stock = block01,
                     TradeFilterPreference = profileHeavilyTradedOnly
                 },
                 new TradeRequest()
@@ -72,7 +72,7 @@ namespace ConsoleApplication
                     TradeSide = TradeSide.Buy,
                     TradeRequestId = 502,
                     OriginalCapacityQuantity = 1000,
-                    Block = block02,
+                    Stock = block02,
                     TradeFilterPreference = profileEncumberedOnly
                 },
                 new TradeRequest()
@@ -80,7 +80,7 @@ namespace ConsoleApplication
                     TradeSide = TradeSide.Sell,
                     TradeRequestId = 502,
                     OriginalCapacityQuantity = 1000,
-                    Block = block02,
+                    Stock = block02,
                     TradeFilterPreference = profileEncumberedOnly
                 },
             };
@@ -92,8 +92,8 @@ namespace ConsoleApplication
 
             foreach (var orderCapacity in orderCapacities)
             {
-                Console.WriteLine($"Filter Report for TradeRequestId '{orderCapacity.TradeRequestId}' with StockId '{orderCapacity.Block.StockId}'");
-                Console.WriteLine($"\tStarting Quantity: '{orderCapacity.OriginalCapacityQuantity}' and Starting Amount '{orderCapacity.OriginalCapacityQuantity * orderCapacity.Block.PriceInUsd}'");
+                Console.WriteLine($"Filter Report for TradeRequestId '{orderCapacity.TradeRequestId}' with StockId '{orderCapacity.Stock.StockId}'");
+                Console.WriteLine($"\tStarting Quantity: '{orderCapacity.OriginalCapacityQuantity}' and Starting Amount '{orderCapacity.OriginalCapacityQuantity * orderCapacity.Stock.PriceInUsd}'");
 
                 if (orderCapacity.Constraints.Any())
                 {

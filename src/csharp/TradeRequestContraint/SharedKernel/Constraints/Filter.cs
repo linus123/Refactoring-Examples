@@ -36,7 +36,7 @@ namespace SharedKernel.Constraints
 
         public decimal CalculateFilteredAmountAndAvailableQuantity(TradeRequest tradeRequest)
         {
-            FilteredAmount = FilteredQuantity * tradeRequest.Block.PriceInUsd;
+            FilteredAmount = FilteredQuantity * tradeRequest.Stock.PriceInUsd;
 
             AvailQuantity = OriginalQuantity - FilteredQuantity;
 

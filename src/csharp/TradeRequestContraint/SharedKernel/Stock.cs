@@ -1,6 +1,6 @@
 ﻿namespace SharedKernel
 {
-    public class Block
+    public class Stock
     {
         public string StockId { get; set; }
         public decimal PriceInUsd { get; set; }

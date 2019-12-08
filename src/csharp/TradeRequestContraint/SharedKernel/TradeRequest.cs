@@ -22,7 +22,7 @@ namespace SharedKernel
         public decimal HoldingsQuantity { get; set; }
         public decimal EncumberedQuantity { get; set; }
         
-        public Block Block { get; set; }
+        public Stock Stock { get; set; }
         public TradeFilterPreference TradeFilterPreference { get; set; }
 
         public bool IsSellOutQty(
