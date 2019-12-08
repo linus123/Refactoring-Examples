@@ -6,23 +6,23 @@ namespace SharedKernel.Constraints
     public class EncumberedFilter : Filter
     {
 
-        public EncumberedFilter(decimal originalQty) : base(originalQty)
+        public EncumberedFilter(decimal originalQuantity) : base(originalQuantity)
         {
 
         }
 
-        public override decimal ApplyConstraint(TradeRequest tradeRequest, Profile profile)
+        public override decimal ApplyFilter(TradeRequest tradeRequest, Profile profile)
         {
-            ConstrainedQty = 0;
+            FilteredQuantity = 0;
             if (profile.IsCapacityEncumberedSharesConstraintActive)
             {
-                if (tradeRequest.IsSellOutQty(OriginalQty))
+                if (tradeRequest.IsSellOutQty(OriginalQuantity))
                 {
-                    ConstrainedQty = OriginalQty - tradeRequest.CalculateUnencumberedQuantity();
+                    FilteredQuantity = OriginalQuantity - tradeRequest.CalculateUnencumberedQuantity();
                 }
             }
 
-            return CalculateConstrainedAmtAndAvailableQty(tradeRequest);
+            return CalculateFilteredAmountAndAvailableQuantity(tradeRequest);
         }
     }
 }

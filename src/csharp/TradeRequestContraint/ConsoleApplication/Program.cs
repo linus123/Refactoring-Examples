@@ -99,7 +99,7 @@ namespace ConsoleApplication
                 {
                     foreach (var constraint in orderCapacity.Constraints)
                     {
-                        Console.WriteLine($"\t\tConstraint '{constraint.ConstraintType}' applied with Quantity '{constraint.ConstrainedQty}' and Amount '{constraint.ConstrainedAmt}'");
+                        Console.WriteLine($"\t\tConstraint '{constraint.FilterType}' applied with Quantity '{constraint.FilteredQuantity}' and Amount '{constraint.ConstrainedAmt}'");
                     }
                 }
                 else

@@ -5,22 +5,22 @@ namespace SharedKernel.Constraints
     [Description("Primary Limit")]
     public class PrimaryLimitFilter : Filter
     {
-        public PrimaryLimitFilter(decimal originalQty) : base(originalQty)
+        public PrimaryLimitFilter(decimal originalQuantity) : base(originalQuantity)
         {
 
         }
 
-        public override decimal ApplyConstraint(TradeRequest tradeRequest, Profile profile)
+        public override decimal ApplyFilter(TradeRequest tradeRequest, Profile profile)
         {
-            ConstrainedQty = 0;
+            FilteredQuantity = 0;
 
             if (profile.IsPrimaryConstraintActive)
             {
-                ConstrainedQty = OriginalQty;
+                FilteredQuantity = OriginalQuantity;
                 ConstraintDescription = tradeRequest.PrimLimitDescription;
             }
 
-            return CalculateConstrainedAmtAndAvailableQty(tradeRequest);
+            return CalculateFilteredAmountAndAvailableQuantity(tradeRequest);
         }
     }
 }

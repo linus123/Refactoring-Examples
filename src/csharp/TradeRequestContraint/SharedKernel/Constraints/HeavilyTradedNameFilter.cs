@@ -5,15 +5,15 @@ namespace SharedKernel.Constraints
     [Description("Heavily Traded Name")]
     public class HeavilyTradedNameFilter : Filter
     {
-        public HeavilyTradedNameFilter(decimal originalQty) : base(originalQty)
+        public HeavilyTradedNameFilter(decimal originalQuantity) : base(originalQuantity)
         {
 
         }
 
 
-        public override decimal ApplyConstraint(TradeRequest tradeRequest, Profile profile)
+        public override decimal ApplyFilter(TradeRequest tradeRequest, Profile profile)
         {
-            ConstrainedQty = 0;
+            FilteredQuantity = 0;
             if (profile.IsBlockHeavilyTradeConstraintActive)
             {
                 if (tradeRequest.Block.IsHeavilyTradedNameConstraintChecked == true)
@@ -22,7 +22,7 @@ namespace SharedKernel.Constraints
                     if (tradeRequest.Block.ConstrainedByHeavilyTradedName)
                     {
                         //Constrained by Name
-                        ConstrainedQty = AvailQty;
+                        FilteredQuantity = AvailQuantity;
                     }
                 }
                 else
@@ -35,7 +35,7 @@ namespace SharedKernel.Constraints
 
                     if (tradedVolume > volumePercentage * marketVolume)
                     {
-                        ConstrainedQty = AvailQty;
+                        FilteredQuantity = AvailQuantity;
                         tradeRequest.Block.ConstrainedByHeavilyTradedName = true;
                     }
                     tradeRequest.Block.IsHeavilyTradedNameConstraintChecked = true;
@@ -43,7 +43,7 @@ namespace SharedKernel.Constraints
                 }
             }
 
-            return CalculateConstrainedAmtAndAvailableQty(tradeRequest);
+            return CalculateFilteredAmountAndAvailableQuantity(tradeRequest);
 
         }
 

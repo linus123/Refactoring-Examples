@@ -67,7 +67,7 @@ namespace SharedKernel
             }
 
             //Remove Zero Constrained Qty Constraints
-            Constraints = Constraints.Where(c => c.ConstrainedQty != 0).ToList();
+            Constraints = Constraints.Where(c => c.FilteredQuantity != 0).ToList();
 
             AvailCapacityQty = availQty;
         }
@@ -76,7 +76,7 @@ namespace SharedKernel
         {
             Constraints.Add(filter);
 
-            return filter.ApplyConstraint(this, profile);
+            return filter.ApplyFilter(this, profile);
         }
     }
 }

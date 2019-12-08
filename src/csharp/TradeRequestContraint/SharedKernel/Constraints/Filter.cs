@@ -10,38 +10,42 @@ namespace SharedKernel.Constraints
 
         }
 
-        public Filter(decimal originalQty)
+        public Filter(decimal originalQuantity)
         {
-            ConstraintType = GetClassDescription(this.GetType());
-            OriginalQty = originalQty;
-            AvailQty = originalQty;
+            FilterType = GetClassDescription(this.GetType());
+            OriginalQuantity = originalQuantity;
+            AvailQuantity = originalQuantity;
             IsApplied = true;
         }
 
-        public virtual decimal ApplyConstraint(TradeRequest tradeRequest, Profile profile)
-        { return OriginalQty; }
+        public virtual decimal ApplyFilter(
+            TradeRequest tradeRequest,
+            Profile profile)
+        {
+            return OriginalQuantity;
+        }
 
-        public decimal ConstrainedQty { get; set; }
-        public string ConstraintType { get; set; }
-        public decimal OriginalQty { get; set; }
-        public decimal AvailQty { get; set; }
+        public decimal FilteredQuantity { get; set; }
+        public string FilterType { get; set; }
+        public decimal OriginalQuantity { get; set; }
+        public decimal AvailQuantity { get; set; }
         public decimal ConstrainedAmt { get; set; }
         public string ConstraintDescription { get; set; }
 
         public bool IsApplied { get; set; }
 
-        public decimal CalculateConstrainedAmtAndAvailableQty(TradeRequest tradeRequest)
+        public decimal CalculateFilteredAmountAndAvailableQuantity(TradeRequest tradeRequest)
         {
-            ConstrainedAmt = ConstrainedQty * tradeRequest.Block.PriceInUsd;
+            ConstrainedAmt = FilteredQuantity * tradeRequest.Block.PriceInUsd;
 
-            AvailQty = OriginalQty - ConstrainedQty;
+            AvailQuantity = OriginalQuantity - FilteredQuantity;
 
-            if (AvailQty < 0)
+            if (AvailQuantity < 0)
             {
-                AvailQty = 0;
+                AvailQuantity = 0;
             }
 
-            return AvailQty;
+            return AvailQuantity;
         }
 
         private static string GetClassDescription(Type type)
