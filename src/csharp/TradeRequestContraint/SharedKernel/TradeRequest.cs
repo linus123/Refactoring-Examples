@@ -51,17 +51,17 @@ namespace SharedKernel
             decimal availQty = this.OriginalCapacityQuantity;
 
 
-            if (tradeFilterPreference.IsPrimaryConstraintActive)
+            if (tradeFilterPreference.IsPrimaryFilterActive)
             {
                 availQty = ApplyConstraint(tradeFilterPreference, new PrimaryLimitFilter(availQty));
             }
 
-            if (tradeFilterPreference.IsBlockHeavilyTradeConstraintActive)
+            if (tradeFilterPreference.IsHeavilyTradeFilterActive)
             {
                 availQty = ApplyConstraint(tradeFilterPreference, new HeavilyTradedNameFilter(availQty));
             }
 
-            if (tradeFilterPreference.IsCapacityEncumberedSharesConstraintActive)
+            if (tradeFilterPreference.IsCapacityEncumberedSharesFilterActive)
             {
                 availQty = ApplyConstraint(tradeFilterPreference, new EncumberedFilter(availQty));
             }

@@ -8,40 +8,40 @@ namespace ConsoleApplication
     {
         static void Main(string[] args)
         {
-            var profilePrimaryOnly = new TradeFilterPreference()
+            var preferencePrimaryOnly = new TradeFilterPreference()
             {
-                IsPrimaryConstraintActive = true,
-                IsBlockHeavilyTradeConstraintActive = false,
-                IsCapacityEncumberedSharesConstraintActive = false,
+                IsPrimaryFilterActive = true,
+                IsHeavilyTradeFilterActive = false,
+                IsCapacityEncumberedSharesFilterActive = false,
             };
 
-            var profileHeavilyTradedOnly = new TradeFilterPreference()
+            var preferenceHeavilyTradedOnly = new TradeFilterPreference()
             {
-                IsPrimaryConstraintActive = false,
-                IsBlockHeavilyTradeConstraintActive = true,
+                IsPrimaryFilterActive = false,
+                IsHeavilyTradeFilterActive = true,
                 BlockHeavilyTradeDay = 2,
                 BlockHeavilyTradeVolume = 0.9m,
-                IsCapacityEncumberedSharesConstraintActive = false,
+                IsCapacityEncumberedSharesFilterActive = false,
             };
 
-            var profileEncumberedOnly = new TradeFilterPreference()
+            var preferenceEncumberedOnly = new TradeFilterPreference()
             {
-                IsPrimaryConstraintActive = false,
-                IsBlockHeavilyTradeConstraintActive = false,
-                IsCapacityEncumberedSharesConstraintActive = true,
+                IsPrimaryFilterActive = false,
+                IsHeavilyTradeFilterActive = false,
+                IsCapacityEncumberedSharesFilterActive = true,
             };
 
-            var block01 = new Stock()
+            var stock01 = new Stock()
             {
                 StockId = "0001",
                 PriceInUsd = 600
             };
 
-            block01.SetVolumes(
+            stock01.SetVolumes(
                 new decimal[] { 2000, 2100, 2200, 2300, 2400 },
                 new decimal[] { 1000, 1100, 1200, 1300, 1400 });
 
-            var block02 = new Stock()
+            var stock02 = new Stock()
             {
                 StockId = "0002",
                 PriceInUsd = 54
@@ -54,8 +54,8 @@ namespace ConsoleApplication
                     TradeSide = TradeSide.Buy,
                     TradeRequestId = 500,
                     OriginalCapacityQuantity = 600,
-                    Stock = block01,
-                    TradeFilterPreference = profilePrimaryOnly
+                    Stock = stock01,
+                    TradeFilterPreference = preferencePrimaryOnly
                 },
                 new TradeRequest()
                 {
@@ -64,24 +64,24 @@ namespace ConsoleApplication
                     OriginalCapacityQuantity = 100,
                     HoldingsQuantity = 30,
                     EncumberedQuantity = 20,
-                    Stock = block01,
-                    TradeFilterPreference = profileHeavilyTradedOnly
+                    Stock = stock01,
+                    TradeFilterPreference = preferenceHeavilyTradedOnly
                 },
                 new TradeRequest()
                 {
                     TradeSide = TradeSide.Buy,
                     TradeRequestId = 502,
                     OriginalCapacityQuantity = 1000,
-                    Stock = block02,
-                    TradeFilterPreference = profileEncumberedOnly
+                    Stock = stock02,
+                    TradeFilterPreference = preferenceEncumberedOnly
                 },
                 new TradeRequest()
                 {
                     TradeSide = TradeSide.Sell,
                     TradeRequestId = 502,
                     OriginalCapacityQuantity = 1000,
-                    Stock = block02,
-                    TradeFilterPreference = profileEncumberedOnly
+                    Stock = stock02,
+                    TradeFilterPreference = preferenceEncumberedOnly
                 },
             };
 
@@ -99,12 +99,12 @@ namespace ConsoleApplication
                 {
                     foreach (var constraint in orderCapacity.Constraints)
                     {
-                        Console.WriteLine($"\t\tConstraint '{constraint.FilterType}' applied with Quantity '{constraint.FilteredQuantity}' and Amount '{constraint.FilteredAmount}'");
+                        Console.WriteLine($"\t\tFilter '{constraint.FilterType}' applied with Quantity '{constraint.FilteredQuantity}' and Amount '{constraint.FilteredAmount}'");
                     }
                 }
                 else
                 {
-                    Console.WriteLine("\t\tNo Constraints");
+                    Console.WriteLine("\t\tNo Filters");
                 }
 
                 Console.WriteLine($"\tFinal Available Quantity: {orderCapacity.AvailableCapacityQuantity}");

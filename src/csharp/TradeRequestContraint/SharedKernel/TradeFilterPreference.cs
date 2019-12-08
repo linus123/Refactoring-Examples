@@ -2,11 +2,11 @@
 {
     public class TradeFilterPreference
     {
-        public bool IsPrimaryConstraintActive { get; set; }
+        public bool IsPrimaryFilterActive { get; set; }
 
-        public bool IsCapacityEncumberedSharesConstraintActive { get; set; }
+        public bool IsCapacityEncumberedSharesFilterActive { get; set; }
 
-        public bool IsBlockHeavilyTradeConstraintActive { get; set; }
+        public bool IsHeavilyTradeFilterActive { get; set; }
 
         public int BlockHeavilyTradeDay { get; set; }
 

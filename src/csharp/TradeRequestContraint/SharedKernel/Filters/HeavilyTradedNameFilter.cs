@@ -14,7 +14,7 @@ namespace SharedKernel.Filters
         public override decimal ApplyFilter(TradeRequest tradeRequest, TradeFilterPreference tradeFilterPreference)
         {
             FilteredQuantity = 0;
-            if (tradeFilterPreference.IsBlockHeavilyTradeConstraintActive)
+            if (tradeFilterPreference.IsHeavilyTradeFilterActive)
             {
                 if (tradeRequest.Stock.IsHeavilyTradedNameConstraintChecked == true)
                 {
