@@ -2,30 +2,25 @@
 {
     public class TradeRequestCollection
     {
-        private readonly TradeRequest[] _orderCapacities;
+        private readonly TradeRequest[] _tradeRequests;
 
         public TradeRequestCollection(
-            TradeRequest[] orderCapacities)
+            TradeRequest[] tradeRequests)
         {
-            _orderCapacities = orderCapacities;
-        }
-
-        public TradeRequest[] GetOrderCapacities()
-        {
-            return _orderCapacities;
+            _tradeRequests = tradeRequests;
         }
 
         public void ApplyFilters(TradeFilterPreference tradeFilterPreference = null)
         {
-            foreach (var oc in _orderCapacities)
+            foreach (var oc in _tradeRequests)
             {
                 if (tradeFilterPreference == null)
                 {
-                    oc.ApplyConstraints(oc.TradeFilterPreference);
+                    oc.ApplyFilters(oc.TradeFilterPreference);
                 }
                 else
                 {
-                    oc.ApplyConstraints(tradeFilterPreference);
+                    oc.ApplyFilters(tradeFilterPreference);
                 }
 
             }

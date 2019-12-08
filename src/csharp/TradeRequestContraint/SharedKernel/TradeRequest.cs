@@ -46,7 +46,7 @@ namespace SharedKernel
             return unencumberedQuantity;
         }
 
-        public void ApplyConstraints(TradeFilterPreference tradeFilterPreference)
+        public void ApplyFilters(TradeFilterPreference tradeFilterPreference)
         {
             decimal availQty = this.OriginalCapacityQuantity;
 
