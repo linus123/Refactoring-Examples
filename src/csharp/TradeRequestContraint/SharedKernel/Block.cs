@@ -2,20 +2,32 @@
 {
     public class Block
     {
+        public string StockId { get; set; }
         public decimal PriceInUsd { get; set; }
         public bool IsHeavilyTradedNameConstraintChecked { get; set; }
         public bool ConstrainedByHeavilyTradedName { get; set; }
 
+        private decimal[] _tradeVolumes;
+        private decimal[] _marketVolumes;
+
+        public void SetVolumes(
+            decimal[] tradeVolumes,
+            decimal[] marketVolumes)
+        {
+            _tradeVolumes = tradeVolumes;
+            _marketVolumes = marketVolumes;
+        }
+
         public decimal GetAccumulatedDayTradeVolume(
             int dayNumber)
         {
-            return 0m;
+            return _tradeVolumes[dayNumber];
         }
 
         public decimal GetAccumulatedDayMarketVolume(
             int dayNumber)
         {
-            return 0m;
+            return _marketVolumes[dayNumber];
         }
     }
 }

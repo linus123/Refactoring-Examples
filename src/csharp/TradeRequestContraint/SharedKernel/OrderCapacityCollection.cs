@@ -2,12 +2,17 @@
 {
     public class OrderCapacityCollection
     {
-        private OrderCapacity[] _orderCapacities;
+        private readonly OrderCapacity[] _orderCapacities;
 
         public OrderCapacityCollection(
             OrderCapacity[] orderCapacities)
         {
             _orderCapacities = orderCapacities;
+        }
+
+        public OrderCapacity[] GetOrderCapacities()
+        {
+            return _orderCapacities;
         }
 
         public void ApplyConstraints(Profile profile = null)

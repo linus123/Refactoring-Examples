@@ -4,6 +4,12 @@ using SharedKernel.Constraints;
 
 namespace SharedKernel
 {
+    public enum TradeSide
+    {
+        Buy,
+        Sell
+    }
+
     public class OrderCapacity
     {
         public OrderCapacity()
@@ -13,13 +19,23 @@ namespace SharedKernel
 
         public List<Constraint> Constraints { get; set; }
 
+        public int OrderId { get; set; }
         public string PrimLimitDescription { get; set; }
+        public decimal OriginalCapacityQuantity { get; set; }
+        public decimal AvailCapacityQty { get; set; }
+        public TradeSide TradeSide { get; set; }
 
+        public decimal HoldingsQty { get; set; }
+        public decimal EncumberedQty { get; set; }
+        
         public Block Block { get; set; }
 
         public bool IsSellOutQty(
-            decimal value)
+            decimal quantity)
         {
+            if (TradeSide == TradeSide.Sell)
+                return quantity >= (HoldingsQty - EncumberedQty);
+
             return false;
         }
 
@@ -28,13 +44,9 @@ namespace SharedKernel
             return 0;
         }
 
-        public decimal OriginalCapacityQty { get; set; }
-
-        public decimal AvailCapacityQty { get; set; }
-
         public void ApplyConstraints(Profile profile)
         {
-            decimal availQty = this.OriginalCapacityQty;
+            decimal availQty = this.OriginalCapacityQuantity;
 
 
             if (profile.IsPrimaryConstraintActive)
