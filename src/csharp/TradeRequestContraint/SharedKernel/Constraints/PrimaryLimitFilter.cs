@@ -17,7 +17,7 @@ namespace SharedKernel.Constraints
             if (profile.IsPrimaryConstraintActive)
             {
                 FilteredQuantity = OriginalQuantity;
-                ConstraintDescription = tradeRequest.PrimLimitDescription;
+                FilterDescription = tradeRequest.PrimLimitDescription;
             }
 
             return CalculateFilteredAmountAndAvailableQuantity(tradeRequest);

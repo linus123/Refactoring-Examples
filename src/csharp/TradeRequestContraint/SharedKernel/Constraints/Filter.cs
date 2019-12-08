@@ -29,14 +29,14 @@ namespace SharedKernel.Constraints
         public string FilterType { get; set; }
         public decimal OriginalQuantity { get; set; }
         public decimal AvailQuantity { get; set; }
-        public decimal ConstrainedAmt { get; set; }
-        public string ConstraintDescription { get; set; }
+        public decimal FilteredAmount { get; set; }
+        public string FilterDescription { get; set; }
 
         public bool IsApplied { get; set; }
 
         public decimal CalculateFilteredAmountAndAvailableQuantity(TradeRequest tradeRequest)
         {
-            ConstrainedAmt = FilteredQuantity * tradeRequest.Block.PriceInUsd;
+            FilteredAmount = FilteredQuantity * tradeRequest.Block.PriceInUsd;
 
             AvailQuantity = OriginalQuantity - FilteredQuantity;
 
