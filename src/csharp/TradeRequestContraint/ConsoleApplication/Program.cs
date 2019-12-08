@@ -8,14 +8,14 @@ namespace ConsoleApplication
     {
         static void Main(string[] args)
         {
-            var profilePrimaryOnly = new Profile()
+            var profilePrimaryOnly = new TradeFilterPreference()
             {
                 IsPrimaryConstraintActive = true,
                 IsBlockHeavilyTradeConstraintActive = false,
                 IsCapacityEncumberedSharesConstraintActive = false,
             };
 
-            var profileHeavilyTradedOnly = new Profile()
+            var profileHeavilyTradedOnly = new TradeFilterPreference()
             {
                 IsPrimaryConstraintActive = false,
                 IsBlockHeavilyTradeConstraintActive = true,
@@ -24,7 +24,7 @@ namespace ConsoleApplication
                 IsCapacityEncumberedSharesConstraintActive = false,
             };
 
-            var profileEncumberedOnly = new Profile()
+            var profileEncumberedOnly = new TradeFilterPreference()
             {
                 IsPrimaryConstraintActive = false,
                 IsBlockHeavilyTradeConstraintActive = false,
@@ -55,7 +55,7 @@ namespace ConsoleApplication
                     OrderId = 500,
                     OriginalCapacityQuantity = 600,
                     Block = block01,
-                    Profile = profilePrimaryOnly
+                    TradeFilterPreference = profilePrimaryOnly
                 },
                 new TradeRequest()
                 {
@@ -65,7 +65,7 @@ namespace ConsoleApplication
                     HoldingsQty = 30,
                     EncumberedQty = 20,
                     Block = block01,
-                    Profile = profileHeavilyTradedOnly
+                    TradeFilterPreference = profileHeavilyTradedOnly
                 },
                 new TradeRequest()
                 {
@@ -73,7 +73,7 @@ namespace ConsoleApplication
                     OrderId = 502,
                     OriginalCapacityQuantity = 1000,
                     Block = block02,
-                    Profile = profileEncumberedOnly
+                    TradeFilterPreference = profileEncumberedOnly
                 },
                 new TradeRequest()
                 {
@@ -81,7 +81,7 @@ namespace ConsoleApplication
                     OrderId = 502,
                     OriginalCapacityQuantity = 1000,
                     Block = block02,
-                    Profile = profileEncumberedOnly
+                    TradeFilterPreference = profileEncumberedOnly
                 },
             };
 

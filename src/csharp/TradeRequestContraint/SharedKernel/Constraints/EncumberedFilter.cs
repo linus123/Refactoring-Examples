@@ -11,10 +11,10 @@ namespace SharedKernel.Constraints
 
         }
 
-        public override decimal ApplyFilter(TradeRequest tradeRequest, Profile profile)
+        public override decimal ApplyFilter(TradeRequest tradeRequest, TradeFilterPreference tradeFilterPreference)
         {
             FilteredQuantity = 0;
-            if (profile.IsCapacityEncumberedSharesConstraintActive)
+            if (tradeFilterPreference.IsCapacityEncumberedSharesConstraintActive)
             {
                 if (tradeRequest.IsSellOutQty(OriginalQuantity))
                 {

@@ -23,7 +23,7 @@ namespace SharedKernel
         public decimal EncumberedQty { get; set; }
         
         public Block Block { get; set; }
-        public Profile Profile { get; set; }
+        public TradeFilterPreference TradeFilterPreference { get; set; }
 
         public bool IsSellOutQty(
             decimal quantity)
@@ -46,24 +46,24 @@ namespace SharedKernel
             return unencumberedQuantity;
         }
 
-        public void ApplyConstraints(Profile profile)
+        public void ApplyConstraints(TradeFilterPreference tradeFilterPreference)
         {
             decimal availQty = this.OriginalCapacityQuantity;
 
 
-            if (profile.IsPrimaryConstraintActive)
+            if (tradeFilterPreference.IsPrimaryConstraintActive)
             {
-                availQty = ApplyConstraint(profile, new PrimaryLimitFilter(availQty));
+                availQty = ApplyConstraint(tradeFilterPreference, new PrimaryLimitFilter(availQty));
             }
 
-            if (profile.IsBlockHeavilyTradeConstraintActive)
+            if (tradeFilterPreference.IsBlockHeavilyTradeConstraintActive)
             {
-                availQty = ApplyConstraint(profile, new HeavilyTradedNameFilter(availQty));
+                availQty = ApplyConstraint(tradeFilterPreference, new HeavilyTradedNameFilter(availQty));
             }
 
-            if (profile.IsCapacityEncumberedSharesConstraintActive)
+            if (tradeFilterPreference.IsCapacityEncumberedSharesConstraintActive)
             {
-                availQty = ApplyConstraint(profile, new EncumberedFilter(availQty));
+                availQty = ApplyConstraint(tradeFilterPreference, new EncumberedFilter(availQty));
             }
 
             //Remove Zero Constrained Qty Constraints
@@ -72,11 +72,11 @@ namespace SharedKernel
             AvailCapacityQty = availQty;
         }
 
-        public decimal ApplyConstraint(Profile profile, Filter filter)
+        public decimal ApplyConstraint(TradeFilterPreference tradeFilterPreference, Filter filter)
         {
             Constraints.Add(filter);
 
-            return filter.ApplyFilter(this, profile);
+            return filter.ApplyFilter(this, tradeFilterPreference);
         }
     }
 }

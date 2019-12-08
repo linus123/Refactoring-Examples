@@ -11,10 +11,10 @@ namespace SharedKernel.Constraints
         }
 
 
-        public override decimal ApplyFilter(TradeRequest tradeRequest, Profile profile)
+        public override decimal ApplyFilter(TradeRequest tradeRequest, TradeFilterPreference tradeFilterPreference)
         {
             FilteredQuantity = 0;
-            if (profile.IsBlockHeavilyTradeConstraintActive)
+            if (tradeFilterPreference.IsBlockHeavilyTradeConstraintActive)
             {
                 if (tradeRequest.Block.IsHeavilyTradedNameConstraintChecked == true)
                 {
@@ -28,8 +28,8 @@ namespace SharedKernel.Constraints
                 else
                 {
                     //First-time Check
-                    var dayNo = (int)profile.BlockHeavilyTradeDay;
-                    var volumePercentage = profile.BlockHeavilyTradeVolume;
+                    var dayNo = (int)tradeFilterPreference.BlockHeavilyTradeDay;
+                    var volumePercentage = tradeFilterPreference.BlockHeavilyTradeVolume;
                     var tradedVolume = tradeRequest.Block.GetAccumulatedDayTradeVolume(dayNo);
                     var marketVolume = tradeRequest.Block.GetAccumulatedDayMarketVolume(dayNo);
 

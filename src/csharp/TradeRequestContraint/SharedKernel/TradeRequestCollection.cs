@@ -15,17 +15,17 @@
             return _orderCapacities;
         }
 
-        public void ApplyConstraints(Profile profile = null)
+        public void ApplyConstraints(TradeFilterPreference tradeFilterPreference = null)
         {
             foreach (var oc in _orderCapacities)
             {
-                if (profile == null)
+                if (tradeFilterPreference == null)
                 {
-                    oc.ApplyConstraints(oc.Profile);
+                    oc.ApplyConstraints(oc.TradeFilterPreference);
                 }
                 else
                 {
-                    oc.ApplyConstraints(profile);
+                    oc.ApplyConstraints(tradeFilterPreference);
                 }
 
             }

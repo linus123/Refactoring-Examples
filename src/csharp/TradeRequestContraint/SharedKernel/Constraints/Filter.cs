@@ -20,7 +20,7 @@ namespace SharedKernel.Constraints
 
         public virtual decimal ApplyFilter(
             TradeRequest tradeRequest,
-            Profile profile)
+            TradeFilterPreference tradeFilterPreference)
         {
             return OriginalQuantity;
         }

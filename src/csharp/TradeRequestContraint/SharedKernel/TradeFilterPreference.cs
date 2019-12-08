@@ -1,6 +1,6 @@
 ﻿namespace SharedKernel
 {
-    public class Profile
+    public class TradeFilterPreference
     {
         public bool IsPrimaryConstraintActive { get; set; }
 

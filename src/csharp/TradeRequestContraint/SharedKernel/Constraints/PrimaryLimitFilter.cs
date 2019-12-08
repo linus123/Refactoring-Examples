@@ -10,11 +10,11 @@ namespace SharedKernel.Constraints
 
         }
 
-        public override decimal ApplyFilter(TradeRequest tradeRequest, Profile profile)
+        public override decimal ApplyFilter(TradeRequest tradeRequest, TradeFilterPreference tradeFilterPreference)
         {
             FilteredQuantity = 0;
 
-            if (profile.IsPrimaryConstraintActive)
+            if (tradeFilterPreference.IsPrimaryConstraintActive)
             {
                 FilteredQuantity = OriginalQuantity;
                 FilterDescription = tradeRequest.PrimLimitDescription;
