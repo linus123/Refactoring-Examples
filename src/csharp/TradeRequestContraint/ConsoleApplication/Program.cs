@@ -47,7 +47,7 @@ namespace ConsoleApplication
                 PriceInUsd = 54
             };
 
-            var orderCapacities = new TradeRequest[]
+            var tradeRequests = new TradeRequest[]
             {
                 new TradeRequest()
                 {
@@ -85,19 +85,19 @@ namespace ConsoleApplication
                 },
             };
 
-            var orderCapacityCollection = new TradeRequestCollection(
-                orderCapacities);
+            var tradeRequestCollection = new TradeRequestCollection(
+                tradeRequests);
 
-            orderCapacityCollection.ApplyConstraints();
+            tradeRequestCollection.ApplyFilters();
 
-            foreach (var orderCapacity in orderCapacities)
+            foreach (var tradeRequest in tradeRequests)
             {
-                Console.WriteLine($"Filter Report for TradeRequestId '{orderCapacity.TradeRequestId}' with StockId '{orderCapacity.Stock.StockId}'");
-                Console.WriteLine($"\tStarting Quantity: '{orderCapacity.OriginalCapacityQuantity}' and Starting Amount '{orderCapacity.OriginalCapacityQuantity * orderCapacity.Stock.PriceInUsd}'");
+                Console.WriteLine($"Filter Report for TradeRequestId '{tradeRequest.TradeRequestId}' with StockId '{tradeRequest.Stock.StockId}'");
+                Console.WriteLine($"\tStarting Quantity: '{tradeRequest.OriginalCapacityQuantity}' and Starting Amount '{tradeRequest.OriginalCapacityQuantity * tradeRequest.Stock.PriceInUsd}'");
 
-                if (orderCapacity.Constraints.Any())
+                if (tradeRequest.Constraints.Any())
                 {
-                    foreach (var constraint in orderCapacity.Constraints)
+                    foreach (var constraint in tradeRequest.Constraints)
                     {
                         Console.WriteLine($"\t\tFilter '{constraint.FilterType}' applied with Quantity '{constraint.FilteredQuantity}' and Amount '{constraint.FilteredAmount}'");
                     }
@@ -107,7 +107,7 @@ namespace ConsoleApplication
                     Console.WriteLine("\t\tNo Filters");
                 }
 
-                Console.WriteLine($"\tFinal Available Quantity: {orderCapacity.AvailableCapacityQuantity}");
+                Console.WriteLine($"\tFinal Available Quantity: {tradeRequest.AvailableCapacityQuantity}");
                 Console.WriteLine();
             }
 
