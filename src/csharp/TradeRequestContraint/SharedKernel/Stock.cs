@@ -1,4 +1,6 @@
-﻿namespace SharedKernel
+﻿using System.Security.Authentication.ExtendedProtection;
+
+namespace SharedKernel
 {
     public class Stock
     {
@@ -6,6 +8,8 @@
         public decimal PriceInUsd { get; set; }
         public bool IsHeavilyTradedNameConstraintChecked { get; set; }
         public bool ConstrainedByHeavilyTradedName { get; set; }
+
+        public decimal SharePrice { get; set; }
 
         private decimal[] _tradeVolumes;
         private decimal[] _marketVolumes;
@@ -28,6 +32,16 @@
             int dayNumber)
         {
             return _marketVolumes[dayNumber];
+        }
+
+        public bool IsSharePriceWithBufferGreaterThan(decimal value, decimal buffer)
+        {
+            return (SharePrice * (1 - buffer)) > value;
+        }
+
+        public bool IsSharePriceWithBufferLessThan(decimal value, decimal buffer)
+        {
+            return (SharePrice * (1 + buffer)) < value;
         }
     }
 }

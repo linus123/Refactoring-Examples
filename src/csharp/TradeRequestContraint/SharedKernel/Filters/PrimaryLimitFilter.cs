@@ -14,7 +14,7 @@ namespace SharedKernel.Filters
         {
             FilteredQuantity = 0;
 
-            if (tradeFilterPreference.IsPrimaryFilterActive)
+            if (tradeRequest.ShouldPrimaryConstraintBeApplied(tradeFilterPreference))
             {
                 FilteredQuantity = OriginalQuantity;
                 FilterDescription = tradeRequest.PrimaryLimitDescription;
