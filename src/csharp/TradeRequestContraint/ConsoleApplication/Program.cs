@@ -11,6 +11,8 @@ namespace ConsoleApplication
             var preferencePrimaryOnly = new TradeFilterPreference()
             {
                 IsPrimaryFilterActive = true,
+                CapacityPrimaryLimitBuy = 0.01m,
+                CapacityPrimaryLimitSell = 0.02m,
                 IsHeavilyTradeFilterActive = false,
                 IsCapacityEncumberedSharesFilterActive = false,
             };
@@ -34,7 +36,8 @@ namespace ConsoleApplication
             var stock01 = new Stock()
             {
                 StockId = "0001",
-                PriceInUsd = 600
+                PriceInUsd = 600,
+                SharePrice = 50
             };
 
             stock01.SetVolumes(
@@ -44,7 +47,8 @@ namespace ConsoleApplication
             var stock02 = new Stock()
             {
                 StockId = "0002",
-                PriceInUsd = 54
+                PriceInUsd = 54,
+                SharePrice = 50
             };
 
             var tradeRequests = new TradeRequest[]
@@ -55,6 +59,7 @@ namespace ConsoleApplication
                     TradeRequestId = 500,
                     OriginalCapacityQuantity = 600,
                     Stock = stock01,
+                    PrimaryLimit = 10,
                     TradeFilterPreference = preferencePrimaryOnly
                 },
                 new TradeRequest()
