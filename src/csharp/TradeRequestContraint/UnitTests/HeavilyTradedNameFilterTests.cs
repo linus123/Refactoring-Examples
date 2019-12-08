@@ -10,7 +10,7 @@ namespace UnitTests
         [Fact]
         public void ShouldDoNothingWhenFilterIsNotActive()
         {
-            var heavilyTradedNameFilter = new HeavilyTradedNameFilter(200);
+            var filter = new HeavilyTradedNameFilter(200);
 
             var stock = new Stock()
             {
@@ -33,16 +33,16 @@ namespace UnitTests
                 StockHeavilyTradeDay = 1
             };
 
-            heavilyTradedNameFilter.ApplyFilter(tradeRequest, tradeFilterPreference);
+            filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
-            heavilyTradedNameFilter.FilteredQuantity.Should().Be(0);
-            heavilyTradedNameFilter.AvailQuantity.Should().Be(200);
+            filter.FilteredQuantity.Should().Be(0);
+            filter.AvailQuantity.Should().Be(200);
         }
 
         [Fact]
         public void ShouldApplyFilterWhenTradeRequestIsHeavilyTraded()
         {
-            var heavilyTradedNameFilter = new HeavilyTradedNameFilter(200);
+            var filter = new HeavilyTradedNameFilter(200);
 
             var stock = new Stock()
             {
@@ -65,17 +65,17 @@ namespace UnitTests
                 StockHeavilyTradeDay = 1
             };
 
-            heavilyTradedNameFilter.ApplyFilter(tradeRequest, tradeFilterPreference);
+            filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
-            heavilyTradedNameFilter.FilteredQuantity.Should().Be(200);
-            heavilyTradedNameFilter.AvailQuantity.Should().Be(0);
+            filter.FilteredQuantity.Should().Be(200);
+            filter.AvailQuantity.Should().Be(0);
 
         }
 
         [Fact]
         public void ShouldNotApplyFilterWhenTradeRequestIsNotHeavilyTraded()
         {
-            var heavilyTradedNameFilter = new HeavilyTradedNameFilter(200);
+            var filter = new HeavilyTradedNameFilter(200);
 
             var stock = new Stock()
             {
@@ -98,10 +98,10 @@ namespace UnitTests
                 StockHeavilyTradeDay = 1
             };
 
-            heavilyTradedNameFilter.ApplyFilter(tradeRequest, tradeFilterPreference);
+            filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
-            heavilyTradedNameFilter.FilteredQuantity.Should().Be(0);
-            heavilyTradedNameFilter.AvailQuantity.Should().Be(200);
+            filter.FilteredQuantity.Should().Be(0);
+            filter.AvailQuantity.Should().Be(200);
         }
     }
 }

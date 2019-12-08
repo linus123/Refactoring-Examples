@@ -10,7 +10,7 @@ namespace UnitTests
         [Fact]
         public void ShouldNotFilterWhenFilterIsNotActive()
         {
-            var encumberedFilter = new EncumberedFilter(100);
+            var filter = new EncumberedFilter(100);
 
             var tradeRequest = new TradeRequest()
             {
@@ -28,16 +28,16 @@ namespace UnitTests
                 IsCapacityEncumberedSharesFilterActive = false
             };
 
-            encumberedFilter.ApplyFilter(tradeRequest, tradeFilterPreference);
+            filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
-            encumberedFilter.FilteredQuantity.Should().Be(0);
-            encumberedFilter.AvailQuantity.Should().Be(100);
+            filter.FilteredQuantity.Should().Be(0);
+            filter.AvailQuantity.Should().Be(100);
         }
 
         [Fact]
         public void ShouldNotFilterWhenTradeIsBuy()
         {
-            var encumberedFilter = new EncumberedFilter(100);
+            var filter = new EncumberedFilter(100);
 
             var tradeRequest = new TradeRequest()
             {
@@ -55,16 +55,16 @@ namespace UnitTests
                 IsCapacityEncumberedSharesFilterActive = true
             };
 
-            encumberedFilter.ApplyFilter(tradeRequest, tradeFilterPreference);
+            filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
-            encumberedFilter.FilteredQuantity.Should().Be(0);
-            encumberedFilter.AvailQuantity.Should().Be(100);
+            filter.FilteredQuantity.Should().Be(0);
+            filter.AvailQuantity.Should().Be(100);
         }
 
         [Fact]
         public void ShouldFilterWhenTradeIsSell()
         {
-            var encumberedFilter = new EncumberedFilter(200);
+            var filter = new EncumberedFilter(200);
 
             var tradeRequest = new TradeRequest()
             {
@@ -82,10 +82,10 @@ namespace UnitTests
                 IsCapacityEncumberedSharesFilterActive = true
             };
 
-            encumberedFilter.ApplyFilter(tradeRequest, tradeFilterPreference);
+            filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
-            encumberedFilter.FilteredQuantity.Should().Be(30);
-            encumberedFilter.AvailQuantity.Should().Be(170);
+            filter.FilteredQuantity.Should().Be(30);
+            filter.AvailQuantity.Should().Be(170);
         }
     }
 }
