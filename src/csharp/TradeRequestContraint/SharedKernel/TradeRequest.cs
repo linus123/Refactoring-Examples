@@ -13,14 +13,14 @@ namespace SharedKernel
 
         public List<Filter> Constraints { get; set; }
 
-        public int OrderId { get; set; }
-        public string PrimLimitDescription { get; set; }
+        public int TradeRequestId { get; set; }
+        public string PrimaryLimitDescription { get; set; }
         public decimal OriginalCapacityQuantity { get; set; }
-        public decimal AvailCapacityQty { get; set; }
+        public decimal AvailableCapacityQuantity { get; set; }
         public TradeSide TradeSide { get; set; }
 
-        public decimal HoldingsQty { get; set; }
-        public decimal EncumberedQty { get; set; }
+        public decimal HoldingsQuantity { get; set; }
+        public decimal EncumberedQuantity { get; set; }
         
         public Block Block { get; set; }
         public TradeFilterPreference TradeFilterPreference { get; set; }
@@ -29,14 +29,14 @@ namespace SharedKernel
             decimal quantity)
         {
             if (TradeSide == TradeSide.Sell)
-                return quantity >= (HoldingsQty - EncumberedQty);
+                return quantity >= (HoldingsQuantity - EncumberedQuantity);
 
             return false;
         }
 
         public decimal CalculateUnencumberedQuantity()
         {
-            var unencumberedQuantity = HoldingsQty - EncumberedQty;
+            var unencumberedQuantity = HoldingsQuantity - EncumberedQuantity;
 
             if (unencumberedQuantity < 0)
             {
@@ -69,7 +69,7 @@ namespace SharedKernel
             //Remove Zero Constrained Qty Constraints
             Constraints = Constraints.Where(c => c.FilteredQuantity != 0).ToList();
 
-            AvailCapacityQty = availQty;
+            AvailableCapacityQuantity = availQty;
         }
 
         public decimal ApplyConstraint(TradeFilterPreference tradeFilterPreference, Filter filter)

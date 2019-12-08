@@ -52,7 +52,7 @@ namespace ConsoleApplication
                 new TradeRequest()
                 {
                     TradeSide = TradeSide.Buy,
-                    OrderId = 500,
+                    TradeRequestId = 500,
                     OriginalCapacityQuantity = 600,
                     Block = block01,
                     TradeFilterPreference = profilePrimaryOnly
@@ -60,7 +60,7 @@ namespace ConsoleApplication
                 new TradeRequest()
                 {
                     TradeSide = TradeSide.Sell,
-                    OrderId = 501,
+                    TradeRequestId = 501,
                     OriginalCapacityQuantity = 100,
                     HoldingsQty = 30,
                     EncumberedQty = 20,
@@ -70,7 +70,7 @@ namespace ConsoleApplication
                 new TradeRequest()
                 {
                     TradeSide = TradeSide.Buy,
-                    OrderId = 502,
+                    TradeRequestId = 502,
                     OriginalCapacityQuantity = 1000,
                     Block = block02,
                     TradeFilterPreference = profileEncumberedOnly
@@ -78,7 +78,7 @@ namespace ConsoleApplication
                 new TradeRequest()
                 {
                     TradeSide = TradeSide.Sell,
-                    OrderId = 502,
+                    TradeRequestId = 502,
                     OriginalCapacityQuantity = 1000,
                     Block = block02,
                     TradeFilterPreference = profileEncumberedOnly
@@ -92,7 +92,7 @@ namespace ConsoleApplication
 
             foreach (var orderCapacity in orderCapacities)
             {
-                Console.WriteLine($"Filter Report for OrderId '{orderCapacity.OrderId}' with StockId '{orderCapacity.Block.StockId}'");
+                Console.WriteLine($"Filter Report for TradeRequestId '{orderCapacity.TradeRequestId}' with StockId '{orderCapacity.Block.StockId}'");
                 Console.WriteLine($"\tStarting Quantity: '{orderCapacity.OriginalCapacityQuantity}' and Starting Amount '{orderCapacity.OriginalCapacityQuantity * orderCapacity.Block.PriceInUsd}'");
 
                 if (orderCapacity.Constraints.Any())
@@ -107,7 +107,7 @@ namespace ConsoleApplication
                     Console.WriteLine("\t\tNo Constraints");
                 }
 
-                Console.WriteLine($"\tFinal Available Quantity: {orderCapacity.AvailCapacityQty}");
+                Console.WriteLine($"\tFinal Available Quantity: {orderCapacity.AvailableCapacityQuantity}");
                 Console.WriteLine();
             }
 
