@@ -26,6 +26,11 @@ namespace SharedKernel
         public Stock Stock { get; set; }
         public TradeFilterPreference TradeFilterPreference { get; set; }
 
+        public decimal GetOriginalCapacityAmount()
+        {
+            return OriginalCapacityQuantity * Stock.PriceInUsd;
+        }
+
         public bool IsSellOutQty(
             decimal quantity)
         {
