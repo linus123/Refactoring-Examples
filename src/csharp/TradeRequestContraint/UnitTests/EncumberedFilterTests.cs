@@ -15,10 +15,11 @@ namespace UnitTests
             var tradeRequest = new TradeRequest()
             {
                 TradeSide = TradeSide.Sell,
-                HoldingsQuantity = 100,
+                HoldingsQuantity = 200,
                 EncumberedQuantity = 30,
                 Stock = new Stock()
                 {
+                    StockId = "0000"
                 }
             };
 
@@ -41,10 +42,11 @@ namespace UnitTests
             var tradeRequest = new TradeRequest()
             {
                 TradeSide = TradeSide.Buy,
-                HoldingsQuantity = 100,
+                HoldingsQuantity = 200,
                 EncumberedQuantity = 30,
                 Stock = new Stock()
                 {
+                    StockId = "0000"
                 }
             };
 
@@ -62,15 +64,16 @@ namespace UnitTests
         [Fact]
         public void ShouldFilterWhenTradeIsSell()
         {
-            var encumberedFilter = new EncumberedFilter(100);
+            var encumberedFilter = new EncumberedFilter(200);
 
             var tradeRequest = new TradeRequest()
             {
                 TradeSide = TradeSide.Sell,
-                HoldingsQuantity = 100,
+                HoldingsQuantity = 200,
                 EncumberedQuantity = 30,
                 Stock = new Stock()
                 {
+                    StockId = "0000"
                 }
             };
 
@@ -82,7 +85,7 @@ namespace UnitTests
             encumberedFilter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
             encumberedFilter.FilteredQuantity.Should().Be(30);
-            encumberedFilter.AvailQuantity.Should().Be(70);
+            encumberedFilter.AvailQuantity.Should().Be(170);
         }
     }
 }
