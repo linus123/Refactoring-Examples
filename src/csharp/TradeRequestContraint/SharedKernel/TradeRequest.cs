@@ -14,7 +14,7 @@ namespace SharedKernel
         public List<Filter> Filters { get; set; }
 
         public int TradeRequestId { get; set; }
-        public decimal PrimLimit { get; set; }
+        public decimal PrimaryLimit { get; set; }
         public string PrimaryLimitDescription { get; set; }
         public decimal OriginalCapacityQuantity { get; set; }
         public decimal AvailableCapacityQuantity { get; set; }
@@ -86,11 +86,11 @@ namespace SharedKernel
 
             if (TradeSide == TradeSide.Buy)
             {
-                return Stock.IsSharePriceWithBufferGreaterThan(PrimLimit, tradeFilterPreference.CapacityPrimaryLimitBuy);
+                return Stock.IsSharePriceWithBufferGreaterThan(PrimaryLimit, tradeFilterPreference.CapacityPrimaryLimitBuy);
             }
             else // Sell
             {
-                return Stock.IsSharePriceWithBufferLessThan(PrimLimit, tradeFilterPreference.CapacityPrimaryLimitSell);
+                return Stock.IsSharePriceWithBufferLessThan(PrimaryLimit, tradeFilterPreference.CapacityPrimaryLimitSell);
             }
         }
     }
