@@ -8,37 +8,81 @@ namespace ConsoleApplication
     {
         static void Main(string[] args)
         {
-            var profile = new Profile()
+            var profilePrimaryOnly = new Profile()
+            {
+                IsPrimaryConstraintActive = true,
+                IsBlockHeavilyTradeConstraintActive = false,
+                IsCapacityEncumberedSharesConstraintActive = false,
+            };
+
+            var profileHeavilyTradedOnly = new Profile()
+            {
+                IsPrimaryConstraintActive = false,
+                IsBlockHeavilyTradeConstraintActive = true,
+                BlockHeavilyTradeDay = 2,
+                BlockHeavilyTradeVolume = 0.9m,
+                IsCapacityEncumberedSharesConstraintActive = false,
+            };
+
+            var profileEncumberedOnly = new Profile()
             {
                 IsPrimaryConstraintActive = false,
                 IsBlockHeavilyTradeConstraintActive = false,
-                BlockHeavilyTradeDay = 2,
-                BlockHeavilyTradeVolume = 0.9m,
                 IsCapacityEncumberedSharesConstraintActive = true,
             };
 
-            var block = new Block()
+            var block01 = new Block()
             {
                 StockId = "0001",
                 PriceInUsd = 600
             };
 
-            block.SetVolumes(
+            block01.SetVolumes(
                 new decimal[] { 2000, 2100, 2200, 2300, 2400 },
                 new decimal[] { 1000, 1100, 1200, 1300, 1400 });
+
+            var block02 = new Block()
+            {
+                StockId = "0002",
+                PriceInUsd = 54
+            };
 
             var orderCapacities = new OrderCapacity[]
             {
                 new OrderCapacity()
                 {
-                    TradeSide = TradeSide.Sell,
+                    TradeSide = TradeSide.Buy,
                     OrderId = 500,
+                    OriginalCapacityQuantity = 600,
+                    Block = block01,
+                    Profile = profilePrimaryOnly
+                },
+                new OrderCapacity()
+                {
+                    TradeSide = TradeSide.Sell,
+                    OrderId = 501,
                     OriginalCapacityQuantity = 100,
                     HoldingsQty = 30,
                     EncumberedQty = 20,
-                    Block = block,
-                    Profile = profile
-                }
+                    Block = block01,
+                    Profile = profileHeavilyTradedOnly
+                },
+                new OrderCapacity()
+                {
+                    TradeSide = TradeSide.Buy,
+                    OrderId = 502,
+                    OriginalCapacityQuantity = 1000,
+                    Block = block02,
+                    Profile = profileEncumberedOnly
+                },
+                new OrderCapacity()
+                {
+                    TradeSide = TradeSide.Sell,
+                    OrderId = 502,
+                    OriginalCapacityQuantity = 1000,
+                    Block = block02,
+                    Profile = profileEncumberedOnly
+                },
             };
 
             var orderCapacityCollection = new OrderCapacityCollection(
