@@ -18,7 +18,7 @@ namespace SharedKernel.Constraints
             {
                 if (orderCapacity.IsSellOutQty(OriginalQty))
                 {
-                    ConstrainedQty = OriginalQty - orderCapacity.CalculateUnemcumberedQty();
+                    ConstrainedQty = OriginalQty - orderCapacity.CalculateUnencumberedQuantity();
                 }
             }
 
