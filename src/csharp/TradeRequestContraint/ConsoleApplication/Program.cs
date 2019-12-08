@@ -47,9 +47,9 @@ namespace ConsoleApplication
                 PriceInUsd = 54
             };
 
-            var orderCapacities = new OrderCapacity[]
+            var orderCapacities = new TradeRequest[]
             {
-                new OrderCapacity()
+                new TradeRequest()
                 {
                     TradeSide = TradeSide.Buy,
                     OrderId = 500,
@@ -57,7 +57,7 @@ namespace ConsoleApplication
                     Block = block01,
                     Profile = profilePrimaryOnly
                 },
-                new OrderCapacity()
+                new TradeRequest()
                 {
                     TradeSide = TradeSide.Sell,
                     OrderId = 501,
@@ -67,7 +67,7 @@ namespace ConsoleApplication
                     Block = block01,
                     Profile = profileHeavilyTradedOnly
                 },
-                new OrderCapacity()
+                new TradeRequest()
                 {
                     TradeSide = TradeSide.Buy,
                     OrderId = 502,
@@ -75,7 +75,7 @@ namespace ConsoleApplication
                     Block = block02,
                     Profile = profileEncumberedOnly
                 },
-                new OrderCapacity()
+                new TradeRequest()
                 {
                     TradeSide = TradeSide.Sell,
                     OrderId = 502,
@@ -85,14 +85,14 @@ namespace ConsoleApplication
                 },
             };
 
-            var orderCapacityCollection = new OrderCapacityCollection(
+            var orderCapacityCollection = new TradeRequestCollection(
                 orderCapacities);
 
             orderCapacityCollection.ApplyConstraints();
 
             foreach (var orderCapacity in orderCapacities)
             {
-                Console.WriteLine($"Constraint Report for OrderId '{orderCapacity.OrderId}' with StockId '{orderCapacity.Block.StockId}'");
+                Console.WriteLine($"Filter Report for OrderId '{orderCapacity.OrderId}' with StockId '{orderCapacity.Block.StockId}'");
                 Console.WriteLine($"\tStarting Quantity: '{orderCapacity.OriginalCapacityQuantity}' and Starting Amount '{orderCapacity.OriginalCapacityQuantity * orderCapacity.Block.PriceInUsd}'");
 
                 if (orderCapacity.Constraints.Any())

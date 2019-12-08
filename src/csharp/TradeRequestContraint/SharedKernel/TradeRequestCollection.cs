@@ -1,16 +1,16 @@
 ﻿namespace SharedKernel
 {
-    public class OrderCapacityCollection
+    public class TradeRequestCollection
     {
-        private readonly OrderCapacity[] _orderCapacities;
+        private readonly TradeRequest[] _orderCapacities;
 
-        public OrderCapacityCollection(
-            OrderCapacity[] orderCapacities)
+        public TradeRequestCollection(
+            TradeRequest[] orderCapacities)
         {
             _orderCapacities = orderCapacities;
         }
 
-        public OrderCapacity[] GetOrderCapacities()
+        public TradeRequest[] GetOrderCapacities()
         {
             return _orderCapacities;
         }

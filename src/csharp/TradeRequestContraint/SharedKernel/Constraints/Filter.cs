@@ -3,14 +3,14 @@ using System.ComponentModel;
 
 namespace SharedKernel.Constraints
 {
-    public class Constraint
+    public class Filter
     {
-        public Constraint()
+        public Filter()
         {
 
         }
 
-        public Constraint(decimal originalQty)
+        public Filter(decimal originalQty)
         {
             ConstraintType = GetClassDescription(this.GetType());
             OriginalQty = originalQty;
@@ -18,7 +18,7 @@ namespace SharedKernel.Constraints
             IsApplied = true;
         }
 
-        public virtual decimal ApplyConstraint(OrderCapacity orderCapacity, Profile profile)
+        public virtual decimal ApplyConstraint(TradeRequest tradeRequest, Profile profile)
         { return OriginalQty; }
 
         public decimal ConstrainedQty { get; set; }
@@ -30,9 +30,9 @@ namespace SharedKernel.Constraints
 
         public bool IsApplied { get; set; }
 
-        public decimal CalculateConstrainedAmtAndAvailableQty(OrderCapacity orderCapacity)
+        public decimal CalculateConstrainedAmtAndAvailableQty(TradeRequest tradeRequest)
         {
-            ConstrainedAmt = ConstrainedQty * orderCapacity.Block.PriceInUsd;
+            ConstrainedAmt = ConstrainedQty * tradeRequest.Block.PriceInUsd;
 
             AvailQty = OriginalQty - ConstrainedQty;
 

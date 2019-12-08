@@ -3,23 +3,23 @@
 namespace SharedKernel.Constraints
 {
     [Description("Heavily Traded Name")]
-    public class HeavilyTradedNameConstraint : Constraint
+    public class HeavilyTradedNameFilter : Filter
     {
-        public HeavilyTradedNameConstraint(decimal originalQty) : base(originalQty)
+        public HeavilyTradedNameFilter(decimal originalQty) : base(originalQty)
         {
 
         }
 
 
-        public override decimal ApplyConstraint(OrderCapacity orderCapacity, Profile profile)
+        public override decimal ApplyConstraint(TradeRequest tradeRequest, Profile profile)
         {
             ConstrainedQty = 0;
             if (profile.IsBlockHeavilyTradeConstraintActive)
             {
-                if (orderCapacity.Block.IsHeavilyTradedNameConstraintChecked == true)
+                if (tradeRequest.Block.IsHeavilyTradedNameConstraintChecked == true)
                 {
                     //Block has been checked by Heavily Traded Name
-                    if (orderCapacity.Block.ConstrainedByHeavilyTradedName)
+                    if (tradeRequest.Block.ConstrainedByHeavilyTradedName)
                     {
                         //Constrained by Name
                         ConstrainedQty = AvailQty;
@@ -30,20 +30,20 @@ namespace SharedKernel.Constraints
                     //First-time Check
                     var dayNo = (int)profile.BlockHeavilyTradeDay;
                     var volumePercentage = profile.BlockHeavilyTradeVolume;
-                    var tradedVolume = orderCapacity.Block.GetAccumulatedDayTradeVolume(dayNo);
-                    var marketVolume = orderCapacity.Block.GetAccumulatedDayMarketVolume(dayNo);
+                    var tradedVolume = tradeRequest.Block.GetAccumulatedDayTradeVolume(dayNo);
+                    var marketVolume = tradeRequest.Block.GetAccumulatedDayMarketVolume(dayNo);
 
                     if (tradedVolume > volumePercentage * marketVolume)
                     {
                         ConstrainedQty = AvailQty;
-                        orderCapacity.Block.ConstrainedByHeavilyTradedName = true;
+                        tradeRequest.Block.ConstrainedByHeavilyTradedName = true;
                     }
-                    orderCapacity.Block.IsHeavilyTradedNameConstraintChecked = true;
+                    tradeRequest.Block.IsHeavilyTradedNameConstraintChecked = true;
 
                 }
             }
 
-            return CalculateConstrainedAmtAndAvailableQty(orderCapacity);
+            return CalculateConstrainedAmtAndAvailableQty(tradeRequest);
 
         }
 

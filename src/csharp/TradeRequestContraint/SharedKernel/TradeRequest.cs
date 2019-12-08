@@ -4,20 +4,14 @@ using SharedKernel.Constraints;
 
 namespace SharedKernel
 {
-    public enum TradeSide
+    public class TradeRequest
     {
-        Buy,
-        Sell
-    }
-
-    public class OrderCapacity
-    {
-        public OrderCapacity()
+        public TradeRequest()
         {
-            Constraints = new List<Constraint>();
+            Constraints = new List<Filter>();
         }
 
-        public List<Constraint> Constraints { get; set; }
+        public List<Filter> Constraints { get; set; }
 
         public int OrderId { get; set; }
         public string PrimLimitDescription { get; set; }
@@ -59,17 +53,17 @@ namespace SharedKernel
 
             if (profile.IsPrimaryConstraintActive)
             {
-                availQty = ApplyConstraint(profile, new PrimaryLimitConstraint(availQty));
+                availQty = ApplyConstraint(profile, new PrimaryLimitFilter(availQty));
             }
 
             if (profile.IsBlockHeavilyTradeConstraintActive)
             {
-                availQty = ApplyConstraint(profile, new HeavilyTradedNameConstraint(availQty));
+                availQty = ApplyConstraint(profile, new HeavilyTradedNameFilter(availQty));
             }
 
             if (profile.IsCapacityEncumberedSharesConstraintActive)
             {
-                availQty = ApplyConstraint(profile, new EncumberedConstraint(availQty));
+                availQty = ApplyConstraint(profile, new EncumberedFilter(availQty));
             }
 
             //Remove Zero Constrained Qty Constraints
@@ -78,11 +72,11 @@ namespace SharedKernel
             AvailCapacityQty = availQty;
         }
 
-        public decimal ApplyConstraint(Profile profile, Constraint constraint)
+        public decimal ApplyConstraint(Profile profile, Filter filter)
         {
-            Constraints.Add(constraint);
+            Constraints.Add(filter);
 
-            return constraint.ApplyConstraint(this, profile);
+            return filter.ApplyConstraint(this, profile);
         }
     }
 }
