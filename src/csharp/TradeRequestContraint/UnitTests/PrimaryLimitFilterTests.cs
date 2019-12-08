@@ -10,7 +10,7 @@ namespace UnitTests
         [Fact]
         public void ShouldNotApplyFilterWhenIsPrimaryFilterActiveIsFalse()
         {
-            var primaryLimitFilter = new PrimaryLimitFilter(200);
+            var filter = new PrimaryLimitFilter(200);
 
             var tradeRequest = new TradeRequest()
             {
@@ -27,16 +27,16 @@ namespace UnitTests
                 IsPrimaryFilterActive = false
             };
 
-            primaryLimitFilter.ApplyFilter(tradeRequest, tradeFilterPreference);
+            filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
-            primaryLimitFilter.FilteredQuantity.Should().Be(0);
-            primaryLimitFilter.AvailQuantity.Should().Be(200);
+            filter.FilteredQuantity.Should().Be(0);
+            filter.AvailQuantity.Should().Be(200);
         }
 
         [Fact]
         public void ShouldNotApplyFilterWhenNotFilterByBufferForBuy()
         {
-            var primaryLimitFilter = new PrimaryLimitFilter(200);
+            var filter = new PrimaryLimitFilter(200);
 
             var tradeRequest = new TradeRequest()
             {
@@ -55,16 +55,16 @@ namespace UnitTests
                 CapacityPrimaryLimitSell = 0.02m
             };
 
-            primaryLimitFilter.ApplyFilter(tradeRequest, tradeFilterPreference);
+            filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
-            primaryLimitFilter.FilteredQuantity.Should().Be(0);
-            primaryLimitFilter.AvailQuantity.Should().Be(200);
+            filter.FilteredQuantity.Should().Be(0);
+            filter.AvailQuantity.Should().Be(200);
         }
 
         [Fact]
         public void ShouldApplyFilterWhenFilterByBufferForBuy()
         {
-            var primaryLimitFilter = new PrimaryLimitFilter(200);
+            var filter = new PrimaryLimitFilter(200);
 
             var tradeRequest = new TradeRequest()
             {
@@ -83,18 +83,16 @@ namespace UnitTests
                 CapacityPrimaryLimitSell = 0.02m
             };
 
-            primaryLimitFilter.ApplyFilter(tradeRequest, tradeFilterPreference);
+            filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
-            primaryLimitFilter.FilteredQuantity.Should().Be(200);
-            primaryLimitFilter.AvailQuantity.Should().Be(0);
+            filter.FilteredQuantity.Should().Be(200);
+            filter.AvailQuantity.Should().Be(0);
         }
-
-        // ****
 
         [Fact]
         public void ShouldApplyFilterWhenFilterByBufferForSell()
         {
-            var primaryLimitFilter = new PrimaryLimitFilter(200);
+            var filter = new PrimaryLimitFilter(200);
 
             var tradeRequest = new TradeRequest()
             {
@@ -113,16 +111,16 @@ namespace UnitTests
                 CapacityPrimaryLimitSell = 0.02m
             };
 
-            primaryLimitFilter.ApplyFilter(tradeRequest, tradeFilterPreference);
+            filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
-            primaryLimitFilter.FilteredQuantity.Should().Be(200);
-            primaryLimitFilter.AvailQuantity.Should().Be(0);
+            filter.FilteredQuantity.Should().Be(200);
+            filter.AvailQuantity.Should().Be(0);
         }
 
         [Fact]
         public void ShouldNotApplyFilterWhenNotFilterByBufferForSell()
         {
-            var primaryLimitFilter = new PrimaryLimitFilter(200);
+            var filter = new PrimaryLimitFilter(200);
 
             var tradeRequest = new TradeRequest()
             {
@@ -141,11 +139,10 @@ namespace UnitTests
                 CapacityPrimaryLimitSell = 0.02m
             };
 
-            primaryLimitFilter.ApplyFilter(tradeRequest, tradeFilterPreference);
+            filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
-            primaryLimitFilter.FilteredQuantity.Should().Be(0);
-            primaryLimitFilter.AvailQuantity.Should().Be(200);
+            filter.FilteredQuantity.Should().Be(0);
+            filter.AvailQuantity.Should().Be(200);
         }
-
     }
 }
