@@ -19,8 +19,8 @@ namespace ConsoleApplication
             {
                 IsPrimaryFilterActive = false,
                 IsHeavilyTradeFilterActive = true,
-                BlockHeavilyTradeDay = 2,
-                BlockHeavilyTradeVolume = 0.9m,
+                StockHeavilyTradeDay = 2,
+                StockHeavilyTradeVolume = 0.9m,
                 IsCapacityEncumberedSharesFilterActive = false,
             };
 
