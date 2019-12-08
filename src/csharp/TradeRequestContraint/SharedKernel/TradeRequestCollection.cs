@@ -12,17 +12,16 @@
 
         public void ApplyFilters(TradeFilterPreference tradeFilterPreference = null)
         {
-            foreach (var oc in _tradeRequests)
+            foreach (var req in _tradeRequests)
             {
                 if (tradeFilterPreference == null)
                 {
-                    oc.ApplyFilters(oc.TradeFilterPreference);
+                    req.ApplyFilters(req.TradeFilterPreference);
                 }
                 else
                 {
-                    oc.ApplyFilters(tradeFilterPreference);
+                    req.ApplyFilters(tradeFilterPreference);
                 }
-
             }
         }
     }
