@@ -29,6 +29,7 @@ namespace SharedKernel
         public decimal EncumberedQty { get; set; }
         
         public Block Block { get; set; }
+        public Profile Profile { get; set; }
 
         public bool IsSellOutQty(
             decimal quantity)
@@ -41,7 +42,14 @@ namespace SharedKernel
 
         public decimal CalculateUnencumberedQuantity()
         {
-            return 0;
+            var unencumberedQuantity = HoldingsQty - EncumberedQty;
+
+            if (unencumberedQuantity < 0)
+            {
+                unencumberedQuantity = 0;
+            }
+
+            return unencumberedQuantity;
         }
 
         public void ApplyConstraints(Profile profile)

@@ -19,7 +19,15 @@
         {
             foreach (var oc in _orderCapacities)
             {
-                oc.ApplyConstraints(profile);
+                if (profile == null)
+                {
+                    oc.ApplyConstraints(oc.Profile);
+                }
+                else
+                {
+                    oc.ApplyConstraints(profile);
+                }
+
             }
         }
     }

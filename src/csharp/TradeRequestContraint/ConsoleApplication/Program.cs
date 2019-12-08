@@ -11,14 +11,15 @@ namespace ConsoleApplication
             var profile = new Profile()
             {
                 IsPrimaryConstraintActive = false,
-                IsCapacityEncumberedSharesConstraintActive = false,
-                IsBlockHeavilyTradeConstraintActive = true,
+                IsBlockHeavilyTradeConstraintActive = false,
                 BlockHeavilyTradeDay = 2,
-                BlockHeavilyTradeVolume = 0.9m
+                BlockHeavilyTradeVolume = 0.9m,
+                IsCapacityEncumberedSharesConstraintActive = true,
             };
 
             var block = new Block()
             {
+                StockId = "0001",
                 PriceInUsd = 600
             };
 
@@ -33,31 +34,28 @@ namespace ConsoleApplication
                     TradeSide = TradeSide.Sell,
                     OrderId = 500,
                     OriginalCapacityQuantity = 100,
-                    Block = block,
                     HoldingsQty = 30,
-                    EncumberedQty = 20
+                    EncumberedQty = 20,
+                    Block = block,
+                    Profile = profile
                 }
             };
 
             var orderCapacityCollection = new OrderCapacityCollection(
                 orderCapacities);
 
-            orderCapacityCollection.ApplyConstraints(profile);
-
-            Console.WriteLine("Constraint Report");
+            orderCapacityCollection.ApplyConstraints();
 
             foreach (var orderCapacity in orderCapacities)
             {
-                Console.WriteLine($"\tOrderId: {orderCapacity.OrderId}");
+                Console.WriteLine($"Constraint Report for OrderId '{orderCapacity.OrderId}' with StockId '{orderCapacity.Block.StockId}'");
+                Console.WriteLine($"\tStarting Quantity: '{orderCapacity.OriginalCapacityQuantity}' and Starting Amount '{orderCapacity.OriginalCapacityQuantity * orderCapacity.Block.PriceInUsd}'");
 
                 if (orderCapacity.Constraints.Any())
                 {
                     foreach (var constraint in orderCapacity.Constraints)
                     {
-                        Console.WriteLine($"\t\tConstraint '{constraint.ConstraintType}'");
-                        Console.WriteLine($"\t\t\t Quantity {constraint.ConstrainedQty}");
-                        Console.WriteLine($"\t\t\t Amount {constraint.ConstrainedAmt}");
-                        Console.WriteLine($"\t\t\t Available Quantity {constraint.AvailQty}");
+                        Console.WriteLine($"\t\tConstraint '{constraint.ConstraintType}' applied with Quantity '{constraint.ConstrainedQty}' and Amount '{constraint.ConstrainedAmt}'");
                     }
                 }
                 else
@@ -65,6 +63,8 @@ namespace ConsoleApplication
                     Console.WriteLine("\t\tNo Constraints");
                 }
 
+                Console.WriteLine($"\tFinal Available Quantity: {orderCapacity.AvailCapacityQty}");
+                Console.WriteLine();
             }
 
             Console.WriteLine("Press any key to end...");
