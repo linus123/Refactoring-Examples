@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace SharedKernel
+namespace SharedKernel.Constraints
 {
     [Description("Primary Limit")]
     public class PrimaryLimitConstraint : Constraint

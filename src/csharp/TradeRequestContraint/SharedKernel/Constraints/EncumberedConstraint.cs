@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace SharedKernel
+namespace SharedKernel.Constraints
 {
     [Description("Encumbered")]
     public class EncumberedConstraint : Constraint

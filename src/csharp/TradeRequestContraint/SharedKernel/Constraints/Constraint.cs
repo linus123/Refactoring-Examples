@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace SharedKernel
+namespace SharedKernel.Constraints
 {
     public class Constraint
     {
