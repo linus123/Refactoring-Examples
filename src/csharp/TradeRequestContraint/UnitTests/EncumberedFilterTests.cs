@@ -10,7 +10,10 @@ namespace UnitTests
         [Fact]
         public void ShouldNotFilterWhenFilterIsNotActive()
         {
-            var filter = new EncumberedFilter(100);
+            var tradeFilterPreference = new TradeFilterPreference()
+            {
+                IsCapacityEncumberedSharesFilterActive = false
+            };
 
             var tradeRequest = new TradeRequest()
             {
@@ -20,18 +23,20 @@ namespace UnitTests
                 Stock = new Stock()
                 {
                     StockId = "0000"
-                }
+                },
+                TradeFilterPreference = tradeFilterPreference
             };
 
-            var tradeFilterPreference = new TradeFilterPreference()
-            {
-                IsCapacityEncumberedSharesFilterActive = false
-            };
+            var tradeRequestCollection = new TradeRequestCollection(new TradeRequest[1] {tradeRequest});
 
-            filter.ApplyFilter(tradeRequest, tradeFilterPreference);
+            tradeRequestCollection.ApplyFilters();
 
-            filter.FilteredQuantity.Should().Be(0);
-            filter.AvailQuantity.Should().Be(100);
+            tradeRequest.Filters.Should().HaveCount(0);
+
+//            filter.ApplyFilter(tradeRequest, tradeFilterPreference);
+//
+//            filter.FilteredQuantity.Should().Be(0);
+//            filter.AvailQuantity.Should().Be(100);
         }
 
         [Fact]
