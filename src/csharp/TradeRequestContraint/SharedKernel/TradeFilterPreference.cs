@@ -8,8 +8,8 @@
 
         public bool IsHeavilyTradeFilterActive { get; set; }
 
-        public int BlockHeavilyTradeDay { get; set; }
+        public int StockHeavilyTradeDay { get; set; }
 
-        public decimal BlockHeavilyTradeVolume { get; set; }
+        public decimal StockHeavilyTradeVolume { get; set; }
     }
 }

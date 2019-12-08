@@ -15,7 +15,7 @@
             return _orderCapacities;
         }
 
-        public void ApplyConstraints(TradeFilterPreference tradeFilterPreference = null)
+        public void ApplyFilters(TradeFilterPreference tradeFilterPreference = null)
         {
             foreach (var oc in _orderCapacities)
             {

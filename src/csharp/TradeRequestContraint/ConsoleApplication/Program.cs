@@ -95,9 +95,9 @@ namespace ConsoleApplication
                 Console.WriteLine($"Filter Report for TradeRequestId '{tradeRequest.TradeRequestId}' with StockId '{tradeRequest.Stock.StockId}'");
                 Console.WriteLine($"\tStarting Quantity: '{tradeRequest.OriginalCapacityQuantity}' and Starting Amount '{tradeRequest.OriginalCapacityQuantity * tradeRequest.Stock.PriceInUsd}'");
 
-                if (tradeRequest.Constraints.Any())
+                if (tradeRequest.Filters.Any())
                 {
-                    foreach (var constraint in tradeRequest.Constraints)
+                    foreach (var constraint in tradeRequest.Filters)
                     {
                         Console.WriteLine($"\t\tFilter '{constraint.FilterType}' applied with Quantity '{constraint.FilteredQuantity}' and Amount '{constraint.FilteredAmount}'");
                     }

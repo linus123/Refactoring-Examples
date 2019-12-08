@@ -28,8 +28,8 @@ namespace SharedKernel.Filters
                 else
                 {
                     //First-time Check
-                    var dayNo = (int)tradeFilterPreference.BlockHeavilyTradeDay;
-                    var volumePercentage = tradeFilterPreference.BlockHeavilyTradeVolume;
+                    var dayNo = (int)tradeFilterPreference.StockHeavilyTradeDay;
+                    var volumePercentage = tradeFilterPreference.StockHeavilyTradeVolume;
                     var tradedVolume = tradeRequest.Stock.GetAccumulatedDayTradeVolume(dayNo);
                     var marketVolume = tradeRequest.Stock.GetAccumulatedDayMarketVolume(dayNo);
 

@@ -8,10 +8,10 @@ namespace SharedKernel
     {
         public TradeRequest()
         {
-            Constraints = new List<Filter>();
+            Filters = new List<Filter>();
         }
 
-        public List<Filter> Constraints { get; set; }
+        public List<Filter> Filters { get; set; }
 
         public int TradeRequestId { get; set; }
         public string PrimaryLimitDescription { get; set; }
@@ -66,15 +66,15 @@ namespace SharedKernel
                 availQty = ApplyConstraint(tradeFilterPreference, new EncumberedFilter(availQty));
             }
 
-            //Remove Zero Constrained Qty Constraints
-            Constraints = Constraints.Where(c => c.FilteredQuantity != 0).ToList();
+            //Remove Zero Constrained Qty Filters
+            Filters = Filters.Where(c => c.FilteredQuantity != 0).ToList();
 
             AvailableCapacityQuantity = availQty;
         }
 
         public decimal ApplyConstraint(TradeFilterPreference tradeFilterPreference, Filter filter)
         {
-            Constraints.Add(filter);
+            Filters.Add(filter);
 
             return filter.ApplyFilter(this, tradeFilterPreference);
         }
