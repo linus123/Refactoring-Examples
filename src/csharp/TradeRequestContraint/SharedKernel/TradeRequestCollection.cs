@@ -10,6 +10,11 @@
             _tradeRequests = tradeRequests;
         }
 
+        public TradeRequest[] GetTradeRequests()
+        {
+            return _tradeRequests;
+        }
+
         public void ApplyFilters(TradeFilterPreference tradeFilterPreference = null)
         {
             foreach (var req in _tradeRequests)
