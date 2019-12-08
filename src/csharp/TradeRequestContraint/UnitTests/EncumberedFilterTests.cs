@@ -20,6 +20,7 @@ namespace UnitTests
                 TradeSide = TradeSide.Sell,
                 HoldingsQuantity = 200,
                 EncumberedQuantity = 30,
+                OriginalCapacityQuantity = 100,
                 Stock = new Stock()
                 {
                     StockId = "0000"
@@ -32,11 +33,7 @@ namespace UnitTests
             tradeRequestCollection.ApplyFilters();
 
             tradeRequest.Filters.Should().HaveCount(0);
-
-//            filter.ApplyFilter(tradeRequest, tradeFilterPreference);
-//
-//            filter.FilteredQuantity.Should().Be(0);
-//            filter.AvailQuantity.Should().Be(100);
+            tradeRequest.AvailableCapacityQuantity.Should().Be(100);
         }
 
         [Fact]
