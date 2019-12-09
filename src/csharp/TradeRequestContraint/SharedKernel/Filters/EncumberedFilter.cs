@@ -34,7 +34,6 @@
                 _availableQuantity = 0;
             }
 
-            //            return _availableQuantity;
             return new FilterModel()
             {
                 FilterType = "Encumbered",
@@ -45,7 +44,6 @@
                 FilterDescription = null,
                 IsApplied = true,
             };
-
         }
     }
 }

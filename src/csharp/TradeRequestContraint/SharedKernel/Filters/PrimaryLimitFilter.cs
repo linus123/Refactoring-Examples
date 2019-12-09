@@ -34,8 +34,6 @@
                 _availableQuantity = 0;
             }
 
-            //            return _availableQuantity;
-
             return new FilterModel()
             {
                 FilterType = "Primary Limit",
