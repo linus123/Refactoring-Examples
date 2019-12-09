@@ -13,10 +13,9 @@ namespace UnitTests
             var tradeFilterPreference = new TradeFilterPreferenceBuilder()
                 .Create();
 
-            var stock = new Stock()
-            {
-                SharePrice = 50
-            };
+            var stock = new StockBuilder()
+                .WithSharePrice(50)
+                .Create();
 
             var tradeRequest = TradeRequestBuilder.Buy()
                 .WithPrimaryLimit(1000)
@@ -39,10 +38,9 @@ namespace UnitTests
                 .WithPrimaryFilterActive(0.01m, 0.02m)
                 .Create();
 
-            var stock = new Stock()
-            {
-                SharePrice = 50
-            };
+            var stock = new StockBuilder()
+                .WithSharePrice(50)
+                .Create();
 
             var tradeRequest = TradeRequestBuilder.Buy()
                 .WithPrimaryLimit(1000)
@@ -65,10 +63,9 @@ namespace UnitTests
                 .WithPrimaryFilterActive(0.01m, 0.02m)
                 .Create();
 
-            var stock = new Stock()
-            {
-                SharePrice = 50
-            };
+            var stock = new StockBuilder()
+                .WithSharePrice(50)
+                .Create();
 
             var tradeRequest = TradeRequestBuilder.Buy()
                 .WithPrimaryLimit(10)
@@ -97,10 +94,9 @@ namespace UnitTests
                 .WithPrimaryFilterActive(0.01m, 0.02m)
                 .Create();
 
-            var stock = new Stock()
-            {
-                SharePrice = 50
-            };
+            var stock = new StockBuilder()
+                .WithSharePrice(50)
+                .Create();
 
             var tradeRequest = TradeRequestBuilder.Sell()
                 .WithPrimaryLimit(1000)
@@ -129,10 +125,9 @@ namespace UnitTests
                 .WithPrimaryFilterActive(0.01m, 0.02m)
                 .Create();
 
-            var stock = new Stock()
-            {
-                SharePrice = 50
-            };
+            var stock = new StockBuilder()
+                .WithSharePrice(50)
+                .Create();
 
             var tradeRequest = TradeRequestBuilder.Sell()
                 .WithPrimaryLimit(10)

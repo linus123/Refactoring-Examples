@@ -1,6 +1,4 @@
-﻿using System.Security.Authentication.ExtendedProtection;
-
-namespace SharedKernel
+﻿namespace SharedKernel
 {
     public class Stock
     {
