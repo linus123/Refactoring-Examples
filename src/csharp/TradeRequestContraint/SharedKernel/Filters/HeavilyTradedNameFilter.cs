@@ -2,13 +2,13 @@
 {
     public class HeavilyTradedNameFilter
     {
-        public HeavilyTradedNameFilter(decimal originalQuantity)
+        public HeavilyTradedNameFilter(decimal startingQuantity)
         {
-            _originalQuantity = originalQuantity;
-            _availableQuantity = originalQuantity;
+            _startingQuantity = startingQuantity;
+            _availableQuantity = startingQuantity;
         }
 
-        private readonly decimal _originalQuantity;
+        private readonly decimal _startingQuantity;
         private decimal _availableQuantity;
 
         private decimal _filteredQuantity;
@@ -48,7 +48,7 @@
 
             _filteredAmount = _filteredQuantity * tradeRequest.Stock.PriceInUsd;
 
-            _availableQuantity = _originalQuantity - _filteredQuantity;
+            _availableQuantity = _startingQuantity - _filteredQuantity;
 
             if (_availableQuantity < 0)
             {
@@ -65,7 +65,7 @@
                 FilterType = "Heavily Traded Name",
                 FilteredAmount = _filteredAmount,
                 FilteredQuantity = _filteredQuantity,
-                OriginalQuantity = _originalQuantity,
+                OriginalQuantity = _startingQuantity,
                 AvailableQuantity = _availableQuantity,
                 FilterDescription = null,
                 IsApplied = true,
