@@ -81,9 +81,7 @@ namespace UnitTests
             tradeRequest.Filters.Should().HaveCount(1);
 
             var targetFilter = tradeRequest.Filters[0];
-
-            var precision = 0.00001m;
-
+            
             new FilterAssert(targetFilter)
                 .FilteredQuantityShouldBe(tradeRequest.EncumberedQuantity)
                 .FilterTypeShouldBe("Encumbered")
@@ -93,7 +91,35 @@ namespace UnitTests
                 .FilterDescriptionQuantityShouldBe(null)
                 .IsAppliedShouldBeTrue();
 
+            var precision = 0.00001m;
+
             tradeRequest.AvailableCapacityQuantity.Should().BeApproximately(170m, precision);
+        }
+
+        [Fact]
+        public void ShouldNotApplyFilterWhenEncumberedIsGreaterThenOriginalQuantity()
+        {
+            var tradeFilterPreference = new TradeFilterPreference()
+            {
+                IsCapacityEncumberedSharesFilterActive = true
+            };
+
+            var stock = new StockBuilder()
+                .Create();
+
+            var tradeRequest = TradeRequestBuilder.Sell()
+                .WithOriginalCapacityQuantity(20)
+                .WithEncumberedQuantities(200, 30)
+                .WithStock(stock)
+                .WithTradeFilterPreference(tradeFilterPreference)
+                .Create();
+
+            var tradeRequestCollection = new TradeRequestCollection(new[] { tradeRequest });
+
+            tradeRequestCollection.ApplyFilters();
+
+            tradeRequest.Filters.Should().HaveCount(0);
+            tradeRequest.AvailableCapacityQuantity.Should().Be(tradeRequest.OriginalCapacityQuantity);
         }
     }
 }
