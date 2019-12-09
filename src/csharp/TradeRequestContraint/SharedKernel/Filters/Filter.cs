@@ -1,21 +1,18 @@
-﻿using System;
-using System.ComponentModel;
-
-namespace SharedKernel.Filters
+﻿namespace SharedKernel.Filters
 {
     public class Filter
     {
-        public Filter()
-        {
-
-        }
-
         public Filter(decimal originalQuantity)
         {
-            FilterType = GetClassDescription(this.GetType());
+            FilterType = GetFilterType();
             OriginalQuantity = originalQuantity;
             AvailableQuantity = originalQuantity;
             IsApplied = true;
+        }
+
+        public virtual string GetFilterType()
+        {
+            return null;
         }
 
         public virtual decimal ApplyFilter(
@@ -46,18 +43,6 @@ namespace SharedKernel.Filters
             }
 
             return AvailableQuantity;
-        }
-
-        private static string GetClassDescription(Type type)
-        {
-            var descriptions = (DescriptionAttribute[])
-                type.GetCustomAttributes(typeof(DescriptionAttribute), false);
-
-            if (descriptions.Length == 0)
-            {
-                return null;
-            }
-            return descriptions[0].Description;
         }
     }
 }

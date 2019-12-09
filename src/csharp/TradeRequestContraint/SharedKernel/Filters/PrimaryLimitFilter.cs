@@ -2,12 +2,16 @@
 
 namespace SharedKernel.Filters
 {
-    [Description("Primary Limit")]
     public class PrimaryLimitFilter : Filter
     {
         public PrimaryLimitFilter(decimal originalQuantity) : base(originalQuantity)
         {
 
+        }
+
+        public override string GetFilterType()
+        {
+            return "Primary Limit";
         }
 
         public override decimal ApplyFilter(TradeRequest tradeRequest, TradeFilterPreference tradeFilterPreference)

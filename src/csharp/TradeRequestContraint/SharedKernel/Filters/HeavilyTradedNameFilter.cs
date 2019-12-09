@@ -2,7 +2,6 @@
 
 namespace SharedKernel.Filters
 {
-    [Description("Heavily Traded Name")]
     public class HeavilyTradedNameFilter : Filter
     {
         public HeavilyTradedNameFilter(decimal originalQuantity) : base(originalQuantity)
@@ -10,7 +9,11 @@ namespace SharedKernel.Filters
 
         }
 
-
+        public override string GetFilterType()
+        {
+            return "Heavily Traded Name";
+        }
+        
         public override decimal ApplyFilter(TradeRequest tradeRequest, TradeFilterPreference tradeFilterPreference)
         {
             FilteredQuantity = 0;

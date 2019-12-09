@@ -1,14 +1,16 @@
-﻿using System.ComponentModel;
-
-namespace SharedKernel.Filters
+﻿namespace SharedKernel.Filters
 {
-    [Description("Encumbered")]
     public class EncumberedFilter : Filter
     {
 
         public EncumberedFilter(decimal originalQuantity) : base(originalQuantity)
         {
 
+        }
+
+        public override string GetFilterType()
+        {
+            return "Encumbered";
         }
 
         public override decimal ApplyFilter(TradeRequest tradeRequest, TradeFilterPreference tradeFilterPreference)
