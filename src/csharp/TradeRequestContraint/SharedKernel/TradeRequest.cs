@@ -49,6 +49,11 @@ namespace SharedKernel
             return TradeSide == TradeSide.Sell;
         }
 
+        public bool IsBuy()
+        {
+            return TradeSide == TradeSide.Buy;
+        }
+
         public decimal CalculateUnencumberedQuantity()
         {
             var unencumberedQuantity = HoldingsQuantity - EncumberedQuantity;
@@ -101,20 +106,6 @@ namespace SharedKernel
             Filters = Filters.Where(c => c.FilteredQuantity != 0).ToList();
 
             AvailableCapacityQuantity = availQty;
-        }
-
-        public bool ShouldPrimaryConstraintBeApplied(TradeFilterPreference tradeFilterPreference)
-        {
-            if (!tradeFilterPreference.IsPrimaryFilterActive) return false;
-
-            if (TradeSide == TradeSide.Buy)
-            {
-                return Stock.IsSharePriceWithBufferGreaterThan(PrimaryLimit, tradeFilterPreference.CapacityPrimaryLimitBuy);
-            }
-            else // Sell
-            {
-                return Stock.IsSharePriceWithBufferLessThan(PrimaryLimit, tradeFilterPreference.CapacityPrimaryLimitSell);
-            }
         }
     }
 }
