@@ -22,7 +22,8 @@ namespace UnitTests
                 Stock = new Stock()
                 {
                     SharePrice = 50
-                }
+                },
+                TradeFilterPreference = tradeFilterPreference
             };
 
             var filter = new PrimaryLimitFilter(200);
@@ -50,7 +51,8 @@ namespace UnitTests
                 Stock = new Stock()
                 {
                     SharePrice = 50
-                }
+                },
+                TradeFilterPreference = tradeFilterPreference
             };
 
             var filter = new PrimaryLimitFilter(200);
@@ -78,7 +80,8 @@ namespace UnitTests
                 Stock = new Stock()
                 {
                     SharePrice = 50
-                }
+                },
+                TradeFilterPreference = tradeFilterPreference
             };
 
             var filter = new PrimaryLimitFilter(200);
@@ -106,7 +109,8 @@ namespace UnitTests
                 Stock = new Stock()
                 {
                     SharePrice = 50
-                }
+                },
+                TradeFilterPreference = tradeFilterPreference
             };
 
             var filter = new PrimaryLimitFilter(200);
@@ -134,7 +138,8 @@ namespace UnitTests
                 Stock = new Stock()
                 {
                     SharePrice = 50
-                }
+                },
+                TradeFilterPreference = tradeFilterPreference
             };
 
             var filter = new PrimaryLimitFilter(200);
