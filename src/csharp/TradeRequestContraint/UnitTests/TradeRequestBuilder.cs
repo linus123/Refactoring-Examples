@@ -60,6 +60,14 @@ namespace UnitTests
             return this;
         }
 
+        public TradeRequestBuilder WithPrimaryLimit(
+            decimal v)
+        {
+            _faker = _faker.RuleFor(m => m.PrimaryLimit, v);
+
+            return this;
+        }
+
         public TradeRequestBuilder WithStock(
             Stock stock)
         {

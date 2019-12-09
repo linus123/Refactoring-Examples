@@ -13,23 +13,23 @@ namespace UnitTests
             var tradeFilterPreference = new TradeFilterPreferenceBuilder()
                 .Create();
 
-            var tradeRequest = new TradeRequest()
+            var stock = new Stock()
             {
-                TradeSide = TradeSide.Buy,
-                PrimaryLimit = 1000,
-                Stock = new Stock()
-                {
-                    SharePrice = 50
-                },
-                TradeFilterPreference = tradeFilterPreference
+                SharePrice = 50
             };
 
-            var filter = new PrimaryLimitFilter(200);
+            var tradeRequest = TradeRequestBuilder.Buy()
+                .WithPrimaryLimit(1000)
+                .WithStock(stock)
+                .WithTradeFilterPreference(tradeFilterPreference)
+                .Create();
+
+            var filter = new PrimaryLimitFilter(tradeRequest.OriginalCapacityQuantity);
 
             filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
             filter.FilteredQuantity.Should().Be(0);
-            filter.AvailableQuantity.Should().Be(200);
+            filter.AvailableQuantity.Should().Be(tradeRequest.OriginalCapacityQuantity);
         }
 
         [Fact]
@@ -39,23 +39,23 @@ namespace UnitTests
                 .WithPrimaryFilterActive(0.01m, 0.02m)
                 .Create();
 
-            var tradeRequest = new TradeRequest()
+            var stock = new Stock()
             {
-                TradeSide = TradeSide.Buy,
-                PrimaryLimit = 1000,
-                Stock = new Stock()
-                {
-                    SharePrice = 50
-                },
-                TradeFilterPreference = tradeFilterPreference
+                SharePrice = 50
             };
 
-            var filter = new PrimaryLimitFilter(200);
+            var tradeRequest = TradeRequestBuilder.Buy()
+                .WithPrimaryLimit(1000)
+                .WithStock(stock)
+                .WithTradeFilterPreference(tradeFilterPreference)
+                .Create();
+
+            var filter = new PrimaryLimitFilter(tradeRequest.OriginalCapacityQuantity);
 
             filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
             filter.FilteredQuantity.Should().Be(0);
-            filter.AvailableQuantity.Should().Be(200);
+            filter.AvailableQuantity.Should().Be(tradeRequest.OriginalCapacityQuantity);
         }
 
         [Fact]
@@ -65,23 +65,29 @@ namespace UnitTests
                 .WithPrimaryFilterActive(0.01m, 0.02m)
                 .Create();
 
-            var tradeRequest = new TradeRequest()
+            var stock = new Stock()
             {
-                TradeSide = TradeSide.Buy,
-                PrimaryLimit = 10,
-                Stock = new Stock()
-                {
-                    SharePrice = 50
-                },
-                TradeFilterPreference = tradeFilterPreference
+                SharePrice = 50
             };
 
-            var filter = new PrimaryLimitFilter(200);
+            var tradeRequest = TradeRequestBuilder.Buy()
+                .WithPrimaryLimit(10)
+                .WithStock(stock)
+                .WithTradeFilterPreference(tradeFilterPreference)
+                .Create();
+
+            var filter = new PrimaryLimitFilter(tradeRequest.OriginalCapacityQuantity);
 
             filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
-            filter.FilteredQuantity.Should().Be(200);
-            filter.AvailableQuantity.Should().Be(0);
+            new FilterAssert(filter)
+                .FilteredQuantityShouldBe(tradeRequest.OriginalCapacityQuantity)
+                .FilterTypeShouldBe("Primary Limit")
+                .OriginalQuantityShouldBe(tradeRequest.OriginalCapacityQuantity)
+                .AvailableQuantityShouldBe(0)
+                .FilteredAmountQuantityShouldBe(tradeRequest.OriginalCapacityQuantity * stock.PriceInUsd)
+                .FilterDescriptionQuantityShouldBe(null)
+                .IsAppliedShouldBeTrue();
         }
 
         [Fact]
@@ -91,23 +97,29 @@ namespace UnitTests
                 .WithPrimaryFilterActive(0.01m, 0.02m)
                 .Create();
 
-            var tradeRequest = new TradeRequest()
+            var stock = new Stock()
             {
-                TradeSide = TradeSide.Sell,
-                PrimaryLimit = 1000,
-                Stock = new Stock()
-                {
-                    SharePrice = 50
-                },
-                TradeFilterPreference = tradeFilterPreference
+                SharePrice = 50
             };
 
-            var filter = new PrimaryLimitFilter(200);
+            var tradeRequest = TradeRequestBuilder.Sell()
+                .WithPrimaryLimit(1000)
+                .WithStock(stock)
+                .WithTradeFilterPreference(tradeFilterPreference)
+                .Create();
+            
+            var filter = new PrimaryLimitFilter(tradeRequest.OriginalCapacityQuantity);
 
             filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
-            filter.FilteredQuantity.Should().Be(200);
-            filter.AvailableQuantity.Should().Be(0);
+            new FilterAssert(filter)
+                .FilteredQuantityShouldBe(tradeRequest.OriginalCapacityQuantity)
+                .FilterTypeShouldBe("Primary Limit")
+                .OriginalQuantityShouldBe(tradeRequest.OriginalCapacityQuantity)
+                .AvailableQuantityShouldBe(0)
+                .FilteredAmountQuantityShouldBe(tradeRequest.OriginalCapacityQuantity * stock.PriceInUsd)
+                .FilterDescriptionQuantityShouldBe(null)
+                .IsAppliedShouldBeTrue();
         }
 
         [Fact]
@@ -117,23 +129,23 @@ namespace UnitTests
                 .WithPrimaryFilterActive(0.01m, 0.02m)
                 .Create();
 
-            var tradeRequest = new TradeRequest()
+            var stock = new Stock()
             {
-                TradeSide = TradeSide.Sell,
-                PrimaryLimit = 10,
-                Stock = new Stock()
-                {
-                    SharePrice = 50
-                },
-                TradeFilterPreference = tradeFilterPreference
+                SharePrice = 50
             };
 
-            var filter = new PrimaryLimitFilter(200);
+            var tradeRequest = TradeRequestBuilder.Sell()
+                .WithPrimaryLimit(10)
+                .WithStock(stock)
+                .WithTradeFilterPreference(tradeFilterPreference)
+                .Create();
+
+            var filter = new PrimaryLimitFilter(tradeRequest.OriginalCapacityQuantity);
 
             filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
             filter.FilteredQuantity.Should().Be(0);
-            filter.AvailableQuantity.Should().Be(200);
+            filter.AvailableQuantity.Should().Be(tradeRequest.OriginalCapacityQuantity);
         }
     }
 }
