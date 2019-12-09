@@ -9,7 +9,6 @@
 
         public decimal FilteredQuantity { get; set; }
         public decimal FilteredAmount { get; set; }
-        public string FilterDescription { get; set; }
 
         public decimal ApplyFilter(TradeRequest tradeRequest, TradeFilterPreference tradeFilterPreference)
         {
@@ -64,7 +63,7 @@
                 FilteredQuantity = this.FilteredQuantity,
                 OriginalQuantity = this.OriginalQuantity,
                 AvailableQuantity = this.AvailableQuantity,
-                FilterDescription = this.FilterDescription,
+                FilterDescription = null,
                 IsApplied = true,
             };
         }
