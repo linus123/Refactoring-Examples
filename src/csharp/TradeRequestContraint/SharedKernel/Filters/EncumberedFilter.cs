@@ -8,7 +8,7 @@
         private decimal _filteredQuantity;
         private decimal _filteredAmount;
 
-        public FilterModel ApplyFilter(
+        public FilterModel CreateModel(
             decimal startingQuantity,
             TradeRequest tradeRequest,
             TradeFilterPreference tradeFilterPreference)

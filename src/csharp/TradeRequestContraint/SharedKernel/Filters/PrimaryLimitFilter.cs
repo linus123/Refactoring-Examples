@@ -9,7 +9,7 @@
         private decimal _filteredAmount;
         private string _filterDescription;
 
-        public FilterModel ApplyFilter(
+        public FilterModel CreateModel(
             decimal startingQuantity,
             TradeRequest tradeRequest,
             TradeFilterPreference tradeFilterPreference)

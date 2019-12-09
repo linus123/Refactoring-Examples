@@ -60,7 +60,7 @@ namespace SharedKernel
             if (tradeFilterPreference.IsPrimaryFilterActive)
             {
                 var model = new PrimaryLimitFilter()
-                    .ApplyFilter(availQty, this, tradeFilterPreference);
+                    .CreateModel(availQty, this, tradeFilterPreference);
 
                 availQty = model.AvailableQuantity;
 
@@ -71,7 +71,7 @@ namespace SharedKernel
             if (tradeFilterPreference.IsHeavilyTradeFilterActive)
             {
                 var model = new HeavilyTradedNameFilter()
-                    .ApplyFilter(availQty, this, tradeFilterPreference);
+                    .CreateModel(availQty, this, tradeFilterPreference);
 
                 availQty = model.AvailableQuantity;
 
@@ -81,7 +81,7 @@ namespace SharedKernel
             if (tradeFilterPreference.IsCapacityEncumberedSharesFilterActive)
             {
                 var model = new EncumberedFilter()
-                    .ApplyFilter(availQty, this, tradeFilterPreference);
+                    .CreateModel(availQty, this, tradeFilterPreference);
 
                 availQty = model.AvailableQuantity;
 
