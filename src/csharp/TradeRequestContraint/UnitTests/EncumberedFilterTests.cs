@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using SharedKernel;
-using SharedKernel.Filters;
 using Xunit;
 
 namespace UnitTests
@@ -15,79 +14,83 @@ namespace UnitTests
                 IsCapacityEncumberedSharesFilterActive = false
             };
 
-            var tradeRequest = new TradeRequest()
-            {
-                TradeSide = TradeSide.Sell,
-                HoldingsQuantity = 200,
-                EncumberedQuantity = 30,
-                OriginalCapacityQuantity = 100,
-                Stock = new Stock()
+            var tradeRequest = TradeRequestBuilder.Sell()
+                .WithEncumberedQuantities(200, 30)
+                .WithStock(new Stock()
                 {
                     StockId = "0000"
-                },
-                TradeFilterPreference = tradeFilterPreference
-            };
+                })
+                .WithTradeFilterPreference(tradeFilterPreference)
+                .Create();
 
-            var tradeRequestCollection = new TradeRequestCollection(new TradeRequest[1] {tradeRequest});
+            var tradeRequestCollection = new TradeRequestCollection(new [] {tradeRequest});
 
             tradeRequestCollection.ApplyFilters();
 
             tradeRequest.Filters.Should().HaveCount(0);
-            tradeRequest.AvailableCapacityQuantity.Should().Be(100);
+            tradeRequest.AvailableCapacityQuantity.Should().Be(tradeRequest.OriginalCapacityQuantity);
         }
 
         [Fact]
         public void ShouldNotFilterWhenTradeIsBuy()
         {
-            var filter = new EncumberedFilter(100);
-
-            var tradeRequest = new TradeRequest()
-            {
-                TradeSide = TradeSide.Buy,
-                HoldingsQuantity = 200,
-                EncumberedQuantity = 30,
-                Stock = new Stock()
-                {
-                    StockId = "0000"
-                }
-            };
-
             var tradeFilterPreference = new TradeFilterPreference()
             {
                 IsCapacityEncumberedSharesFilterActive = true
             };
 
-            filter.ApplyFilter(tradeRequest, tradeFilterPreference);
+            var tradeRequest = TradeRequestBuilder.Buy()
+                .WithEncumberedQuantities(200, 30)
+                .WithStock(new Stock()
+                {
+                    StockId = "0000"
+                })
+                .WithTradeFilterPreference(tradeFilterPreference)
+                .Create();
 
-            filter.FilteredQuantity.Should().Be(0);
-            filter.AvailQuantity.Should().Be(100);
+            var tradeRequestCollection = new TradeRequestCollection(new[] { tradeRequest });
+
+            tradeRequestCollection.ApplyFilters();
+
+            tradeRequest.Filters.Should().HaveCount(0);
+            tradeRequest.AvailableCapacityQuantity.Should().Be(tradeRequest.OriginalCapacityQuantity);
         }
 
         [Fact]
         public void ShouldFilterWhenTradeIsSell()
         {
-            var filter = new EncumberedFilter(200);
-
-            var tradeRequest = new TradeRequest()
-            {
-                TradeSide = TradeSide.Sell,
-                HoldingsQuantity = 200,
-                EncumberedQuantity = 30,
-                Stock = new Stock()
-                {
-                    StockId = "0000"
-                }
-            };
-
             var tradeFilterPreference = new TradeFilterPreference()
             {
                 IsCapacityEncumberedSharesFilterActive = true
             };
 
-            filter.ApplyFilter(tradeRequest, tradeFilterPreference);
+            var tradeRequest = TradeRequestBuilder.Sell()
+                .WithOriginalCapacityQuantity(200)
+                .WithEncumberedQuantities(200, 30)
+                .WithStock(new Stock()
+                {
+                    StockId = "0000"
+                })
+                .WithTradeFilterPreference(tradeFilterPreference)
+                .Create();
 
-            filter.FilteredQuantity.Should().Be(30);
-            filter.AvailQuantity.Should().Be(170);
+            var tradeRequestCollection = new TradeRequestCollection(new[] { tradeRequest });
+
+            tradeRequestCollection.ApplyFilters();
+
+            tradeRequest.Filters.Should().HaveCount(1);
+
+            var targetFilter = tradeRequest.Filters[0];
+
+            targetFilter.FilteredQuantity.Should().Be(30m);
+            targetFilter.FilterType.Should().Be("Encumbered");
+            targetFilter.OriginalQuantity.Should().Be(200);
+            targetFilter.AvailQuantity.Should().Be(170m);
+            targetFilter.FilteredAmount.Should().Be(0);
+            targetFilter.FilterDescription.Should().BeNull();
+            targetFilter.IsApplied.Should().BeTrue();
+
+            tradeRequest.AvailableCapacityQuantity.Should().Be(170m);
         }
     }
 }
