@@ -31,7 +31,7 @@ namespace UnitTests
             filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
             filter.FilteredQuantity.Should().Be(0);
-            filter.AvailQuantity.Should().Be(100);
+            filter.AvailableQuantity.Should().Be(100);
         }
 
         [Fact]
@@ -58,7 +58,7 @@ namespace UnitTests
             filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
             filter.FilteredQuantity.Should().Be(0);
-            filter.AvailQuantity.Should().Be(100);
+            filter.AvailableQuantity.Should().Be(100);
         }
 
         [Fact]
@@ -85,7 +85,7 @@ namespace UnitTests
             filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
             filter.FilteredQuantity.Should().Be(30);
-            filter.AvailQuantity.Should().Be(170);
+            filter.AvailableQuantity.Should().Be(170);
         }
     }
 }
