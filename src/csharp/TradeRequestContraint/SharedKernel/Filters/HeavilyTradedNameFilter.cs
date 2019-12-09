@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace SharedKernel.Filters
+﻿namespace SharedKernel.Filters
 {
     public class HeavilyTradedNameFilter : Filter
     {
