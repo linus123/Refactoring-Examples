@@ -59,30 +59,32 @@ namespace SharedKernel
 
             if (tradeFilterPreference.IsPrimaryFilterActive)
             {
-                availQty = ApplyConstraint(tradeFilterPreference, new PrimaryLimitFilter(availQty));
+                Filter filter = new PrimaryLimitFilter(availQty);
+                Filters.Add(filter);
+
+                availQty = filter.ApplyFilter(this, tradeFilterPreference);
             }
 
             if (tradeFilterPreference.IsHeavilyTradeFilterActive)
             {
-                availQty = ApplyConstraint(tradeFilterPreference, new HeavilyTradedNameFilter(availQty));
+                Filter filter = new HeavilyTradedNameFilter(availQty);
+                Filters.Add(filter);
+
+                availQty = filter.ApplyFilter(this, tradeFilterPreference);
             }
 
             if (tradeFilterPreference.IsCapacityEncumberedSharesFilterActive)
             {
-                availQty = ApplyConstraint(tradeFilterPreference, new EncumberedFilter(availQty));
+                Filter filter = new EncumberedFilter(availQty);
+                Filters.Add(filter);
+
+                availQty = filter.ApplyFilter(this, tradeFilterPreference);
             }
 
             //Remove Zero Constrained Qty Filters
             Filters = Filters.Where(c => c.FilteredQuantity != 0).ToList();
 
             AvailableCapacityQuantity = availQty;
-        }
-
-        public decimal ApplyConstraint(TradeFilterPreference tradeFilterPreference, Filter filter)
-        {
-            Filters.Add(filter);
-
-            return filter.ApplyFilter(this, tradeFilterPreference);
         }
 
         public bool ShouldPrimaryConstraintBeApplied(TradeFilterPreference tradeFilterPreference)
