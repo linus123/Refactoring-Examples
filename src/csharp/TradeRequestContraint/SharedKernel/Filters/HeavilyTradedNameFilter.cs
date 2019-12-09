@@ -22,7 +22,7 @@ namespace SharedKernel.Filters
                     if (tradeRequest.Stock.ConstrainedByHeavilyTradedName)
                     {
                         //Constrained by Name
-                        FilteredQuantity = AvailQuantity;
+                        FilteredQuantity = AvailableQuantity;
                     }
                 }
                 else
@@ -35,7 +35,7 @@ namespace SharedKernel.Filters
 
                     if (tradedVolume > volumePercentage * marketVolume)
                     {
-                        FilteredQuantity = AvailQuantity;
+                        FilteredQuantity = AvailableQuantity;
                         tradeRequest.Stock.ConstrainedByHeavilyTradedName = true;
                     }
                     tradeRequest.Stock.IsHeavilyTradedNameConstraintChecked = true;

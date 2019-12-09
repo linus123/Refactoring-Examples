@@ -30,7 +30,7 @@ namespace UnitTests
             filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
             filter.FilteredQuantity.Should().Be(0);
-            filter.AvailQuantity.Should().Be(200);
+            filter.AvailableQuantity.Should().Be(200);
         }
 
         [Fact]
@@ -58,7 +58,7 @@ namespace UnitTests
             filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
             filter.FilteredQuantity.Should().Be(0);
-            filter.AvailQuantity.Should().Be(200);
+            filter.AvailableQuantity.Should().Be(200);
         }
 
         [Fact]
@@ -86,7 +86,7 @@ namespace UnitTests
             filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
             filter.FilteredQuantity.Should().Be(200);
-            filter.AvailQuantity.Should().Be(0);
+            filter.AvailableQuantity.Should().Be(0);
         }
 
         [Fact]
@@ -114,7 +114,7 @@ namespace UnitTests
             filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
             filter.FilteredQuantity.Should().Be(200);
-            filter.AvailQuantity.Should().Be(0);
+            filter.AvailableQuantity.Should().Be(0);
         }
 
         [Fact]
@@ -142,7 +142,7 @@ namespace UnitTests
             filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
             filter.FilteredQuantity.Should().Be(0);
-            filter.AvailQuantity.Should().Be(200);
+            filter.AvailableQuantity.Should().Be(200);
         }
     }
 }

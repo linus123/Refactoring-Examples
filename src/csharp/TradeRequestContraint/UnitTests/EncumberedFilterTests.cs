@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using FluentAssertions;
+﻿using FluentAssertions;
 using SharedKernel;
 using SharedKernel.Filters;
 using Xunit;
@@ -137,7 +136,7 @@ namespace UnitTests
             public FilterAssert AvailableQuantityShouldBe(
                 decimal v)
             {
-                _filter.AvailQuantity.Should().BeApproximately(v, Precision);
+                _filter.AvailableQuantity.Should().BeApproximately(v, Precision);
 
                 return this;
             }

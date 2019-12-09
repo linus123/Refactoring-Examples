@@ -14,7 +14,7 @@ namespace SharedKernel.Filters
         {
             FilterType = GetClassDescription(this.GetType());
             OriginalQuantity = originalQuantity;
-            AvailQuantity = originalQuantity;
+            AvailableQuantity = originalQuantity;
             IsApplied = true;
         }
 
@@ -28,7 +28,7 @@ namespace SharedKernel.Filters
         public decimal FilteredQuantity { get; set; }
         public string FilterType { get; set; }
         public decimal OriginalQuantity { get; set; }
-        public decimal AvailQuantity { get; set; }
+        public decimal AvailableQuantity { get; set; }
         public decimal FilteredAmount { get; set; }
         public string FilterDescription { get; set; }
 
@@ -38,14 +38,14 @@ namespace SharedKernel.Filters
         {
             FilteredAmount = FilteredQuantity * tradeRequest.Stock.PriceInUsd;
 
-            AvailQuantity = OriginalQuantity - FilteredQuantity;
+            AvailableQuantity = OriginalQuantity - FilteredQuantity;
 
-            if (AvailQuantity < 0)
+            if (AvailableQuantity < 0)
             {
-                AvailQuantity = 0;
+                AvailableQuantity = 0;
             }
 
-            return AvailQuantity;
+            return AvailableQuantity;
         }
 
         private static string GetClassDescription(Type type)
