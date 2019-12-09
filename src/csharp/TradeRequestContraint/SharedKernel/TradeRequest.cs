@@ -59,9 +59,9 @@ namespace SharedKernel
 
             if (tradeFilterPreference.IsPrimaryFilterActive)
             {
-                var filter = new PrimaryLimitFilter(availQty);
+                var model = new PrimaryLimitFilter()
+                    .ApplyFilter(availQty, this, tradeFilterPreference);
 
-                var model = filter.ApplyFilter(this, tradeFilterPreference);
                 availQty = model.AvailableQuantity;
 
                 Filters.Add(model);
@@ -70,9 +70,9 @@ namespace SharedKernel
 
             if (tradeFilterPreference.IsHeavilyTradeFilterActive)
             {
-                var filter = new HeavilyTradedNameFilter(availQty);
+                var model = new HeavilyTradedNameFilter()
+                    .ApplyFilter(availQty, this, tradeFilterPreference);
 
-                var model = filter.ApplyFilter(this, tradeFilterPreference);
                 availQty = model.AvailableQuantity;
 
                 Filters.Add(model);
@@ -80,9 +80,9 @@ namespace SharedKernel
 
             if (tradeFilterPreference.IsCapacityEncumberedSharesFilterActive)
             {
-                var filter = new EncumberedFilter(availQty);
+                var model = new EncumberedFilter()
+                    .ApplyFilter(availQty, this, tradeFilterPreference);
 
-                var model = filter.ApplyFilter(this, tradeFilterPreference);
                 availQty = model.AvailableQuantity;
 
                 Filters.Add(model);

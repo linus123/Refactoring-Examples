@@ -2,21 +2,21 @@
 {
     public class PrimaryLimitFilter
     {
-        public PrimaryLimitFilter(decimal startingQuantity)
-        {
-            _startingQuantity = startingQuantity;
-            _availableQuantity = startingQuantity;
-        }
-
-        private readonly decimal _startingQuantity;
+        private decimal _startingQuantity;
         private decimal _availableQuantity;
 
         private decimal _filteredQuantity;
         private decimal _filteredAmount;
         private string _filterDescription;
 
-        public FilterModel ApplyFilter(TradeRequest tradeRequest, TradeFilterPreference tradeFilterPreference)
+        public FilterModel ApplyFilter(
+            decimal startingQuantity,
+            TradeRequest tradeRequest,
+            TradeFilterPreference tradeFilterPreference)
         {
+            _startingQuantity = startingQuantity;
+            _availableQuantity = startingQuantity;
+
             _filteredQuantity = 0;
 
             if (tradeRequest.ShouldPrimaryConstraintBeApplied(tradeFilterPreference))
