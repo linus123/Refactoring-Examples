@@ -69,5 +69,13 @@ namespace UnitTests
 
             return this;
         }
+
+        public FilterAssert IsAppliedShouldBeFalse()
+        {
+            _filter.IsApplied.Should().BeFalse();
+
+            return this;
+        }
+
     }
 }

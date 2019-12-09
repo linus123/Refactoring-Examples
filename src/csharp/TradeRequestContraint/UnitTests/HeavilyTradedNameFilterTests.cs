@@ -35,8 +35,14 @@ namespace UnitTests
 
             filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
-            filter.FilteredQuantity.Should().Be(0);
-            filter.AvailableQuantity.Should().Be(200);
+            new FilterAssert(filter)
+                .FilteredQuantityShouldBe(0)
+                .FilterTypeShouldBe("Heavily Traded Name")
+                .OriginalQuantityShouldBe(200)
+                .AvailableQuantityShouldBe(200)
+                .FilteredAmountQuantityShouldBe(0)
+                .FilterDescriptionQuantityShouldBe(null)
+                .IsAppliedShouldBeTrue();
         }
 
         [Fact]
@@ -67,9 +73,14 @@ namespace UnitTests
 
             filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
-            filter.FilteredQuantity.Should().Be(200);
-            filter.AvailableQuantity.Should().Be(0);
-
+            new FilterAssert(filter)
+                .FilteredQuantityShouldBe(200)
+                .FilterTypeShouldBe("Heavily Traded Name")
+                .OriginalQuantityShouldBe(200)
+                .AvailableQuantityShouldBe(0)
+                .FilteredAmountQuantityShouldBe(0)
+                .FilterDescriptionQuantityShouldBe(null)
+                .IsAppliedShouldBeTrue();
         }
 
         [Fact]
@@ -102,6 +113,15 @@ namespace UnitTests
 
             filter.FilteredQuantity.Should().Be(0);
             filter.AvailableQuantity.Should().Be(200);
+
+            new FilterAssert(filter)
+                .FilteredQuantityShouldBe(0)
+                .FilterTypeShouldBe("Heavily Traded Name")
+                .OriginalQuantityShouldBe(200)
+                .AvailableQuantityShouldBe(200)
+                .FilteredAmountQuantityShouldBe(0)
+                .FilterDescriptionQuantityShouldBe(null)
+                .IsAppliedShouldBeTrue();
         }
     }
 }
