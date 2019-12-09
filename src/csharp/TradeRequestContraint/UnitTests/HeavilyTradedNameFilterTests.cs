@@ -24,12 +24,8 @@ namespace UnitTests
                 Stock = stock
             };
 
-            var tradeFilterPreference = new TradeFilterPreference()
-            {
-                IsHeavilyTradeFilterActive = false,
-                StockHeavilyTradeVolume = 0.90m,
-                StockHeavilyTradeDay = 1
-            };
+            var tradeFilterPreference = new TradeFilterPreferenceBuilder()
+                .Create();
 
             filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
@@ -60,12 +56,9 @@ namespace UnitTests
                 Stock = stock
             };
 
-            var tradeFilterPreference = new TradeFilterPreference()
-            {
-                IsHeavilyTradeFilterActive = true,
-                StockHeavilyTradeVolume = 0.90m,
-                StockHeavilyTradeDay = 1
-            };
+            var tradeFilterPreference = new TradeFilterPreferenceBuilder()
+                .WithHeavilyTradedFilterActive(0.9m, 1)
+                .Create();
 
             filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
@@ -96,12 +89,9 @@ namespace UnitTests
                 Stock = stock
             };
 
-            var tradeFilterPreference = new TradeFilterPreference()
-            {
-                IsHeavilyTradeFilterActive = true,
-                StockHeavilyTradeVolume = 0.90m,
-                StockHeavilyTradeDay = 1
-            };
+            var tradeFilterPreference = new TradeFilterPreferenceBuilder()
+                .WithHeavilyTradedFilterActive(0.9m, 1)
+                .Create();
 
             filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
