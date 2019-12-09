@@ -2,9 +2,6 @@
 {
     public class EncumberedFilter
     {
-        private decimal _startingQuantity;
-        private decimal _availableQuantity;
-
         private decimal _filteredQuantity;
         private decimal _filteredAmount;
 
@@ -13,25 +10,22 @@
             TradeRequest tradeRequest,
             TradeFilterPreference tradeFilterPreference)
         {
-            _startingQuantity = startingQuantity;
-            _availableQuantity = startingQuantity;
-
             _filteredQuantity = 0;
             if (tradeFilterPreference.IsCapacityEncumberedSharesFilterActive)
             {
-                if (tradeRequest.IsSellOutQty(_startingQuantity))
+                if (tradeRequest.IsSellOutQty(startingQuantity))
                 {
-                    _filteredQuantity = _startingQuantity - tradeRequest.CalculateUnencumberedQuantity();
+                    _filteredQuantity = startingQuantity - tradeRequest.CalculateUnencumberedQuantity();
                 }
             }
 
             _filteredAmount = _filteredQuantity * tradeRequest.Stock.PriceInUsd;
 
-            _availableQuantity = _startingQuantity - _filteredQuantity;
+            var availableQuantity = startingQuantity - _filteredQuantity;
 
-            if (_availableQuantity < 0)
+            if (availableQuantity < 0)
             {
-                _availableQuantity = 0;
+                availableQuantity = 0;
             }
 
             return new FilterModel()
@@ -39,8 +33,8 @@
                 FilterType = "Encumbered",
                 FilteredAmount = _filteredAmount,
                 FilteredQuantity = _filteredQuantity,
-                OriginalQuantity = _startingQuantity,
-                AvailableQuantity = _availableQuantity,
+                OriginalQuantity = startingQuantity,
+                AvailableQuantity = availableQuantity,
                 FilterDescription = null,
                 IsApplied = true,
             };
