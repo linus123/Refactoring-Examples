@@ -34,10 +34,19 @@ namespace SharedKernel
         public bool IsSellOutQty(
             decimal quantity)
         {
-            if (TradeSide == TradeSide.Sell)
-                return quantity >= (HoldingsQuantity - EncumberedQuantity);
+            if (IsSell())
+            {
+                var encumberedQuantity = HoldingsQuantity - EncumberedQuantity;
+
+                return quantity >= encumberedQuantity;
+            }
 
             return false;
+        }
+
+        private bool IsSell()
+        {
+            return TradeSide == TradeSide.Sell;
         }
 
         public decimal CalculateUnencumberedQuantity()
