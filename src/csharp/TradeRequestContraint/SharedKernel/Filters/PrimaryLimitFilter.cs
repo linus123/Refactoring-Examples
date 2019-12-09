@@ -24,11 +24,6 @@ namespace SharedKernel.Filters
                 FilterDescription = tradeRequest.PrimaryLimitDescription;
             }
 
-            return CalculateFilteredAmountAndAvailableQuantity(tradeRequest);
-        }
-
-        public decimal CalculateFilteredAmountAndAvailableQuantity(TradeRequest tradeRequest)
-        {
             FilteredAmount = FilteredQuantity * tradeRequest.Stock.PriceInUsd;
 
             AvailableQuantity = OriginalQuantity - FilteredQuantity;
