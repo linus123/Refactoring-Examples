@@ -10,10 +10,8 @@ namespace UnitTests
         [Fact]
         public void ShouldNotApplyFilterWhenIsPrimaryFilterActiveIsFalse()
         {
-            var tradeFilterPreference = new TradeFilterPreference()
-            {
-                IsPrimaryFilterActive = false
-            };
+            var tradeFilterPreference = new TradeFilterPreferenceBuilder()
+                .Create();
 
             var tradeRequest = new TradeRequest()
             {
@@ -37,12 +35,9 @@ namespace UnitTests
         [Fact]
         public void ShouldNotApplyFilterWhenNotFilterByBufferForBuy()
         {
-            var tradeFilterPreference = new TradeFilterPreference()
-            {
-                IsPrimaryFilterActive = true,
-                CapacityPrimaryLimitBuy = 0.01m,
-                CapacityPrimaryLimitSell = 0.02m
-            };
+            var tradeFilterPreference = new TradeFilterPreferenceBuilder()
+                .WithPrimaryFilterActive(0.01m, 0.02m)
+                .Create();
 
             var tradeRequest = new TradeRequest()
             {
@@ -66,12 +61,9 @@ namespace UnitTests
         [Fact]
         public void ShouldApplyFilterWhenFilterByBufferForBuy()
         {
-            var tradeFilterPreference = new TradeFilterPreference()
-            {
-                IsPrimaryFilterActive = true,
-                CapacityPrimaryLimitBuy = 0.01m,
-                CapacityPrimaryLimitSell = 0.02m
-            };
+            var tradeFilterPreference = new TradeFilterPreferenceBuilder()
+                .WithPrimaryFilterActive(0.01m, 0.02m)
+                .Create();
 
             var tradeRequest = new TradeRequest()
             {
@@ -95,12 +87,9 @@ namespace UnitTests
         [Fact]
         public void ShouldApplyFilterWhenFilterByBufferForSell()
         {
-            var tradeFilterPreference = new TradeFilterPreference()
-            {
-                IsPrimaryFilterActive = true,
-                CapacityPrimaryLimitBuy = 0.01m,
-                CapacityPrimaryLimitSell = 0.02m
-            };
+            var tradeFilterPreference = new TradeFilterPreferenceBuilder()
+                .WithPrimaryFilterActive(0.01m, 0.02m)
+                .Create();
 
             var tradeRequest = new TradeRequest()
             {
@@ -124,12 +113,9 @@ namespace UnitTests
         [Fact]
         public void ShouldNotApplyFilterWhenNotFilterByBufferForSell()
         {
-            var tradeFilterPreference = new TradeFilterPreference()
-            {
-                IsPrimaryFilterActive = true,
-                CapacityPrimaryLimitBuy = 0.01m,
-                CapacityPrimaryLimitSell = 0.02m
-            };
+            var tradeFilterPreference = new TradeFilterPreferenceBuilder()
+                .WithPrimaryFilterActive(0.01m, 0.02m)
+                .Create();
 
             var tradeRequest = new TradeRequest()
             {

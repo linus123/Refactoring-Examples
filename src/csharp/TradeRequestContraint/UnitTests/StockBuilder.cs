@@ -20,30 +20,4 @@ namespace UnitTests
             return _faker.Generate();
         }
     }
-
-    public class TradeFilterPreferenceBuilder
-    {
-        private readonly TradeFilterPreference _tradeFilterPreference;
-
-        public TradeFilterPreferenceBuilder()
-        {
-            _tradeFilterPreference = new TradeFilterPreference();
-        }
-
-        public TradeFilterPreferenceBuilder WithHeavilyTradedFilterActive(
-            decimal tradeVolume,
-            int tradeDay)
-        {
-            _tradeFilterPreference.IsHeavilyTradeFilterActive = true;
-            _tradeFilterPreference.StockHeavilyTradeVolume = tradeVolume;
-            _tradeFilterPreference.StockHeavilyTradeDay = tradeDay;
-
-            return this;
-        }
-
-        public TradeFilterPreference Create()
-        {
-            return _tradeFilterPreference;
-        }
-    }
 }
