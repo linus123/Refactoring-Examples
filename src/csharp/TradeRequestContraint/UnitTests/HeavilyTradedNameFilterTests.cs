@@ -12,10 +12,8 @@ namespace UnitTests
         {
             var filter = new HeavilyTradedNameFilter(200);
 
-            var stock = new Stock()
-            {
-                StockId = "1234"
-            };
+            var stock = new StockBuilder()
+                .Create();
 
             stock.SetVolumes(
                 new decimal[] { 2000, 2100, 2200, 2300, 2400 },
@@ -50,10 +48,8 @@ namespace UnitTests
         {
             var filter = new HeavilyTradedNameFilter(200);
 
-            var stock = new Stock()
-            {
-                StockId = "1234"
-            };
+            var stock = new StockBuilder()
+                .Create();
 
             stock.SetVolumes(
                 new decimal[] { 2000, 2100, 2200, 2300, 2400 },
@@ -78,7 +74,7 @@ namespace UnitTests
                 .FilterTypeShouldBe("Heavily Traded Name")
                 .OriginalQuantityShouldBe(200)
                 .AvailableQuantityShouldBe(0)
-                .FilteredAmountQuantityShouldBe(0)
+                .FilteredAmountQuantityShouldBe(200 * stock.PriceInUsd)
                 .FilterDescriptionQuantityShouldBe(null)
                 .IsAppliedShouldBeTrue();
         }
@@ -88,10 +84,8 @@ namespace UnitTests
         {
             var filter = new HeavilyTradedNameFilter(200);
 
-            var stock = new Stock()
-            {
-                StockId = "1234"
-            };
+            var stock = new StockBuilder()
+                .Create();
 
             stock.SetVolumes(
                 new decimal[] { 100, 200, 110, 210, 150 },
