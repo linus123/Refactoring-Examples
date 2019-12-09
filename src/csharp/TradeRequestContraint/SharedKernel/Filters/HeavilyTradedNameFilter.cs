@@ -56,8 +56,7 @@
                 FilteredQuantity = filteredQuantity,
                 OriginalQuantity = startingQuantity,
                 AvailableQuantity = availableQuantity,
-                FilterDescription = null,
-                IsApplied = true,
+                FilterDescription = null
             };
 
         }

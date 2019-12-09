@@ -33,7 +33,6 @@
                 OriginalQuantity = startingQuantity,
                 AvailableQuantity = availableQuantity,
                 FilterDescription = filterDescription,
-                IsApplied = true,
             };
         }
     }

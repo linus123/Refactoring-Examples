@@ -69,8 +69,7 @@ namespace UnitTests
                 .OriginalQuantityShouldBe(tradeRequest.OriginalCapacityQuantity)
                 .AvailableQuantityShouldBe(0)
                 .FilteredAmountQuantityShouldBe(tradeRequest.OriginalCapacityQuantity * stock.PriceInUsd)
-                .FilterDescriptionQuantityShouldBe(null)
-                .IsAppliedShouldBeTrue();
+                .FilterDescriptionQuantityShouldBe(null);
 
             tradeRequest.Stock.ConstrainedByHeavilyTradedName.Should().BeTrue();
             tradeRequest.Stock.IsHeavilyTradedNameConstraintChecked.Should().BeTrue();
@@ -175,8 +174,7 @@ namespace UnitTests
                 .OriginalQuantityShouldBe(tradeRequest.OriginalCapacityQuantity)
                 .AvailableQuantityShouldBe(0)
                 .FilteredAmountQuantityShouldBe(tradeRequest.OriginalCapacityQuantity * stock.PriceInUsd)
-                .FilterDescriptionQuantityShouldBe(null)
-                .IsAppliedShouldBeTrue();
+                .FilterDescriptionQuantityShouldBe(null);
 
             tradeRequest.Stock.ConstrainedByHeavilyTradedName.Should().BeTrue();
             tradeRequest.Stock.IsHeavilyTradedNameConstraintChecked.Should().BeTrue();

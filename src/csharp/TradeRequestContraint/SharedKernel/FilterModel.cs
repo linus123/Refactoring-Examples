@@ -8,6 +8,5 @@
         public decimal AvailableQuantity { get; set; }
         public decimal FilteredAmount { get; set; }
         public string FilterDescription { get; set; }
-        public bool IsApplied { get; set; }
     }
 }

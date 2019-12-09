@@ -88,8 +88,7 @@ namespace UnitTests
                 .OriginalQuantityShouldBe(tradeRequest.OriginalCapacityQuantity)
                 .AvailableQuantityShouldBe(tradeRequest.HoldingsQuantity - tradeRequest.EncumberedQuantity)
                 .FilteredAmountQuantityShouldBe(tradeRequest.EncumberedQuantity * stock.PriceInUsd)
-                .FilterDescriptionQuantityShouldBe(null)
-                .IsAppliedShouldBeTrue();
+                .FilterDescriptionQuantityShouldBe(null);
 
             var precision = 0.00001m;
 
