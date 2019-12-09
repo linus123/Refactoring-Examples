@@ -4,12 +4,12 @@
     {
         public HeavilyTradedNameFilter(decimal originalQuantity)
         {
-            OriginalQuantity = originalQuantity;
-            AvailableQuantity = originalQuantity;
+            _originalQuantity = originalQuantity;
+            _availableQuantity = originalQuantity;
         }
 
-        public decimal OriginalQuantity { get; set; }
-        public decimal AvailableQuantity { get; set; }
+        private readonly decimal _originalQuantity;
+        private decimal _availableQuantity;
 
         private decimal _filteredQuantity;
         private decimal _filteredAmount;
@@ -25,7 +25,7 @@
                     if (tradeRequest.Stock.ConstrainedByHeavilyTradedName)
                     {
                         //Constrained by Name
-                        _filteredQuantity = AvailableQuantity;
+                        _filteredQuantity = _availableQuantity;
                     }
                 }
                 else
@@ -38,7 +38,7 @@
 
                     if (tradedVolume > volumePercentage * marketVolume)
                     {
-                        _filteredQuantity = AvailableQuantity;
+                        _filteredQuantity = _availableQuantity;
                         tradeRequest.Stock.ConstrainedByHeavilyTradedName = true;
                     }
                     tradeRequest.Stock.IsHeavilyTradedNameConstraintChecked = true;
@@ -48,14 +48,14 @@
 
             _filteredAmount = _filteredQuantity * tradeRequest.Stock.PriceInUsd;
 
-            AvailableQuantity = OriginalQuantity - _filteredQuantity;
+            _availableQuantity = _originalQuantity - _filteredQuantity;
 
-            if (AvailableQuantity < 0)
+            if (_availableQuantity < 0)
             {
-                AvailableQuantity = 0;
+                _availableQuantity = 0;
             }
 
-            return AvailableQuantity;
+            return _availableQuantity;
         }
 
         public FilterModel CreateModel()
@@ -63,10 +63,10 @@
             return new FilterModel()
             {
                 FilterType = "Heavily Traded Name",
-                FilteredAmount = this._filteredAmount,
-                FilteredQuantity = this._filteredQuantity,
-                OriginalQuantity = this.OriginalQuantity,
-                AvailableQuantity = this.AvailableQuantity,
+                FilteredAmount = _filteredAmount,
+                FilteredQuantity = _filteredQuantity,
+                OriginalQuantity = _originalQuantity,
+                AvailableQuantity = _availableQuantity,
                 FilterDescription = null,
                 IsApplied = true,
             };

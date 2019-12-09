@@ -4,12 +4,12 @@
     {
         public EncumberedFilter(decimal originalQuantity)
         {
-            OriginalQuantity = originalQuantity;
-            AvailableQuantity = originalQuantity;
+            _originalQuantity = originalQuantity;
+            _availableQuantity = originalQuantity;
         }
 
-        public decimal OriginalQuantity { get; set; }
-        public decimal AvailableQuantity { get; set; }
+        private readonly decimal _originalQuantity;
+        private decimal _availableQuantity;
 
         private decimal _filteredQuantity;
         private decimal _filteredAmount;
@@ -19,22 +19,22 @@
             _filteredQuantity = 0;
             if (tradeFilterPreference.IsCapacityEncumberedSharesFilterActive)
             {
-                if (tradeRequest.IsSellOutQty(OriginalQuantity))
+                if (tradeRequest.IsSellOutQty(_originalQuantity))
                 {
-                    _filteredQuantity = OriginalQuantity - tradeRequest.CalculateUnencumberedQuantity();
+                    _filteredQuantity = _originalQuantity - tradeRequest.CalculateUnencumberedQuantity();
                 }
             }
 
             _filteredAmount = _filteredQuantity * tradeRequest.Stock.PriceInUsd;
 
-            AvailableQuantity = OriginalQuantity - _filteredQuantity;
+            _availableQuantity = _originalQuantity - _filteredQuantity;
 
-            if (AvailableQuantity < 0)
+            if (_availableQuantity < 0)
             {
-                AvailableQuantity = 0;
+                _availableQuantity = 0;
             }
 
-            return AvailableQuantity;
+            return _availableQuantity;
         }
 
         public FilterModel CreateModel()
@@ -42,10 +42,10 @@
             return new FilterModel()
             {
                 FilterType = "Encumbered",
-                FilteredAmount = this._filteredAmount,
-                FilteredQuantity = this._filteredQuantity,
-                OriginalQuantity = this.OriginalQuantity,
-                AvailableQuantity = this.AvailableQuantity,
+                FilteredAmount = _filteredAmount,
+                FilteredQuantity = _filteredQuantity,
+                OriginalQuantity = _originalQuantity,
+                AvailableQuantity = _availableQuantity,
                 FilterDescription = null,
                 IsApplied = true,
             };
