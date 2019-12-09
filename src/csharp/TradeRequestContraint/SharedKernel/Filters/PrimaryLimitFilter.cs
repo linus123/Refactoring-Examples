@@ -7,11 +7,6 @@
 
         }
 
-        public string GetFilterType()
-        {
-            return "Primary Limit";
-        }
-
         public decimal ApplyFilter(TradeRequest tradeRequest, TradeFilterPreference tradeFilterPreference)
         {
             FilteredQuantity = 0;
@@ -38,7 +33,7 @@
         {
             return new FilterModel()
             {
-                FilterType = this.GetFilterType(),
+                FilterType = "Primary Limit",
                 FilteredAmount = this.FilteredAmount,
                 FilteredQuantity = this.FilteredQuantity,
                 OriginalQuantity = this.OriginalQuantity,

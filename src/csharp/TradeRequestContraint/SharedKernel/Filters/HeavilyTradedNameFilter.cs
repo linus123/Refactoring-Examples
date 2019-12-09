@@ -7,11 +7,6 @@
 
         }
 
-        public string GetFilterType()
-        {
-            return "Heavily Traded Name";
-        }
-        
         public decimal ApplyFilter(TradeRequest tradeRequest, TradeFilterPreference tradeFilterPreference)
         {
             FilteredQuantity = 0;
@@ -60,7 +55,7 @@
         {
             return new FilterModel()
             {
-                FilterType = this.GetFilterType(),
+                FilterType = "Heavily Traded Name",
                 FilteredAmount = this.FilteredAmount,
                 FilteredQuantity = this.FilteredQuantity,
                 OriginalQuantity = this.OriginalQuantity,
