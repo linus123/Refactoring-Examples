@@ -8,10 +8,10 @@ namespace SharedKernel
     {
         public TradeRequest()
         {
-            Filters = new List<Filter>();
+            Filters = new List<FilterModel>();
         }
 
-        public List<Filter> Filters { get; set; }
+        public List<FilterModel> Filters { get; set; }
 
         public int TradeRequestId { get; set; }
         public decimal PrimaryLimit { get; set; }
@@ -63,7 +63,7 @@ namespace SharedKernel
 
                 availQty = filter.ApplyFilter(this, tradeFilterPreference);
 
-                Filters.Add(filter);
+                Filters.Add(filter.CreateModel());
 
             }
 
@@ -73,7 +73,7 @@ namespace SharedKernel
 
                 availQty = filter.ApplyFilter(this, tradeFilterPreference);
 
-                Filters.Add(filter);
+                Filters.Add(filter.CreateModel());
             }
 
             if (tradeFilterPreference.IsCapacityEncumberedSharesFilterActive)
@@ -82,7 +82,7 @@ namespace SharedKernel
 
                 availQty = filter.ApplyFilter(this, tradeFilterPreference);
 
-                Filters.Add(filter);
+                Filters.Add(filter.CreateModel());
             }
 
             //Remove Zero Constrained Qty Filters

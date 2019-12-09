@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using SharedKernel.Filters;
+using SharedKernel;
 
 namespace UnitTests
 {
@@ -7,10 +7,10 @@ namespace UnitTests
     {
         private const decimal Precision = 0.00001m;
 
-        private readonly Filter _filter;
+        private readonly FilterModel _filter;
 
         public FilterAssert(
-            Filter filter)
+            FilterModel filter)
         {
             _filter = filter;
         }

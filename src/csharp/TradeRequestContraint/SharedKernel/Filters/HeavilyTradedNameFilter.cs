@@ -55,5 +55,20 @@
 
             return AvailableQuantity;
         }
+
+        public FilterModel CreateModel()
+        {
+            return new FilterModel()
+            {
+                FilterType = this.FilterType,
+                FilteredAmount = this.FilteredAmount,
+                FilteredQuantity = this.FilteredQuantity,
+                OriginalQuantity = this.OriginalQuantity,
+                AvailableQuantity = this.AvailableQuantity,
+                FilterDescription = this.FilterDescription,
+                IsApplied = this.IsApplied,
+            };
+        }
+
     }
 }
