@@ -1,11 +1,15 @@
 ﻿namespace SharedKernel.Filters
 {
-    public class PrimaryLimitFilter : Filter
+    public class PrimaryLimitFilter
     {
-        public PrimaryLimitFilter(decimal originalQuantity) : base(originalQuantity)
+        public PrimaryLimitFilter(decimal originalQuantity)
         {
-
+            OriginalQuantity = originalQuantity;
+            AvailableQuantity = originalQuantity;
         }
+
+        public decimal OriginalQuantity { get; set; }
+        public decimal AvailableQuantity { get; set; }
 
         private decimal _filteredQuantity;
         private decimal _filteredAmount;

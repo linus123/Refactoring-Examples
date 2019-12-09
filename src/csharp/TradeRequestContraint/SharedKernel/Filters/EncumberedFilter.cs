@@ -1,12 +1,15 @@
 ﻿namespace SharedKernel.Filters
 {
-    public class EncumberedFilter : Filter
+    public class EncumberedFilter
     {
-
-        public EncumberedFilter(decimal originalQuantity) : base(originalQuantity)
+        public EncumberedFilter(decimal originalQuantity)
         {
-
+            OriginalQuantity = originalQuantity;
+            AvailableQuantity = originalQuantity;
         }
+
+        public decimal OriginalQuantity { get; set; }
+        public decimal AvailableQuantity { get; set; }
 
         private decimal _filteredQuantity;
         private decimal _filteredAmount;
