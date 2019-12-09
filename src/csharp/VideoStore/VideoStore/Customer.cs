@@ -1,16 +1,14 @@
-﻿using System.Collections;
+﻿using System.Collections.Generic;
 using System.Linq;
-//TODO: Separate Calculation from Printing out
-//TODO: GetFrequentRenterPoints
-//TODO: GetTotalAmount
 //TODO: Convert Switch to Polymorphism
-//TODO: Convert Array to Generic
 
 namespace VideoStore
 {
     public class Customer
     {
-        private readonly ArrayList _rentals = new ArrayList();
+        private readonly List<Rental> _rentals = new List<Rental>();
+        private readonly List<decimal> _thisAmounts = new List<decimal>();
+
         public decimal TotalAmount;
         public string Name { get; }
         public int FrequentRenterPoints { get; set; }
@@ -24,14 +22,20 @@ namespace VideoStore
             _rentals.Add(rental);
         }
 
-        public string Statement()
+        public void Statement()
+        {
+            SetTotalAmounts();
+
+            SetFrequentRenterPoints();
+        }
+
+        private void SetTotalAmounts()
         {
             TotalAmount = 0;
-            var result = "Rental Record for " + Name + "\n";
-            foreach (var rental in _rentals.Cast<Rental>())
+            foreach (var rental in _rentals)
             {
                 decimal thisAmount = 0;
-                switch (rental.Movie.PriceCode)
+                switch (rental.GetPriceCode())
                 {
                     case Movie.Regular:
                         thisAmount += 2;
@@ -48,21 +52,33 @@ namespace VideoStore
                         if (rental.DaysRented > 3)
                             thisAmount += (rental.DaysRented - 3) * 1.5m;
                         break;
-                    default:
-                        break;
                 }
 
-                // add frequent renter points
+                // show figures for this rental
+                TotalAmount += thisAmount;
 
+                _thisAmounts.Add(thisAmount);
+            }
+        }
+
+        public void SetFrequentRenterPoints()
+        {
+            foreach (var rental in _rentals)
+            {
                 FrequentRenterPoints++;
                 // add bonus for a two day new release rental
                 if ((rental.Movie.PriceCode == Movie.NewRelease) &&
                     rental.DaysRented > 1)
                     FrequentRenterPoints++;
+            }
+        }
+        public string BuildStatementString()
+        {
+            var result = "Rental Record for " + Name + "\n";
 
-                // show figures for this rental
-                result += $"\t{rental.Movie.Title}\t" + $"{thisAmount:F1}\n";
-                TotalAmount += thisAmount;
+            for (int i = 0; i < _rentals.Count(); i++)
+            {
+                result += $"\t{_rentals[i].GetTitle()}\t" + $"{_thisAmounts[i]:F1}\n";
             }
 
             // add footer lines
@@ -70,5 +86,7 @@ namespace VideoStore
             result += $"You earned {FrequentRenterPoints} frequent renter points\n";
             return result;
         }
+
+
     }
 }

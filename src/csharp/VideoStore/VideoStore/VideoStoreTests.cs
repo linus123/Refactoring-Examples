@@ -85,13 +85,15 @@ namespace VideoStore
             var movie3 = new Movie("Eraserhead", Movie.Regular);
             _customer.AddRental(new Rental(movie3, 3));
 
+            _customer.Statement();
+
             Assert.Equal("Rental Record for Fred\n" +
                          "\tPlan 9 from Outer Space\t2.0\n" +
                          "\t8 1/2\t2.0\n" +
                          "\tEraserhead\t3.5\n" +
                          "You owed 7.5\n" +
                          "You earned 3 frequent renter points\n",
-                _customer.Statement());
+                _customer.BuildStatementString());
         }
 
     }

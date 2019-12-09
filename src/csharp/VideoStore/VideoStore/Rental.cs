@@ -10,5 +10,15 @@
             Movie = movie;
             DaysRented = daysRented;
         }
+
+        public int GetPriceCode()
+        {
+            return Movie.PriceCode;
+        }
+
+        public string GetTitle()
+        {
+            return Movie.Title;
+        }
     }
 }
