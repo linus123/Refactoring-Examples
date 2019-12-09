@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using SharedKernel;
-using SharedKernel.Filters;
+﻿using SharedKernel.Filters;
 using Xunit;
 
 namespace UnitTests
@@ -10,8 +8,6 @@ namespace UnitTests
         [Fact]
         public void ShouldDoNothingWhenFilterIsNotActive()
         {
-            var filter = new HeavilyTradedNameFilter(200);
-
             var stock = new StockBuilder()
                 .Create();
 
@@ -19,21 +15,22 @@ namespace UnitTests
                 new decimal[] { 2000, 2100, 2200, 2300, 2400 },
                 new decimal[] { 1000, 1100, 1200, 1300, 1400 });
 
-            var tradeRequest = new TradeRequest()
-            {
-                Stock = stock
-            };
+            var tradeRequest = new TradeRequestBuilder()
+                .WithStock(stock)
+                .Create();
 
             var tradeFilterPreference = new TradeFilterPreferenceBuilder()
                 .Create();
+
+            var filter = new HeavilyTradedNameFilter(tradeRequest.OriginalCapacityQuantity);
 
             filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
             new FilterAssert(filter)
                 .FilteredQuantityShouldBe(0)
                 .FilterTypeShouldBe("Heavily Traded Name")
-                .OriginalQuantityShouldBe(200)
-                .AvailableQuantityShouldBe(200)
+                .OriginalQuantityShouldBe(tradeRequest.OriginalCapacityQuantity)
+                .AvailableQuantityShouldBe(tradeRequest.OriginalCapacityQuantity)
                 .FilteredAmountQuantityShouldBe(0)
                 .FilterDescriptionQuantityShouldBe(null)
                 .IsAppliedShouldBeTrue();
@@ -42,8 +39,6 @@ namespace UnitTests
         [Fact]
         public void ShouldApplyFilterWhenTradeRequestIsHeavilyTraded()
         {
-            var filter = new HeavilyTradedNameFilter(200);
-
             var stock = new StockBuilder()
                 .Create();
 
@@ -51,23 +46,24 @@ namespace UnitTests
                 new decimal[] { 2000, 2100, 2200, 2300, 2400 },
                 new decimal[] { 1000, 1100, 1200, 1300, 1400 });
 
-            var tradeRequest = new TradeRequest()
-            {
-                Stock = stock
-            };
+            var tradeRequest = new TradeRequestBuilder()
+                .WithStock(stock)
+                .Create();
 
             var tradeFilterPreference = new TradeFilterPreferenceBuilder()
                 .WithHeavilyTradedFilterActive(0.9m, 1)
                 .Create();
 
+            var filter = new HeavilyTradedNameFilter(tradeRequest.OriginalCapacityQuantity);
+
             filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
             new FilterAssert(filter)
-                .FilteredQuantityShouldBe(200)
+                .FilteredQuantityShouldBe(tradeRequest.OriginalCapacityQuantity)
                 .FilterTypeShouldBe("Heavily Traded Name")
-                .OriginalQuantityShouldBe(200)
+                .OriginalQuantityShouldBe(tradeRequest.OriginalCapacityQuantity)
                 .AvailableQuantityShouldBe(0)
-                .FilteredAmountQuantityShouldBe(200 * stock.PriceInUsd)
+                .FilteredAmountQuantityShouldBe(tradeRequest.OriginalCapacityQuantity * stock.PriceInUsd)
                 .FilterDescriptionQuantityShouldBe(null)
                 .IsAppliedShouldBeTrue();
         }
@@ -75,8 +71,6 @@ namespace UnitTests
         [Fact]
         public void ShouldNotApplyFilterWhenTradeRequestIsNotHeavilyTraded()
         {
-            var filter = new HeavilyTradedNameFilter(200);
-
             var stock = new StockBuilder()
                 .Create();
 
@@ -84,25 +78,28 @@ namespace UnitTests
                 new decimal[] { 100, 200, 110, 210, 150 },
                 new decimal[] { 1000, 1100, 1200, 1300, 1400 });
 
-            var tradeRequest = new TradeRequest()
-            {
-                Stock = stock
-            };
+            var tradeRequest = new TradeRequestBuilder()
+                .WithStock(stock)
+                .Create();
+
+//            var tradeRequest = new TradeRequest()
+//            {
+//                Stock = stock
+//            };
 
             var tradeFilterPreference = new TradeFilterPreferenceBuilder()
                 .WithHeavilyTradedFilterActive(0.9m, 1)
                 .Create();
 
-            filter.ApplyFilter(tradeRequest, tradeFilterPreference);
+            var filter = new HeavilyTradedNameFilter(tradeRequest.OriginalCapacityQuantity);
 
-            filter.FilteredQuantity.Should().Be(0);
-            filter.AvailableQuantity.Should().Be(200);
+            filter.ApplyFilter(tradeRequest, tradeFilterPreference);
 
             new FilterAssert(filter)
                 .FilteredQuantityShouldBe(0)
                 .FilterTypeShouldBe("Heavily Traded Name")
-                .OriginalQuantityShouldBe(200)
-                .AvailableQuantityShouldBe(200)
+                .OriginalQuantityShouldBe(tradeRequest.OriginalCapacityQuantity)
+                .AvailableQuantityShouldBe(tradeRequest.OriginalCapacityQuantity)
                 .FilteredAmountQuantityShouldBe(0)
                 .FilterDescriptionQuantityShouldBe(null)
                 .IsAppliedShouldBeTrue();
