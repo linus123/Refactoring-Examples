@@ -7,12 +7,12 @@
 
         }
 
-        public decimal FilteredQuantity { get; set; }
-        public decimal FilteredAmount { get; set; }
+        private decimal _filteredQuantity;
+        private decimal _filteredAmount;
 
         public decimal ApplyFilter(TradeRequest tradeRequest, TradeFilterPreference tradeFilterPreference)
         {
-            FilteredQuantity = 0;
+            _filteredQuantity = 0;
             if (tradeFilterPreference.IsHeavilyTradeFilterActive)
             {
                 if (tradeRequest.Stock.IsHeavilyTradedNameConstraintChecked == true)
@@ -21,7 +21,7 @@
                     if (tradeRequest.Stock.ConstrainedByHeavilyTradedName)
                     {
                         //Constrained by Name
-                        FilteredQuantity = AvailableQuantity;
+                        _filteredQuantity = AvailableQuantity;
                     }
                 }
                 else
@@ -34,7 +34,7 @@
 
                     if (tradedVolume > volumePercentage * marketVolume)
                     {
-                        FilteredQuantity = AvailableQuantity;
+                        _filteredQuantity = AvailableQuantity;
                         tradeRequest.Stock.ConstrainedByHeavilyTradedName = true;
                     }
                     tradeRequest.Stock.IsHeavilyTradedNameConstraintChecked = true;
@@ -42,9 +42,9 @@
                 }
             }
 
-            FilteredAmount = FilteredQuantity * tradeRequest.Stock.PriceInUsd;
+            _filteredAmount = _filteredQuantity * tradeRequest.Stock.PriceInUsd;
 
-            AvailableQuantity = OriginalQuantity - FilteredQuantity;
+            AvailableQuantity = OriginalQuantity - _filteredQuantity;
 
             if (AvailableQuantity < 0)
             {
@@ -59,8 +59,8 @@
             return new FilterModel()
             {
                 FilterType = "Heavily Traded Name",
-                FilteredAmount = this.FilteredAmount,
-                FilteredQuantity = this.FilteredQuantity,
+                FilteredAmount = this._filteredAmount,
+                FilteredQuantity = this._filteredQuantity,
                 OriginalQuantity = this.OriginalQuantity,
                 AvailableQuantity = this.AvailableQuantity,
                 FilterDescription = null,

@@ -7,23 +7,23 @@
 
         }
 
-        public decimal FilteredQuantity { get; set; }
-        public decimal FilteredAmount { get; set; }
-        public string FilterDescription { get; set; }
+        private decimal _filteredQuantity;
+        private decimal _filteredAmount;
+        private string _filterDescription;
 
         public decimal ApplyFilter(TradeRequest tradeRequest, TradeFilterPreference tradeFilterPreference)
         {
-            FilteredQuantity = 0;
+            _filteredQuantity = 0;
 
             if (tradeRequest.ShouldPrimaryConstraintBeApplied(tradeFilterPreference))
             {
-                FilteredQuantity = OriginalQuantity;
-                FilterDescription = tradeRequest.PrimaryLimitDescription;
+                _filteredQuantity = OriginalQuantity;
+                _filterDescription = tradeRequest.PrimaryLimitDescription;
             }
 
-            FilteredAmount = FilteredQuantity * tradeRequest.Stock.PriceInUsd;
+            _filteredAmount = _filteredQuantity * tradeRequest.Stock.PriceInUsd;
 
-            AvailableQuantity = OriginalQuantity - FilteredQuantity;
+            AvailableQuantity = OriginalQuantity - _filteredQuantity;
 
             if (AvailableQuantity < 0)
             {
@@ -38,11 +38,11 @@
             return new FilterModel()
             {
                 FilterType = "Primary Limit",
-                FilteredAmount = this.FilteredAmount,
-                FilteredQuantity = this.FilteredQuantity,
+                FilteredAmount = this._filteredAmount,
+                FilteredQuantity = this._filteredQuantity,
                 OriginalQuantity = this.OriginalQuantity,
                 AvailableQuantity = this.AvailableQuantity,
-                FilterDescription = this.FilterDescription,
+                FilterDescription = this._filterDescription,
                 IsApplied = true,
             };
         }
