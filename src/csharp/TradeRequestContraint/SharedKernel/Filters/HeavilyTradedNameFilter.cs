@@ -7,6 +7,10 @@
 
         }
 
+        public decimal FilteredQuantity { get; set; }
+        public decimal FilteredAmount { get; set; }
+        public string FilterDescription { get; set; }
+
         public decimal ApplyFilter(TradeRequest tradeRequest, TradeFilterPreference tradeFilterPreference)
         {
             FilteredQuantity = 0;
