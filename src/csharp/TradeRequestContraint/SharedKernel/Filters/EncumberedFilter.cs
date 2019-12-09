@@ -14,7 +14,7 @@
         private decimal _filteredQuantity;
         private decimal _filteredAmount;
 
-        public decimal ApplyFilter(TradeRequest tradeRequest, TradeFilterPreference tradeFilterPreference)
+        public FilterModel ApplyFilter(TradeRequest tradeRequest, TradeFilterPreference tradeFilterPreference)
         {
             _filteredQuantity = 0;
             if (tradeFilterPreference.IsCapacityEncumberedSharesFilterActive)
@@ -34,11 +34,7 @@
                 _availableQuantity = 0;
             }
 
-            return _availableQuantity;
-        }
-
-        public FilterModel CreateModel()
-        {
+            //            return _availableQuantity;
             return new FilterModel()
             {
                 FilterType = "Encumbered",
@@ -49,7 +45,7 @@
                 FilterDescription = null,
                 IsApplied = true,
             };
-        }
 
+        }
     }
 }

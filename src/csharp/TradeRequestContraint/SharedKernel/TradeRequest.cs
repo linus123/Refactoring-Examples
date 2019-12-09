@@ -61,9 +61,10 @@ namespace SharedKernel
             {
                 var filter = new PrimaryLimitFilter(availQty);
 
-                availQty = filter.ApplyFilter(this, tradeFilterPreference);
+                var model = filter.ApplyFilter(this, tradeFilterPreference);
+                availQty = model.AvailableQuantity;
 
-                Filters.Add(filter.CreateModel());
+                Filters.Add(model);
 
             }
 
@@ -71,18 +72,20 @@ namespace SharedKernel
             {
                 var filter = new HeavilyTradedNameFilter(availQty);
 
-                availQty = filter.ApplyFilter(this, tradeFilterPreference);
+                var model = filter.ApplyFilter(this, tradeFilterPreference);
+                availQty = model.AvailableQuantity;
 
-                Filters.Add(filter.CreateModel());
+                Filters.Add(model);
             }
 
             if (tradeFilterPreference.IsCapacityEncumberedSharesFilterActive)
             {
                 var filter = new EncumberedFilter(availQty);
 
-                availQty = filter.ApplyFilter(this, tradeFilterPreference);
+                var model = filter.ApplyFilter(this, tradeFilterPreference);
+                availQty = model.AvailableQuantity;
 
-                Filters.Add(filter.CreateModel());
+                Filters.Add(model);
             }
 
             //Remove Zero Constrained Qty Filters

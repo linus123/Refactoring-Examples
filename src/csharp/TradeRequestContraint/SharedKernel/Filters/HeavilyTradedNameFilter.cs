@@ -14,7 +14,7 @@
         private decimal _filteredQuantity;
         private decimal _filteredAmount;
 
-        public decimal ApplyFilter(TradeRequest tradeRequest, TradeFilterPreference tradeFilterPreference)
+        public FilterModel ApplyFilter(TradeRequest tradeRequest, TradeFilterPreference tradeFilterPreference)
         {
             _filteredQuantity = 0;
             if (tradeFilterPreference.IsHeavilyTradeFilterActive)
@@ -55,11 +55,8 @@
                 _availableQuantity = 0;
             }
 
-            return _availableQuantity;
-        }
+            //            return _availableQuantity;
 
-        public FilterModel CreateModel()
-        {
             return new FilterModel()
             {
                 FilterType = "Heavily Traded Name",
@@ -70,7 +67,7 @@
                 FilterDescription = null,
                 IsApplied = true,
             };
-        }
 
+        }
     }
 }

@@ -15,7 +15,7 @@
         private decimal _filteredAmount;
         private string _filterDescription;
 
-        public decimal ApplyFilter(TradeRequest tradeRequest, TradeFilterPreference tradeFilterPreference)
+        public FilterModel ApplyFilter(TradeRequest tradeRequest, TradeFilterPreference tradeFilterPreference)
         {
             _filteredQuantity = 0;
 
@@ -34,11 +34,8 @@
                 _availableQuantity = 0;
             }
 
-            return _availableQuantity;
-        }
+            //            return _availableQuantity;
 
-        public FilterModel CreateModel()
-        {
             return new FilterModel()
             {
                 FilterType = "Primary Limit",
