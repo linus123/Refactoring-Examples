@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using SharedKernel;
-using SharedKernel.Filters;
 using Xunit;
 
 namespace UnitTests
@@ -23,12 +22,12 @@ namespace UnitTests
                 .WithTradeFilterPreference(tradeFilterPreference)
                 .Create();
 
-            var filter = new PrimaryLimitFilter(tradeRequest.OriginalCapacityQuantity);
+            var tradeRequestCollection = new TradeRequestCollection(new[] { tradeRequest });
 
-            filter.ApplyFilter(tradeRequest, tradeFilterPreference);
+            tradeRequestCollection.ApplyFilters();
 
-            filter.FilteredQuantity.Should().Be(0);
-            filter.AvailableQuantity.Should().Be(tradeRequest.OriginalCapacityQuantity);
+            tradeRequest.Filters.Should().HaveCount(0);
+            tradeRequest.AvailableCapacityQuantity.Should().Be(tradeRequest.OriginalCapacityQuantity);
         }
 
         [Fact]
@@ -48,12 +47,12 @@ namespace UnitTests
                 .WithTradeFilterPreference(tradeFilterPreference)
                 .Create();
 
-            var filter = new PrimaryLimitFilter(tradeRequest.OriginalCapacityQuantity);
+            var tradeRequestCollection = new TradeRequestCollection(new[] { tradeRequest });
 
-            filter.ApplyFilter(tradeRequest, tradeFilterPreference);
+            tradeRequestCollection.ApplyFilters();
 
-            filter.FilteredQuantity.Should().Be(0);
-            filter.AvailableQuantity.Should().Be(tradeRequest.OriginalCapacityQuantity);
+            tradeRequest.Filters.Should().HaveCount(0);
+            tradeRequest.AvailableCapacityQuantity.Should().Be(tradeRequest.OriginalCapacityQuantity);
         }
 
         [Fact]
@@ -73,9 +72,14 @@ namespace UnitTests
                 .WithTradeFilterPreference(tradeFilterPreference)
                 .Create();
 
-            var filter = new PrimaryLimitFilter(tradeRequest.OriginalCapacityQuantity);
+            var tradeRequestCollection = new TradeRequestCollection(new[] { tradeRequest });
 
-            filter.ApplyFilter(tradeRequest, tradeFilterPreference);
+            tradeRequestCollection.ApplyFilters();
+
+            tradeRequest.Filters.Should().HaveCount(1);
+            tradeRequest.AvailableCapacityQuantity.Should().Be(0);
+
+            var filter = tradeRequest.Filters[0];
 
             new FilterAssert(filter)
                 .FilteredQuantityShouldBe(tradeRequest.OriginalCapacityQuantity)
@@ -103,10 +107,15 @@ namespace UnitTests
                 .WithStock(stock)
                 .WithTradeFilterPreference(tradeFilterPreference)
                 .Create();
-            
-            var filter = new PrimaryLimitFilter(tradeRequest.OriginalCapacityQuantity);
 
-            filter.ApplyFilter(tradeRequest, tradeFilterPreference);
+            var tradeRequestCollection = new TradeRequestCollection(new[] { tradeRequest });
+
+            tradeRequestCollection.ApplyFilters();
+
+            tradeRequest.Filters.Should().HaveCount(1);
+            tradeRequest.AvailableCapacityQuantity.Should().Be(0);
+
+            var filter = tradeRequest.Filters[0];
 
             new FilterAssert(filter)
                 .FilteredQuantityShouldBe(tradeRequest.OriginalCapacityQuantity)
@@ -135,12 +144,12 @@ namespace UnitTests
                 .WithTradeFilterPreference(tradeFilterPreference)
                 .Create();
 
-            var filter = new PrimaryLimitFilter(tradeRequest.OriginalCapacityQuantity);
+            var tradeRequestCollection = new TradeRequestCollection(new[] { tradeRequest });
 
-            filter.ApplyFilter(tradeRequest, tradeFilterPreference);
+            tradeRequestCollection.ApplyFilters();
 
-            filter.FilteredQuantity.Should().Be(0);
-            filter.AvailableQuantity.Should().Be(tradeRequest.OriginalCapacityQuantity);
+            tradeRequest.Filters.Should().HaveCount(0);
+            tradeRequest.AvailableCapacityQuantity.Should().Be(tradeRequest.OriginalCapacityQuantity);
         }
     }
 }
