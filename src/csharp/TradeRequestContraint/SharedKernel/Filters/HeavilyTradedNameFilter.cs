@@ -61,7 +61,7 @@
                 OriginalQuantity = this.OriginalQuantity,
                 AvailableQuantity = this.AvailableQuantity,
                 FilterDescription = this.FilterDescription,
-                IsApplied = this.IsApplied,
+                IsApplied = true,
             };
         }
 
