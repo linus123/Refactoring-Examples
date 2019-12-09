@@ -50,5 +50,18 @@ namespace SharedKernel.Filters
 
         }
 
+        public decimal CalculateFilteredAmountAndAvailableQuantity(TradeRequest tradeRequest)
+        {
+            FilteredAmount = FilteredQuantity * tradeRequest.Stock.PriceInUsd;
+
+            AvailableQuantity = OriginalQuantity - FilteredQuantity;
+
+            if (AvailableQuantity < 0)
+            {
+                AvailableQuantity = 0;
+            }
+
+            return AvailableQuantity;
+        }
     }
 }
