@@ -2,9 +2,6 @@
 {
     public class HeavilyTradedNameFilter
     {
-        private decimal _filteredQuantity;
-        private decimal _filteredAmount;
-
         public FilterModel CreateModel(
             decimal startingQuantity,
             TradeRequest tradeRequest,
@@ -12,7 +9,8 @@
         {
             var availableQuantity = startingQuantity;
 
-            _filteredQuantity = 0;
+            decimal filteredQuantity = 0;
+
             if (tradeFilterPreference.IsHeavilyTradeFilterActive)
             {
                 if (tradeRequest.Stock.IsHeavilyTradedNameConstraintChecked == true)
@@ -21,7 +19,7 @@
                     if (tradeRequest.Stock.ConstrainedByHeavilyTradedName)
                     {
                         //Constrained by Name
-                        _filteredQuantity = availableQuantity;
+                        filteredQuantity = availableQuantity;
                     }
                 }
                 else
@@ -34,7 +32,7 @@
 
                     if (tradedVolume > volumePercentage * marketVolume)
                     {
-                        _filteredQuantity = availableQuantity;
+                        filteredQuantity = availableQuantity;
                         tradeRequest.Stock.ConstrainedByHeavilyTradedName = true;
                     }
                     tradeRequest.Stock.IsHeavilyTradedNameConstraintChecked = true;
@@ -42,9 +40,9 @@
                 }
             }
 
-            _filteredAmount = _filteredQuantity * tradeRequest.Stock.PriceInUsd;
+            var filteredAmount = filteredQuantity * tradeRequest.Stock.PriceInUsd;
 
-            availableQuantity = startingQuantity - _filteredQuantity;
+            availableQuantity = startingQuantity - filteredQuantity;
 
             if (availableQuantity < 0)
             {
@@ -54,8 +52,8 @@
             return new FilterModel()
             {
                 FilterType = "Heavily Traded Name",
-                FilteredAmount = _filteredAmount,
-                FilteredQuantity = _filteredQuantity,
+                FilteredAmount = filteredAmount,
+                FilteredQuantity = filteredQuantity,
                 OriginalQuantity = startingQuantity,
                 AvailableQuantity = availableQuantity,
                 FilterDescription = null,
