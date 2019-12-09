@@ -59,26 +59,30 @@ namespace SharedKernel
 
             if (tradeFilterPreference.IsPrimaryFilterActive)
             {
-                Filter filter = new PrimaryLimitFilter(availQty);
-                Filters.Add(filter);
+                var filter = new PrimaryLimitFilter(availQty);
 
                 availQty = filter.ApplyFilter(this, tradeFilterPreference);
+
+                Filters.Add(filter);
+
             }
 
             if (tradeFilterPreference.IsHeavilyTradeFilterActive)
             {
-                Filter filter = new HeavilyTradedNameFilter(availQty);
-                Filters.Add(filter);
+                var filter = new HeavilyTradedNameFilter(availQty);
 
                 availQty = filter.ApplyFilter(this, tradeFilterPreference);
+
+                Filters.Add(filter);
             }
 
             if (tradeFilterPreference.IsCapacityEncumberedSharesFilterActive)
             {
-                Filter filter = new EncumberedFilter(availQty);
-                Filters.Add(filter);
+                var filter = new EncumberedFilter(availQty);
 
                 availQty = filter.ApplyFilter(this, tradeFilterPreference);
+
+                Filters.Add(filter);
             }
 
             //Remove Zero Constrained Qty Filters

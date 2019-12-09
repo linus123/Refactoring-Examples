@@ -12,7 +12,7 @@
             return "Heavily Traded Name";
         }
         
-        public override decimal ApplyFilter(TradeRequest tradeRequest, TradeFilterPreference tradeFilterPreference)
+        public decimal ApplyFilter(TradeRequest tradeRequest, TradeFilterPreference tradeFilterPreference)
         {
             FilteredQuantity = 0;
             if (tradeFilterPreference.IsHeavilyTradeFilterActive)

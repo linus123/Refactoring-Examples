@@ -12,7 +12,7 @@
             return "Primary Limit";
         }
 
-        public override decimal ApplyFilter(TradeRequest tradeRequest, TradeFilterPreference tradeFilterPreference)
+        public decimal ApplyFilter(TradeRequest tradeRequest, TradeFilterPreference tradeFilterPreference)
         {
             FilteredQuantity = 0;
 

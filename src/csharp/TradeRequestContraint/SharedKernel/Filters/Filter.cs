@@ -15,13 +15,6 @@
             return null;
         }
 
-        public virtual decimal ApplyFilter(
-            TradeRequest tradeRequest,
-            TradeFilterPreference tradeFilterPreference)
-        {
-            return OriginalQuantity;
-        }
-
         public decimal FilteredQuantity { get; set; }
         public string FilterType { get; set; }
         public decimal OriginalQuantity { get; set; }
