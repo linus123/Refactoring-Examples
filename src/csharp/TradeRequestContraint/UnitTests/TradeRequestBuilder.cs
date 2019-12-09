@@ -24,7 +24,8 @@ namespace UnitTests
         public TradeRequestBuilder()
         {
             _faker = new Faker<TradeRequest>()
-                .RuleFor(m => m.OriginalCapacityQuantity, f => f.Random.Decimal(1, 6000));
+                .RuleFor(m => m.OriginalCapacityQuantity, f => f.Random.Decimal(1, 6000))
+                .RuleFor(m => m.PrimaryLimitDescription, f => f.Name.JobDescriptor());
         }
 
         public TradeRequestBuilder WithSideAsSell()

@@ -87,7 +87,7 @@ namespace UnitTests
                 .OriginalQuantityShouldBe(tradeRequest.OriginalCapacityQuantity)
                 .AvailableQuantityShouldBe(0)
                 .FilteredAmountQuantityShouldBe(tradeRequest.OriginalCapacityQuantity * stock.PriceInUsd)
-                .FilterDescriptionQuantityShouldBe(null)
+                .FilterDescriptionQuantityShouldBe(tradeRequest.PrimaryLimitDescription)
                 .IsAppliedShouldBeTrue();
         }
 
@@ -123,7 +123,7 @@ namespace UnitTests
                 .OriginalQuantityShouldBe(tradeRequest.OriginalCapacityQuantity)
                 .AvailableQuantityShouldBe(0)
                 .FilteredAmountQuantityShouldBe(tradeRequest.OriginalCapacityQuantity * stock.PriceInUsd)
-                .FilterDescriptionQuantityShouldBe(null)
+                .FilterDescriptionQuantityShouldBe(tradeRequest.PrimaryLimitDescription)
                 .IsAppliedShouldBeTrue();
         }
 
