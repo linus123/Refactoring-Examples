@@ -4,15 +4,9 @@
     {
         public Filter(decimal originalQuantity)
         {
-            FilterType = GetFilterType();
             OriginalQuantity = originalQuantity;
             AvailableQuantity = originalQuantity;
             IsApplied = true;
-        }
-
-        public virtual string GetFilterType()
-        {
-            return null;
         }
 
         public decimal FilteredQuantity { get; set; }

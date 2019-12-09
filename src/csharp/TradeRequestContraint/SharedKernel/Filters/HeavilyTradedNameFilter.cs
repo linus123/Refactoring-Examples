@@ -7,7 +7,7 @@
 
         }
 
-        public override string GetFilterType()
+        public string GetFilterType()
         {
             return "Heavily Traded Name";
         }
@@ -60,7 +60,7 @@
         {
             return new FilterModel()
             {
-                FilterType = this.FilterType,
+                FilterType = this.GetFilterType(),
                 FilteredAmount = this.FilteredAmount,
                 FilteredQuantity = this.FilteredQuantity,
                 OriginalQuantity = this.OriginalQuantity,
