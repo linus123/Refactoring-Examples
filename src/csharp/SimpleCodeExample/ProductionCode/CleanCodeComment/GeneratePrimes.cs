@@ -1,37 +1,15 @@
-﻿/**
-    * This class Generates prime numbers up to a user specified
-    * maximum.  The algorithm used is the Sieve of Eratosthenes.
-    * <p>
-    * Eratosthenes of Cyrene, b. c. 276 BC, Cyrene, Libya --
-    * d. c. 194, Alexandria.  The first man to calculate the
-    * circumference of the Earth.  Also known for working on
-    * calendars with leap years and ran the library at Alexandria.
-    * <p>
-    * The algorithm is quite simple.  Given an array of integers
-    * starting at 2.  Cross out all multiples of 2.  Find the next
-    * uncrossed integer, and cross out all of its multiples.
-    * Repeat untilyou have passed the square root of the maximum
-    * value.
-    *
-    * @author Alphonse
-    * @version 13 Feb 2002 atp
-    */
-
-using System;
+﻿using System;
 
 namespace ProductionCode.CleanCodeComment
 {
     public class GeneratePrimes
     {
-        /**
-     * @param maxValue is the generation limit.
-     */
-        public static int[] Generate(int maxValue)
+        public static int[] Generate(int limit)
         {
-            if (maxValue >= 2) // the only valid case
+            if (limit >= 2) // the only valid case
             {
                 // declarations
-                int s = maxValue + 1; // size of array
+                int s = limit + 1; // size of array
                 bool[] f = new bool[s];
                 int i;
                 // initialize array to true.
