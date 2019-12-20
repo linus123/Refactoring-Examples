@@ -10,7 +10,7 @@
     * The algorithm is quite simple.  Given an array of integers
     * starting at 2.  Cross out all multiples of 2.  Find the next
     * uncrossed integer, and cross out all of its multiples.
-    * Repeat untilyou have passed the square root of the maximum
+    * Repeat until you have passed the square root of the maximum
     * value.
     *
     * @author Alphonse
@@ -34,45 +34,95 @@ namespace ProductionCode.CleanCodeComment
         private static int[] GetPrimeNumbers(int limit)
         {
             int arraySize = limit + 1;
-            bool[] f = new bool[arraySize];
-            // initialize array to true.
-            for (var i = 0; i < arraySize; i++)
-                f[i] = true;
 
-            // get rid of known non-primes
-            f[0] = f[1] = false;
+            var flags = new NumberFlagCollection(arraySize);
 
-            // sieve
-            int j;
-            for (var i = 2; i < Math.Sqrt(arraySize) + 1; i++)
+            flags.RemoveKnownNonPrimes();
+
+            flags.RemoveAllMultiplesOfTwo();
+
+            var primeCount = flags.GetNumberOfPrimes();
+
+            return CreatePrimeNumberArray(primeCount, flags);
+        }
+
+        private static int[] CreatePrimeNumberArray(
+            int primeCount,
+            NumberFlagCollection flags)
+        {
+            int[] primes = new int[primeCount];
+
+            // move the primes into the result
+            for (int i = 0, j = 0; i < flags.GetArraySize(); i++)
             {
-                if (f[i]) // if i is uncrossed, cross its multiples.
+                if (flags.IsPrime(i))
+                    primes[j++] = i;
+            }
+
+            return primes;
+        }
+
+        private class NumberFlagCollection
+        {
+            private readonly bool[] _numberFlags;
+
+            public int GetArraySize()
+            {
+                return _numberFlags.Length;
+            }
+
+            public bool IsPrime(int i)
+            {
+                return _numberFlags[i];
+            }
+
+            public NumberFlagCollection(
+                int arraySize)
+            {
+                _numberFlags = new bool[arraySize];
+
+                for (var i = 0; i < arraySize; i++)
+                    _numberFlags[i] = true;
+            }
+
+            public void RemoveKnownNonPrimes()
+            {
+                _numberFlags[0] = false;
+                _numberFlags[1] = false;
+            }
+
+            public void RemoveAllMultiplesOfTwo()
+            {
+                for (var i = 2; i < Math.Sqrt(_numberFlags.Length) + 1; i++)
                 {
-                    for (j = 2 * i; j < arraySize; j += i)
-                        f[j] = false; // multiple is not prime
+                    if (IsUnCrossed(i))
+                        SetMultiplesAsNotPrime(i);
                 }
             }
 
-            // how many primes are there?
-            int count = 0;
-            for (var i = 0; i < arraySize; i++)
+            private bool IsUnCrossed(int i)
             {
-                if (f[i])
-                    count++; // bump count.
+                return _numberFlags[i];
             }
 
-            int[] primes = new int[count];
-
-            int i1;
-            int j1;
-            // move the primes into the result
-            for (i1 = 0, j1 = 0; i1 < arraySize; i1++)
+            private void SetMultiplesAsNotPrime(
+                int multiple)
             {
-                if (f[i1]) // if prime
-                    primes[j1++] = i1;
+                for (var j = 2 * multiple; j < _numberFlags.Length; j += multiple)
+                    _numberFlags[j] = false;
             }
 
-            return primes; // return the primes
+            public int GetNumberOfPrimes()
+            {
+                int count = 0;
+                for (var i = 0; i < _numberFlags.Length; i++)
+                {
+                    if (_numberFlags[i])
+                        count++;
+                }
+
+                return count;
+            }
         }
     }
 }
