@@ -3,7 +3,7 @@ using FluentAssertions;
 using ProductionCode.CleanCodeComment;
 using Xunit;
 
-namespace UnitTests.CleanCodeComment
+namespace TestCode.CleanCodeComment
 {
     public class GeneratePrimesTests
     {

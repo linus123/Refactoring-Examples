@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.960
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductionCode", "ProductionCode\ProductionCode.csproj", "{89B18027-48A0-415C-9B54-02DBC24FA799}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductionCode", "ProductionCode\ProductionCode.csproj", "{89B18027-48A0-415C-9B54-02DBC24FA799}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{E61D171D-B93C-4D98-9A87-426C2D02C3AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestCode", "UnitTests\TestCode.csproj", "{E61D171D-B93C-4D98-9A87-426C2D02C3AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
