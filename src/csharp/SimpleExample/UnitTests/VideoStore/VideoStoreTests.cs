@@ -1,7 +1,8 @@
 ﻿using FluentAssertions;
+using ProductionCode.VideoStore;
 using Xunit;
 
-namespace VideoStore
+namespace TestCode.VideoStore
 {
     public class VideoStoreTests
     {

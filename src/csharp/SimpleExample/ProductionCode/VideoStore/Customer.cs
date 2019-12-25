@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+
 //TODO: Convert Switch to Polymorphism
 
-namespace VideoStore
+namespace ProductionCode.VideoStore
 {
     public class Customer
     {

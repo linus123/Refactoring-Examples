@@ -1,4 +1,4 @@
-﻿namespace VideoStore
+﻿namespace ProductionCode.VideoStore
 {
     public class Rental
     {
