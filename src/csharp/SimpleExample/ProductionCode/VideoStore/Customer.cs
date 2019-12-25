@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Linq;
 
-namespace VideoStore
+namespace ProductionCode.VideoStore
 {
     public class Customer
     {
