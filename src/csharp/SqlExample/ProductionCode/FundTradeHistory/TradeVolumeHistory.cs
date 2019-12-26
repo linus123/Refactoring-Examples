@@ -1,4 +1,4 @@
-﻿namespace ProductionCode.FundVolume
+﻿namespace ProductionCode.FundTradeHistory
 {
     public class TradeVolumeHistory
     {
