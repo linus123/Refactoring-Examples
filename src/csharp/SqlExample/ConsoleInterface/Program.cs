@@ -1,4 +1,5 @@
 ﻿using System;
+using ProductionCode.FundTradeHistory;
 
 namespace ConsoleInterface
 {
@@ -6,16 +7,16 @@ namespace ConsoleInterface
     {
         static void Main(string[] args)
         {
-            var line = Console.ReadLine();
+            var connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=RefactoringExample;integrated security=true;Persist Security Info=True";
 
-            while (!string.IsNullOrEmpty(line))
-            {
-                // Parse line here
-                Console.WriteLine($"GotLine : {line}");
-                // Parse line here
+            var tradeHistoryRepository = new TradeHistoryRepository(connectionString);
 
-                line = Console.ReadLine();
-            }
+            var tradeVolumeHistories = tradeHistoryRepository.GetTradeVolumeHistories(
+                new DateTime(2010, 1, 1), 
+                new Guid[0]);
+
+            Console.WriteLine("Press any key to continue.");
+            Console.ReadKey();
         }
     }
 }

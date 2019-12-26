@@ -1,4 +1,5 @@
-﻿using System.Data.SqlClient;
+﻿using System;
+using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
 
@@ -14,7 +15,9 @@ namespace ProductionCode.FundTradeHistory
             _connectionString = connectionString;
         }
 
-        public TradeVolumeHistory[] GetTradeVolumeHistories()
+        public TradeVolumeHistory[] GetTradeVolumeHistories(
+            DateTime tradeDate,
+            Guid[] fundIds)
         {
             TradeVolumeHistory[] tradeVolumeHistories = null;
 
@@ -23,7 +26,7 @@ namespace ProductionCode.FundTradeHistory
                 connection.Open();
 
                 tradeVolumeHistories = connection
-                    .Query<TradeVolumeHistory>(TradeVolumesQuery)
+                    .Query<TradeVolumeHistory>(TradeVolumesQuery, new { TradeDate = tradeDate, FundIds = fundIds })
                     .ToArray();
 
                 connection.Close();
@@ -33,18 +36,8 @@ namespace ProductionCode.FundTradeHistory
         }
 
         private const string TradeVolumesQuery = @"
-            CREATE TABLE #CusipSedol
-            (
-                CusipSedol VARCHAR(30) NOT NULL,
-                PRIMARY KEY(CusipSedol)
-            )
-
-            INSERT INTO #CusipSedol 
-            SELECT pairs.FirstValue as 'CusipSedol' 
-            FROM dbo.udf_ParseValuePairsToTable(@cusipSedol,',',';') as pairs
-
-            SELECT CusipSedol, 
-                BrokerCode, 
+            SELECT [FundId], 
+                [BrokerCode], 
                 ISNULL([1],0) AS Day1,
                 ISNULL([2],0) AS Day2,
                 ISNULL([3],0) AS Day3,
@@ -57,17 +50,18 @@ namespace ProductionCode.FundTradeHistory
                 ISNULL([10],0) AS Day10
             FROM
             (
-                SELECT Cusip_Sedol AS 'CusipSedol', Broker_Code AS 'BrokerCode',ABS(Trade_Shares) AS 'Trade_Shares',
-                DATEDIFF(dd, Trade_Date, @tradeDate) 
+                SELECT t.[FundId], t.[BrokerCode], ABS(t.[Shares]) AS 'Shares',
+                DATEDIFF(dd, [TradeDate], @tradeDate) 
                     + CASE WHEN DATEPART(dw,  @tradeDate) = 7 THEN 1 ELSE 0 END  
-                       - (DATEDIFF(wk,  Trade_Date, @tradeDate) * 2 ) 
+                       - (DATEDIFF(wk,  [TradeDate], @tradeDate) * 2 ) 
                        - CASE WHEN DATEPART(dw,  @tradeDate) = 1 THEN 1 ELSE 0 END  
                        - CASE WHEN DATEPART(dw,  @tradeDate) = 1 THEN 1 ELSE 0 
                        END AS 'Day'   
-                FROM #CusipSedol s JOIN dbo.tblTrading_Trades t ON s.CusipSedol = t.Cusip_Sedol
+                FROM [FundTradeHistory].[Trade] t
+                WHERE t.[FundId] in @FundIds
             ) p
             PIVOT(
-                SUM(Trade_Shares)
+                SUM(p.Shares)
                 FOR Day IN
                 (
                     [1],[2],[3],[4],[5],[6],[7],[8],[9],[10]
