@@ -2,7 +2,7 @@
 using System.Linq;
 using Dapper;
 
-namespace ProductionCode.TradeVolume
+namespace ProductionCode.FundVolume
 {
     public class TradeHistoryRepository
     {

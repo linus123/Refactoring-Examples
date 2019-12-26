@@ -1,4 +1,4 @@
-﻿namespace ProductionCode.TradeVolume
+﻿namespace ProductionCode.FundVolume
 {
     public class TradeVolumeHistory
     {
@@ -17,30 +17,30 @@
         public decimal Day9 { get; set; }
         public decimal Day10 { get; set; }
 
-        private decimal[] Accumulated10DayVolume;
+        private decimal[] _accumulated10DayVolume;
 
         public void Accumulate10DayVolume()
         {
-            Accumulated10DayVolume = new decimal[length];
+            _accumulated10DayVolume = new decimal[length];
             for (int i = 0; i < length; i++)
             {
-                Accumulated10DayVolume[i] = GetDayVolume(i + 1);
+                _accumulated10DayVolume[i] = GetDayVolume(i + 1);
             }
             for (int i = 1; i < length; i++)
             {
-                Accumulated10DayVolume[i] += Accumulated10DayVolume[i - 1];
+                _accumulated10DayVolume[i] += _accumulated10DayVolume[i - 1];
             }
         }
 
         public decimal GetAccumulatedDayVolume(int dayNo)
         {
             decimal accumulatedVolume = 0;
-            if (Accumulated10DayVolume != null)
+            if (_accumulated10DayVolume != null)
             {
                 dayNo -= 1;
-                if (dayNo >= 0 && dayNo < Accumulated10DayVolume.Length)
+                if (dayNo >= 0 && dayNo < _accumulated10DayVolume.Length)
                 {
-                    accumulatedVolume = Accumulated10DayVolume[dayNo];
+                    accumulatedVolume = _accumulated10DayVolume[dayNo];
                 }
             }
             return accumulatedVolume;
