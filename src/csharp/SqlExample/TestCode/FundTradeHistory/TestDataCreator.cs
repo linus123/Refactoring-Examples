@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Bogus;
 using FluentAssertions;
 using ProductionCode.FundTradeHistory;
@@ -33,13 +34,25 @@ namespace TestCode.FundTradeHistory
 
             var tradeVolumeHistories = tradeHistoryRepository.GetTradeVolumes(tradeDate, stockIds);
 
-            var tradeHistoryRepositoryRefactored = new TradeHistoryRepositoryRefactored();
+            var tradeHistoryRepositoryRefactored = new TradeHistoryRepositoryRefactored(
+                tradeDataTableGateway);
 
             var dataUnderTest = tradeHistoryRepositoryRefactored.GetTradeVolumes(tradeDate, stockIds);
 
             dataUnderTest.Should().HaveCount(tradeVolumeHistories.Length);
 
+            foreach (var tradeVolumeHistory in tradeVolumeHistories)
+            {
+                tradeVolumeHistory.Accumulate10DayVolume();
 
+                var target = dataUnderTest.FirstOrDefault(d => d.StockId == tradeVolumeHistory.StockId);
+
+                target.Should().NotBeNull();
+
+                var precision = 0.000001m;
+
+                target.GetAccumulatedDayVolume(1).Should().BeApproximately(tradeVolumeHistory.GetAccumulatedDayVolume(1), precision);
+            }
         }
 
         private static void ResetTradeData()
