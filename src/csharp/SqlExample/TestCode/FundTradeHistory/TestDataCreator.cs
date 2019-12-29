@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Bogus;
+using FluentAssertions;
 using ProductionCode.FundTradeHistory;
 using Xunit;
 
@@ -11,6 +12,34 @@ namespace TestCode.FundTradeHistory
 //        [Fact]
         [Fact(Skip = "Only run on request")]
         public void CreateTestData()
+        {
+            ResetTradeData();
+        }
+
+        [Fact]
+        public void TradeVolumeCompareTest()
+        {
+            ResetTradeData();
+
+            var tradeDataTableGateway = new TradeDataTableGateway(
+                LocalDatabase.ConnectionString);
+
+            var stockIds = tradeDataTableGateway.GetStockIds();
+
+            var tradeHistoryRepository = new TradeHistoryRepository(
+                LocalDatabase.ConnectionString);
+
+            var tradeDate = DateTime.Now;
+
+            var tradeVolumeHistories = tradeHistoryRepository.GetTradeVolumes(tradeDate, stockIds);
+
+            var dataUnderTest = new object[0];
+
+            dataUnderTest.Should().HaveCount(tradeVolumeHistories.Length);
+
+        }
+
+        private static void ResetTradeData()
         {
             var tradeDataTableGateway = new TradeDataTableGateway(
                 LocalDatabase.ConnectionString);
