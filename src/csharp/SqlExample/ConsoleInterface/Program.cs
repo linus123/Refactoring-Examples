@@ -14,14 +14,6 @@ namespace ConsoleInterface
             var tradeDate = new DateTime(2010, 1, 1);
             var fundIds = new Guid[0];
 
-            var tradeVolumeHistories = tradeHistoryRepository.GetTradeVolumes(
-                tradeDate, 
-                fundIds);
-
-            var marketVolumeHistories = tradeHistoryRepository.GetMarketVolumes(
-                tradeDate,
-                fundIds);
-
             Console.WriteLine("Press any key to continue.");
             Console.ReadKey();
         }

@@ -3,7 +3,7 @@ CREATE SCHEMA FundTradeHistory
 GO
 
 CREATE TABLE [FundTradeHistory].[Trade](
-    [TradeId] [int] NOT NULL,
+    [TradeId] [int] NOT NULL IDENTITY(1,1),
     [StockId] [uniqueidentifier] NOT NULL,
     [TradeDate] [DateTime] NOT NULL,
     [BrokerCode] [nvarchar](64) NOT NULL,

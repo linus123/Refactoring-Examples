@@ -1,4 +1,5 @@
-﻿using System.Data.SqlClient;
+﻿using System;
+using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
 
@@ -32,26 +33,59 @@ namespace ProductionCode.FundTradeHistory
             return dtos;
         }
 
-        public void Insert(TradeDto[] dtos)
-        {
-            const string sql = @"INSERT INTO [FundTradeHistory].[Trade]
-        ([TradeId]
-        ,[StockId]
+        private const string InsertSql = @"INSERT INTO [FundTradeHistory].[Trade]
+        ([StockId]
         ,[TradeDate]
         ,[BrokerCode]
         ,[Shares])
      VALUES
-        (@TradeId
-        ,@StockId
+        (@StockId
         ,@TradeDate
         ,@BrokerCode
         ,@Shares)";
+
+        public int Insert(TradeDto dto)
+        {
+            const string sql = InsertSql + @"
+
+SELECT CAST(SCOPE_IDENTITY() as int)";
+
+            var id = 0;
 
             using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
 
-                connection.Execute(sql, dtos);
+                id = connection.Query<int>(sql, dto).Single();
+
+                connection.Close();
+            }
+
+            return id;
+        }
+
+        public void Insert(TradeDto[] dtos)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                connection.Execute(InsertSql, dtos);
+
+                connection.Close();
+            }
+        }
+
+        public void DeleteById(
+            int[] ids)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                connection.Execute(
+                    "DELETE FROM [FundTradeHistory].[Trade] WHERE [TradeId] IN @TradeIds",
+                    new { TradeIds = ids });
 
                 connection.Close();
             }
