@@ -1,34 +1,28 @@
-﻿using System;
-using System.Data.SqlClient;
-using System.Linq;
+﻿using System.Linq;
 using Dapper;
 
 namespace ProductionCode.FundTradeHistory
 {
     public class TradeDataTableGateway
     {
-        private readonly string _connectionString;
+        private readonly SqlConnectionHelper _sqlConnectionHelper;
 
         public TradeDataTableGateway(
             string connectionString)
         {
-            _connectionString = connectionString;
+            _sqlConnectionHelper = new SqlConnectionHelper(connectionString);
         }
 
         public TradeDto[] GetAll()
         {
             TradeDto[] dtos = null;
 
-            using (var connection = new SqlConnection(_connectionString))
+            _sqlConnectionHelper.WithConnection(connection =>
             {
-                connection.Open();
-
                 dtos = connection
                     .Query<TradeDto>("SELECT * FROM [FundTradeHistory].[Trade]")
                     .ToArray();
-
-                connection.Close();
-            }
+            });
 
             return dtos;
         }
@@ -52,55 +46,39 @@ SELECT CAST(SCOPE_IDENTITY() as int)";
 
             var id = 0;
 
-            using (var connection = new SqlConnection(_connectionString))
+            _sqlConnectionHelper.WithConnection(connection =>
             {
-                connection.Open();
-
                 id = connection.Query<int>(sql, dto).Single();
-
-                connection.Close();
-            }
+            });
 
             return id;
         }
 
         public void Insert(TradeDto[] dtos)
         {
-            using (var connection = new SqlConnection(_connectionString))
+            _sqlConnectionHelper.WithConnection(connection =>
             {
-                connection.Open();
-
                 connection.Execute(InsertSql, dtos);
-
-                connection.Close();
-            }
+            });
         }
 
         public void DeleteById(
             int[] ids)
         {
-            using (var connection = new SqlConnection(_connectionString))
+            _sqlConnectionHelper.WithConnection(connection =>
             {
-                connection.Open();
-
                 connection.Execute(
                     "DELETE FROM [FundTradeHistory].[Trade] WHERE [TradeId] IN @TradeIds",
                     new { TradeIds = ids });
-
-                connection.Close();
-            }
+            });
         }
 
         public void DeleteAll()
         {
-            using (var connection = new SqlConnection(_connectionString))
+            _sqlConnectionHelper.WithConnection(connection =>
             {
-                connection.Open();
-
                 connection.Execute("DELETE FROM [FundTradeHistory].[Trade]");
-
-                connection.Close();
-            }
+            });
         }
     }
 }

@@ -8,8 +8,8 @@ namespace TestCode.FundTradeHistory
 {
     public class TestDataCreator
     {
-        [Fact]
-//        [Fact(Skip = "Only run on request")]
+//        [Fact]
+        [Fact(Skip = "Only run on request")]
         public void CreateTestData()
         {
             ResetTradeData();
