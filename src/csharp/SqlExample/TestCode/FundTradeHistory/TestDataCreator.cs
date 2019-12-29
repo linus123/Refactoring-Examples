@@ -8,15 +8,9 @@ namespace TestCode.FundTradeHistory
 {
     public class TestDataCreator
     {
-        [Fact]
-//        [Fact(Skip = "Only run on request")]
+//        [Fact]
+        [Fact(Skip = "Only run on request")]
         public void CreateTestData()
-        {
-            ResetTradeData();
-            ResetStockData();
-        }
-
-        private static void ResetTradeData()
         {
             var tradeDataTableGateway = new TradeDataTableGateway(
                 LocalDatabase.ConnectionString);
@@ -26,7 +20,7 @@ namespace TestCode.FundTradeHistory
             var currentDate = DateTime.Now;
 
             var tradeDtoFaker = new Faker<TradeDto>()
-                .RuleFor(d => d.TradeDate, f => f.Date.Between(currentDate.AddDays(-11), currentDate.AddDays(-1)))
+                .RuleFor(d => d.TradeDate, f => f.Date.Between(currentDate.AddDays(-15), currentDate.AddDays(-1)))
                 .RuleFor(d => d.BrokerCode, f => f.Lorem.Word().ToUpper())
                 .RuleFor(d => d.Shares, f => f.Random.Decimal(-500, 500));
 
@@ -47,39 +41,6 @@ namespace TestCode.FundTradeHistory
             }
 
             tradeDataTableGateway.Insert(tradeDtos.ToArray());
-        }
-
-        private static void ResetStockData()
-        {
-            var stockDataTableGateway = new StockDataTableGateway(
-                LocalDatabase.ConnectionString);
-
-            stockDataTableGateway.DeleteAll();
-
-            var stockDataDtoFaker = new Faker<StockDataDto>()
-                .RuleFor(d => d.Source, 3)
-                .RuleFor(d => d.DataType, 4)
-                .RuleFor(d => d.BrokerCode, f => f.Lorem.Word().ToUpper())
-                .RuleFor(d => d.Value, f => f.Random.Decimal(-500, 500));
-
-            var stockDataDtos = new List<StockDataDto>();
-
-            for (int stockIndex = 0; stockIndex < 10; stockIndex++)
-            {
-                var stockId = Guid.NewGuid();
-
-                for (int i = 0; i < 20; i++)
-                {
-                    var stockDataDto = stockDataDtoFaker.Generate();
-
-                    stockDataDto.StockId = stockId;
-                    stockDataDto.DataDate = DateTime.Now.AddDays(i);
-
-                    stockDataDtos.Add(stockDataDto);
-                }
-            }
-
-            stockDataTableGateway.Insert(stockDataDtos.ToArray());
         }
     }
 }
