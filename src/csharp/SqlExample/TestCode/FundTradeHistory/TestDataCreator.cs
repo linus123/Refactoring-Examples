@@ -12,6 +12,12 @@ namespace TestCode.FundTradeHistory
 //        [Fact(Skip = "Only run on request")]
         public void CreateTestData()
         {
+            ResetTradeData();
+            ResetStockData();
+        }
+
+        private static void ResetTradeData()
+        {
             var tradeDataTableGateway = new TradeDataTableGateway(
                 LocalDatabase.ConnectionString);
 
@@ -39,9 +45,10 @@ namespace TestCode.FundTradeHistory
             }
 
             tradeDataTableGateway.Insert(tradeDtos.ToArray());
+        }
 
-            // **
-
+        private static void ResetStockData()
+        {
             var stockDataTableGateway = new StockDataTableGateway(
                 LocalDatabase.ConnectionString);
 
