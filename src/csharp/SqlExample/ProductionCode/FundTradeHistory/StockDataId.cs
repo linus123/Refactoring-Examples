@@ -2,13 +2,11 @@
 
 namespace ProductionCode.FundTradeHistory
 {
-    public class StockDataDto
+    public class StockDataId
     {
         public Guid StockId { get; set; }
         public int Source { get; set; }
         public int DataType { get; set; }
         public DateTime DataDate { get; set; }
-        public string BrokerCode { get; set; }
-        public decimal Value { get; set; }
     }
 }

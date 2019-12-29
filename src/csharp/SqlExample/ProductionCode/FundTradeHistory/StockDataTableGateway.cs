@@ -14,16 +14,16 @@ namespace ProductionCode.FundTradeHistory
             _connectionString = connectionString;
         }
 
-        public TradeDto[] GetAll()
+        public StockDataDto[] GetAll()
         {
-            TradeDto[] dtos = null;
+            StockDataDto[] dtos = null;
 
             using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
 
                 dtos = connection
-                    .Query<TradeDto>("SELECT * FROM [FundTradeHistory].[StockData]")
+                    .Query<StockDataDto>("SELECT * FROM [FundTradeHistory].[StockData]")
                     .ToArray();
 
                 connection.Close();
@@ -32,7 +32,7 @@ namespace ProductionCode.FundTradeHistory
             return dtos;
         }
 
-        public void Insert(TradeDto[] dtos)
+        public void Insert(StockDataDto[] dtos)
         {
             const string sql = @"INSERT INTO [FundTradeHistory].[StockData]
         ([StockId]
@@ -54,6 +54,30 @@ namespace ProductionCode.FundTradeHistory
                 connection.Open();
 
                 connection.Execute(sql, dtos);
+
+                connection.Close();
+            }
+        }
+
+        public void DeleteById(
+            StockDataId[] ids)
+        {
+            var sql = @"DELETE FROM
+        [FundTradeHistory].[StockData]
+    WHERE
+        [StockId] = @StockId
+        AND [Source] = @Source
+        AND [DataType] = @DataType
+        AND [DataDate] = @DataDate";
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+
+
+                connection.Execute(
+                    sql,
+                    ids);
 
                 connection.Close();
             }
