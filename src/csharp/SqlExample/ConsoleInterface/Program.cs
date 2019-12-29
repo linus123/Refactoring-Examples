@@ -23,7 +23,7 @@ namespace ConsoleInterface
             {
                 tradeVolumeHistory.Accumulate10DayVolume();
 
-                Console.WriteLine($"{tradeVolumeHistory.GetAccumulatedDayVolume(1)}, {tradeVolumeHistory.GetAccumulatedDayVolume(2)}, {tradeVolumeHistory.GetAccumulatedDayVolume(3)}");
+                Console.WriteLine($"{tradeVolumeHistory.StockId}, {tradeVolumeHistory.GetAccumulatedDayVolume(1)}, {tradeVolumeHistory.GetAccumulatedDayVolume(2)}, {tradeVolumeHistory.GetAccumulatedDayVolume(3)}");
             }
 
             Console.WriteLine("Press any key to continue.");
