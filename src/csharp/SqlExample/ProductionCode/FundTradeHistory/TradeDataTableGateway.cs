@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Dapper;
 
 namespace ProductionCode.FundTradeHistory
@@ -25,6 +26,20 @@ namespace ProductionCode.FundTradeHistory
             });
 
             return dtos;
+        }
+
+        public Guid[] GetStockIds()
+        {
+            Guid[] ids = null;
+
+            _sqlConnectionHelper.WithConnection(connection =>
+            {
+                ids = connection
+                    .Query<Guid>("SELECT [StockId] FROM [FundTradeHistory].[Trade] GROUP BY [StockId]")
+                    .ToArray();
+            });
+
+            return ids;
         }
 
         private const string InsertSql = @"INSERT INTO [FundTradeHistory].[Trade]

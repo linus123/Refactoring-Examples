@@ -9,10 +9,22 @@ namespace ConsoleInterface
         {
             var connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=RefactoringExample;integrated security=true;Persist Security Info=True";
 
+            var tradeDataTableGateway = new TradeDataTableGateway(connectionString);
+
+            var stockIds = tradeDataTableGateway.GetStockIds();
+
             var tradeHistoryRepository = new TradeHistoryRepository(connectionString);
 
-            var tradeDate = new DateTime(2010, 1, 1);
-            var fundIds = new Guid[0];
+            var tradeDate = DateTime.Now;
+
+            var tradeVolumeHistories = tradeHistoryRepository.GetTradeVolumes(tradeDate, stockIds);
+
+            foreach (var tradeVolumeHistory in tradeVolumeHistories)
+            {
+                tradeVolumeHistory.Accumulate10DayVolume();
+
+                Console.WriteLine($"{tradeVolumeHistory.GetAccumulatedDayVolume(1)}, {tradeVolumeHistory.GetAccumulatedDayVolume(2)}, {tradeVolumeHistory.GetAccumulatedDayVolume(3)}");
+            }
 
             Console.WriteLine("Press any key to continue.");
             Console.ReadKey();

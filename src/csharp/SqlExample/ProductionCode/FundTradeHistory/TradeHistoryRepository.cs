@@ -50,7 +50,7 @@ namespace ProductionCode.FundTradeHistory
                 ISNULL([10],0) AS Day10
             FROM
             (
-                SELECT t.[StockId], t.[BrokerCode], ABS(t.[Shares]) AS [Shares],
+                SELECT t.[StockId], '' AS [BrokerCode], ABS(t.[Shares]) AS [Shares],
                 DATEDIFF(dd, [TradeDate], @tradeDate) 
                     + CASE WHEN DATEPART(dw,  @tradeDate) = 7 THEN 1 ELSE 0 END  
                        - (DATEDIFF(wk,  [TradeDate], @tradeDate) * 2 ) 
@@ -104,7 +104,7 @@ namespace ProductionCode.FundTradeHistory
                 ISNULL([10],0) AS Day10
             FROM
             (
-                SELECT StockId, '' AS 'BrokerCode',ABS(Value) AS [Shares],
+                SELECT StockId, '' AS [BrokerCode],ABS(Value) AS [Shares],
                 DATEDIFF(dd, DataDate, @tradeDate) 
                     + CASE WHEN DATEPART(dw,  @tradeDate) = 7 THEN 1 ELSE 0 END 
                        - (DATEDIFF(wk,  DataDate, @tradeDate) * 2 ) 

@@ -8,8 +8,8 @@ namespace TestCode.FundTradeHistory
 {
     public class TestDataCreator
     {
-//        [Fact]
-        [Fact(Skip = "Only run on request")]
+        [Fact]
+//        [Fact(Skip = "Only run on request")]
         public void CreateTestData()
         {
             ResetTradeData();
@@ -23,8 +23,10 @@ namespace TestCode.FundTradeHistory
 
             tradeDataTableGateway.DeleteAll();
 
+            var currentDate = DateTime.Now;
+
             var tradeDtoFaker = new Faker<TradeDto>()
-                .RuleFor(d => d.TradeDate, f => f.Date.Recent(180, DateTime.Now))
+                .RuleFor(d => d.TradeDate, f => f.Date.Between(currentDate.AddDays(-11), currentDate.AddDays(-1)))
                 .RuleFor(d => d.BrokerCode, f => f.Lorem.Word().ToUpper())
                 .RuleFor(d => d.Shares, f => f.Random.Decimal(-500, 500));
 
