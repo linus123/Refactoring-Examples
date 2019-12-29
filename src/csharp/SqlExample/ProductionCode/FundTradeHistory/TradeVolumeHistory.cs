@@ -1,10 +1,12 @@
-﻿namespace ProductionCode.FundTradeHistory
+﻿using System;
+
+namespace ProductionCode.FundTradeHistory
 {
     public class TradeVolumeHistory
     {
         private int length = 10;
 
-        public string CusipSedol { get; set; }
+        public Guid StockId { get; set; }
         public string BrokerCode { get; set; }
         public decimal Day1 { get; set; }
         public decimal Day2 { get; set; }
