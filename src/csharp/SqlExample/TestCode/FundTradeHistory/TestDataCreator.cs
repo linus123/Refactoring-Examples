@@ -14,13 +14,15 @@ namespace TestCode.FundTradeHistory
         [Fact(Skip = "Only run on request")]
         public void CreateTestData()
         {
-            ResetTradeData();
+            ResetTradeData(DateTime.Now);
         }
 
         [Fact]
         public void TradeVolumeCompareTest()
         {
-            ResetTradeData();
+            var tradeDate = new DateTime(2019, 12, 27);
+
+            ResetTradeData(tradeDate);
 
             var tradeDataTableGateway = new TradeDataTableGateway(
                 LocalDatabase.ConnectionString);
@@ -29,8 +31,6 @@ namespace TestCode.FundTradeHistory
 
             var tradeHistoryRepository = new TradeHistoryRepository(
                 LocalDatabase.ConnectionString);
-
-            var tradeDate = DateTime.Now;
 
             var tradeVolumeHistories = tradeHistoryRepository.GetTradeVolumes(tradeDate, stockIds);
 
@@ -51,18 +51,19 @@ namespace TestCode.FundTradeHistory
 
                 var precision = 0.000001m;
 
-                target.GetAccumulatedDayVolume(1).Should().BeApproximately(tradeVolumeHistory.GetAccumulatedDayVolume(1), precision);
+                var valueUnderTest = target.GetAccumulatedDayVolume(1);
+                var expected = tradeVolumeHistory.GetAccumulatedDayVolume(1);
+
+                valueUnderTest.Should().BeApproximately(expected, precision);
             }
         }
 
-        private static void ResetTradeData()
+        private static void ResetTradeData(DateTime currentDate)
         {
             var tradeDataTableGateway = new TradeDataTableGateway(
                 LocalDatabase.ConnectionString);
 
             tradeDataTableGateway.DeleteAll();
-
-            var currentDate = DateTime.Now;
 
             var tradeDtoFaker = new Faker<TradeDto>()
                 .RuleFor(d => d.TradeDate, f => f.Date.Between(currentDate.AddDays(-15), currentDate.AddDays(-1)))

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ProductionCode.FundTradeHistory
@@ -13,22 +14,54 @@ namespace ProductionCode.FundTradeHistory
             _tradeDataTableGateway = tradeDataTableGateway;
         }
 
-        public Result[] GetTradeVolumes(
+        public Stock[] GetTradeVolumes(
             DateTime tradeDate,
             Guid[] stockIds)
         {
-            var guids = _tradeDataTableGateway.GetStockIds();
+            var allTrades = _tradeDataTableGateway.GetAll();
 
-            return guids.Select(g => new Result() {StockId = g}).ToArray();
+            var results = new List<Stock>();
+
+            foreach (var stockId in stockIds)
+            {
+                var tradesForStock = allTrades
+                    .Where(t => t.StockId == stockId)
+                    .ToArray();
+
+                var result = new Stock(
+                    stockId,
+                    tradeDate,
+                    tradesForStock);
+
+                results.Add(result);
+
+            }
+
+            return results.ToArray();
         }
 
-        public class Result
+        public class Stock
         {
-            public Guid StockId { get; set; }
+            private readonly TradeDto[] _tradeDtos;
+            private readonly DateTime _tradeDate;
+
+            public Stock(
+                Guid stockId,
+                DateTime tradeDate,
+                TradeDto[] tradeDtos)
+            {
+                StockId = stockId;
+                _tradeDate = tradeDate;
+                _tradeDtos = tradeDtos;
+            }
+
+            public Guid StockId { get; private set; }
 
             public decimal GetAccumulatedDayVolume(int i)
             {
-                return 0;
+                return _tradeDtos
+                    .Where(t => t.StockId == StockId && t.TradeDate.Date == _tradeDate.AddDays(-1).Date)
+                    .Sum(d => Math.Abs(d.Shares));
             }
         }
     }
