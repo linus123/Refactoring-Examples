@@ -90,5 +90,17 @@ SELECT CAST(SCOPE_IDENTITY() as int)";
                 connection.Close();
             }
         }
+
+        public void DeleteAll()
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                connection.Execute("DELETE FROM [FundTradeHistory].[Trade]");
+
+                connection.Close();
+            }
+        }
     }
 }

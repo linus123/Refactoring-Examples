@@ -82,5 +82,18 @@ namespace ProductionCode.FundTradeHistory
                 connection.Close();
             }
         }
+
+        public void DeleteAll()
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                connection.Execute("DELETE FROM [FundTradeHistory].[StockData]");
+
+                connection.Close();
+            }
+        }
+
     }
 }

@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Bogus" Version="28.4.4" />
     <PackageReference Include="dapper" Version="2.0.30" />
     <PackageReference Include="fluentassertions" Version="5.9.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
