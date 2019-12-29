@@ -33,9 +33,12 @@ namespace TestCode.FundTradeHistory
 
             var tradeVolumeHistories = tradeHistoryRepository.GetTradeVolumes(tradeDate, stockIds);
 
-            var dataUnderTest = new object[0];
+            var tradeHistoryRepositoryRefactored = new TradeHistoryRepositoryRefactored();
+
+            var dataUnderTest = tradeHistoryRepositoryRefactored.GetTradeVolumes(tradeDate, stockIds);
 
             dataUnderTest.Should().HaveCount(tradeVolumeHistories.Length);
+
 
         }
 
