@@ -9,26 +9,39 @@ namespace TestCode.FundTradeHistory
 {
     public class TradeHistoryRepositoryRefactoredTests
     {
-        [Fact(DisplayName = "GetAccumulatedDayVolume should return shares given single trade on a single day and trade day is a Friday.")]
+        private const decimal Precision = 0.00001m;
+
+        [Fact(DisplayName = "GetAccumulatedDayVolume should return shares given single trade per day and trade day is a Friday.")]
         public void Test001()
         {
             var testHelper = new TestHelper();
 
             var tradeDate = new DateTime(2019, 12, 27);
 
-            var tradeDto = new TradeDtoBuilder()
+            var stockId = Guid.NewGuid();
+
+            var tradeDto01 = new TradeDtoBuilder()
+                .WithStockId(stockId)
                 .WithTradeDate(tradeDate.AddDays(-1))
                 .Create();
 
-            testHelper.InsertTradeDtos(tradeDto);
+            var tradeDto02 = new TradeDtoBuilder()
+                .WithStockId(stockId)
+                .WithTradeDate(tradeDate.AddDays(-2))
+                .Create();
+
+            testHelper.InsertTradeDtos(tradeDto01, tradeDto02);
 
             var tradeVolumes = testHelper.CreateRepository()
-                .GetTradeVolumes(tradeDate, new[] {tradeDto.StockId});
+                .GetTradeVolumes(tradeDate, new[] { stockId });
 
-            var target = FindStock(tradeVolumes, tradeDto.StockId);
+            var target = FindStock(tradeVolumes, tradeDto01.StockId);
 
             target.GetAccumulatedDayVolume(1).Should()
-                .BeApproximately(Math.Abs(tradeDto.Shares), 0.00001m);
+                .BeApproximately(Math.Abs(tradeDto01.Shares), Precision);
+
+            target.GetAccumulatedDayVolume(2).Should()
+                .BeApproximately(Math.Abs(tradeDto01.Shares) + Math.Abs(tradeDto02.Shares), Precision);
 
             testHelper.TearDown();
         }
@@ -67,10 +80,10 @@ namespace TestCode.FundTradeHistory
 
             var target = FindStock(tradeVolumes, stockId);
 
-            var expectedVolume = Math.Abs(tradeDto01.Shares) + Math.Abs(tradeDto02.Shares);
+            var expectedVolume = Math.Abs(tradeDto01.Shares)+ Math.Abs(tradeDto02.Shares);
 
             target.GetAccumulatedDayVolume(1).Should()
-                .BeApproximately(expectedVolume, 0.00001m);
+                .BeApproximately(expectedVolume, Precision);
 
             testHelper.TearDown();
         }

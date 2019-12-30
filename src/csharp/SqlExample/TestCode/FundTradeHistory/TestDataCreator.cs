@@ -51,10 +51,12 @@ namespace TestCode.FundTradeHistory
 
                 var precision = 0.000001m;
 
-                var valueUnderTest = target.GetAccumulatedDayVolume(1);
-                var expected = tradeVolumeHistory.GetAccumulatedDayVolume(1);
+                target.GetAccumulatedDayVolume(1).Should().BeApproximately(
+                    tradeVolumeHistory.GetAccumulatedDayVolume(1), precision);
 
-                valueUnderTest.Should().BeApproximately(expected, precision);
+                target.GetAccumulatedDayVolume(2).Should().BeApproximately(
+                    tradeVolumeHistory.GetAccumulatedDayVolume(2), precision);
+
             }
         }
 

@@ -59,8 +59,11 @@ namespace ProductionCode.FundTradeHistory
 
             public decimal GetAccumulatedDayVolume(int i)
             {
+                var endDate = _tradeDate.AddDays(-1).Date;
+                var startDate = _tradeDate.AddDays(-1 * i).Date;
+
                 return _tradeDtos
-                    .Where(t => t.StockId == StockId && t.TradeDate.Date == _tradeDate.AddDays(-1).Date)
+                    .Where(t => t.StockId == StockId && t.TradeDate.Date <= endDate && t.TradeDate.Date >= startDate)
                     .Sum(d => Math.Abs(d.Shares));
             }
         }
