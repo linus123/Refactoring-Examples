@@ -9,5 +9,10 @@ namespace ProductionCode.FundTradeHistory
         public DateTime TradeDate { get; set; }
         public string BrokerCode { get; set; }
         public decimal Shares { get; set; }
+
+        public decimal GetAbsoluteValueShares()
+        {
+            return Math.Abs(Shares);
+        }
     }
 }
