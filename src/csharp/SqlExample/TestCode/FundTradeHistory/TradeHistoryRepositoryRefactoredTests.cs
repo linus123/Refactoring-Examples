@@ -136,8 +136,8 @@ namespace TestCode.FundTradeHistory
             }
         }
 
-        private static TradeHistoryRepositoryRefactored.Stock FindStock(
-            TradeHistoryRepositoryRefactored.Stock[] tradeVolumes,
+        private static Stock FindStock(
+            Stock[] tradeVolumes,
             Guid stockId)
         {
             var target = tradeVolumes.FirstOrDefault(v => v.StockId == stockId);

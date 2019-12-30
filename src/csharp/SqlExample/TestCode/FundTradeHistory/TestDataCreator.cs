@@ -56,7 +56,6 @@ namespace TestCode.FundTradeHistory
 
                 target.GetAccumulatedDayVolume(2).Should().BeApproximately(
                     tradeVolumeHistory.GetAccumulatedDayVolume(2), precision);
-
             }
         }
 
