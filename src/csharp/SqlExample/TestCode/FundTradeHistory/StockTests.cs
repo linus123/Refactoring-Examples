@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using FluentAssertions;
 using ProductionCode.FundTradeHistory;
 using Xunit;
@@ -14,10 +15,9 @@ namespace TestCode.FundTradeHistory
         {
             var fridayTradeDate = new DateTime(2019, 12, 27);
 
-            var stock = new Stock(
-                Guid.NewGuid(),
-                fridayTradeDate,
-                new TradeDto[0]);
+            var stock = new StockBuilder()
+                .WithTradeDate(fridayTradeDate)
+                .Create();
 
             for (int dayCounter = 1; dayCounter <= 10; dayCounter++)
             {
@@ -37,20 +37,59 @@ namespace TestCode.FundTradeHistory
                 .WithTradeDate(fridayTradeDate.AddDays(-1))
                 .Create();
 
-            var tradeDtos = new TradeDto[]
-            {
-                tradeDto
-            };
-
-            var stock = new Stock(
-                stockId,
-                fridayTradeDate,
-                tradeDtos);
+            var stock = new StockBuilder(stockId)
+                .WithTradeDate(fridayTradeDate)
+                .WithTrade(tradeDto)
+                .Create();
 
             for (int dayCounter = 1; dayCounter <= 10; dayCounter++)
             {
-                stock.GetAccumulatedDayVolume(1).Should()
+                stock.GetAccumulatedDayVolume(dayCounter).Should()
                     .BeApproximately(tradeDto.GetAbsoluteValueShares(), Precision);
+            }
+        }
+
+        public class StockBuilder
+        {
+            private Guid _stockId;
+            private DateTime _tradeDate;
+            private List<TradeDto> _tradeDtos;
+
+            public StockBuilder()
+            {
+                _stockId = Guid.NewGuid();
+
+                _tradeDtos = new List<TradeDto>();
+            }
+
+            public StockBuilder(
+                Guid stockId) : this()
+            {
+                _stockId = stockId;
+            }
+            
+            public StockBuilder WithTradeDate(
+                DateTime tradeDate)
+            {
+                _tradeDate = tradeDate;
+
+                return this;
+            }
+
+            public StockBuilder WithTrade(
+                TradeDto tradeDto)
+            {
+                _tradeDtos.Add(tradeDto);
+
+                return this;
+            }
+
+            public Stock Create()
+            {
+                return new Stock(
+                    _stockId,
+                    _tradeDate,
+                    _tradeDtos.ToArray());
             }
         }
 
