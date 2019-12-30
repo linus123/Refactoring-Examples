@@ -80,10 +80,15 @@ namespace TestCode.FundTradeHistory
 
             var target = FindStock(tradeVolumes, stockId);
 
-            var expectedVolume = Math.Abs(tradeDto01.Shares)+ Math.Abs(tradeDto02.Shares);
+            var day01Shares = Math.Abs(tradeDto01.Shares)+ Math.Abs(tradeDto02.Shares);
 
             target.GetAccumulatedDayVolume(1).Should()
-                .BeApproximately(expectedVolume, Precision);
+                .BeApproximately(day01Shares, Precision);
+
+            var day02Shares = day01Shares + Math.Abs(tradeDto03.Shares);
+
+            target.GetAccumulatedDayVolume(2).Should()
+                .BeApproximately(day02Shares, Precision);
 
             testHelper.TearDown();
         }
