@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using ProductionCode.FundTradeHistory;
@@ -8,26 +9,54 @@ namespace TestCode.FundTradeHistory
 {
     public class TradeHistoryRepositoryRefactoredTests
     {
-        [Fact]
-        public void ShouldReturnSharesGivenSingleDay()
+        public class TestHelper
         {
-            var tradeDataTableGateway = new TradeDataTableGateway(
-                LocalDatabase.ConnectionString);
+            private readonly TradeDataTableGateway _tradeDataTableGateway;
+            private readonly List<int> _insertedTradeIds;
 
-            var tradeDate = new DateTime(2010, 1, 10);
-
-            var tradeDto = new TradeDto()
+            public TestHelper()
             {
-                StockId = Guid.NewGuid(),
-                TradeDate = tradeDate.AddDays(-1),
-                BrokerCode = "123",
-                Shares = 100m
-            };
+                _tradeDataTableGateway = new TradeDataTableGateway(LocalDatabase.ConnectionString);
 
-            var tradeId = tradeDataTableGateway.Insert(tradeDto);
+                _insertedTradeIds = new List<int>();
+            }
 
-            var tradeHistoryRepositoryRefactored = new TradeHistoryRepositoryRefactored(
-                tradeDataTableGateway);
+            public int InsertTradeDto(
+                TradeDto tradeDto)
+            {
+                var tradeId = _tradeDataTableGateway.Insert(tradeDto);
+
+                _insertedTradeIds.Add(tradeId);
+
+                return tradeId;
+            }
+
+            public TradeHistoryRepositoryRefactored CreateRepository()
+            {
+                return new TradeHistoryRepositoryRefactored(
+                    _tradeDataTableGateway);
+            }
+
+            public void TearDown()
+            {
+                _tradeDataTableGateway.DeleteById(_insertedTradeIds.ToArray());
+            }
+        }
+
+        [Fact(DisplayName = "GetAccumulatedDayVolume should return shares given single trade on a single day and trade day is a Friday.")]
+        public void Test001()
+        {
+            var testHelper = new TestHelper();
+
+            var tradeDate = new DateTime(2019, 12, 27);
+
+            var tradeDto = new TradeDtoBuilder()
+                .WithTradeDate(tradeDate.AddDays(-1))
+                .Create();
+
+            testHelper.InsertTradeDto(tradeDto);
+
+            var tradeHistoryRepositoryRefactored = testHelper.CreateRepository();
 
             var tradeVolumes = tradeHistoryRepositoryRefactored.GetTradeVolumes(tradeDate, new[] {tradeDto.StockId});
 
@@ -37,43 +66,42 @@ namespace TestCode.FundTradeHistory
 
             target.Should().NotBeNull();
 
-            target.GetAccumulatedDayVolume(1).Should().BeApproximately(100m, 0.00001m);
+            target.GetAccumulatedDayVolume(1).Should().BeApproximately(Math.Abs(tradeDto.Shares), 0.00001m);
 
-            tradeDataTableGateway.DeleteById(new []{ tradeId });
+            testHelper.TearDown();
         }
 
-        [Fact]
-        public void ShouldReturnSumSharesGivenTwoTradesInCurrentDayDay()
+        [Fact(DisplayName = "GetAccumulatedDayVolume should return summed shares value given two trades on a single day and trade day is a Friday.")]
+        public void Test002()
         {
-            var tradeDataTableGateway = new TradeDataTableGateway(
-                LocalDatabase.ConnectionString);
+            var testHelper = new TestHelper();
 
             var tradeDate = new DateTime(2019, 12, 27);
 
             var stockId = Guid.NewGuid();
 
-            var tradeDto01 = new TradeDto()
-            {
-                StockId = stockId,
-                TradeDate = tradeDate.AddDays(-1),
-                BrokerCode = "123",
-                Shares = 100m
-            };
+            var tradeDto01 = new TradeDtoBuilder()
+                .WithStockId(stockId)
+                .WithTradeDate(tradeDate.AddDays(-1))
+                .Create();
 
-            var tradeId01 = tradeDataTableGateway.Insert(tradeDto01);
+            testHelper.InsertTradeDto(tradeDto01);
 
-            var tradeDto02 = new TradeDto()
-            {
-                StockId = stockId,
-                TradeDate = tradeDate.AddDays(-1),
-                BrokerCode = "123",
-                Shares = -200m
-            };
+            var tradeDto02 = new TradeDtoBuilder()
+                .WithStockId(stockId)
+                .WithTradeDate(tradeDate.AddDays(-1))
+                .Create();
 
-            var tradeId02 = tradeDataTableGateway.Insert(tradeDto02);
+            testHelper.InsertTradeDto(tradeDto02);
 
-            var tradeHistoryRepositoryRefactored = new TradeHistoryRepositoryRefactored(
-                tradeDataTableGateway);
+            var tradeDto03 = new TradeDtoBuilder()
+                .WithStockId(stockId)
+                .WithTradeDate(tradeDate.AddDays(-2))
+                .Create();
+
+            testHelper.InsertTradeDto(tradeDto03);
+
+            var tradeHistoryRepositoryRefactored = testHelper.CreateRepository();
 
             var tradeVolumes = tradeHistoryRepositoryRefactored.GetTradeVolumes(tradeDate, new[] { stockId });
 
@@ -83,10 +111,11 @@ namespace TestCode.FundTradeHistory
 
             target.Should().NotBeNull();
 
-            target.GetAccumulatedDayVolume(1).Should().BeApproximately(300m, 0.00001m);
+            var expectedVolume = Math.Abs(tradeDto01.Shares) + Math.Abs(tradeDto02.Shares);
 
-            tradeDataTableGateway.DeleteById(new[] { tradeId01, tradeId02 });
+            target.GetAccumulatedDayVolume(1).Should().BeApproximately(expectedVolume, 0.00001m);
+
+            testHelper.TearDown();
         }
-
     }
 }
