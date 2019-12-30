@@ -49,6 +49,48 @@ namespace TestCode.FundTradeHistory
             }
         }
 
+        [Fact(DisplayName = "Weekend trade should be put on the previous Friday.")]
+        public void Test003()
+        {
+            var stockId = Guid.NewGuid();
+            var fridayTradeDate = new DateTime(2019, 12, 27);
+
+            var tradeDtoSunday = new TradeDtoBuilder()
+                .WithStockId(stockId)
+                .WithTradeDate(fridayTradeDate.AddDays(-5))
+                .Create();
+
+            var tradeDtoSaturday = new TradeDtoBuilder()
+                .WithStockId(stockId)
+                .WithTradeDate(fridayTradeDate.AddDays(-6))
+                .Create();
+
+            var tradeDtoFriday = new TradeDtoBuilder()
+                .WithStockId(stockId)
+                .WithTradeDate(fridayTradeDate.AddDays(-7))
+                .Create();
+
+            var stock = new StockBuilder(stockId)
+                .WithTradeDate(fridayTradeDate)
+                .WithTrade(tradeDtoSunday)
+                .WithTrade(tradeDtoSaturday)
+                .WithTrade(tradeDtoFriday)
+                .Create();
+
+            stock.GetAccumulatedDayVolume(4).Should()
+                .BeApproximately(tradeDtoSunday.GetAbsoluteValueShares(), Precision);
+
+            var fridayShares = tradeDtoSunday.GetAbsoluteValueShares()
+                               + tradeDtoSaturday.GetAbsoluteValueShares()
+                                + tradeDtoFriday.GetAbsoluteValueShares();
+
+            stock.GetAccumulatedDayVolume(5).Should()
+                .BeApproximately(fridayShares, Precision);
+
+            stock.GetAccumulatedDayVolume(6).Should()
+                .BeApproximately(fridayShares, Precision);
+        }
+
         public class StockBuilder
         {
             private Guid _stockId;

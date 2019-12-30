@@ -51,11 +51,12 @@ namespace TestCode.FundTradeHistory
 
                 var precision = 0.000001m;
 
-                target.GetAccumulatedDayVolume(1).Should().BeApproximately(
-                    tradeVolumeHistory.GetAccumulatedDayVolume(1), precision);
-
-                target.GetAccumulatedDayVolume(2).Should().BeApproximately(
-                    tradeVolumeHistory.GetAccumulatedDayVolume(2), precision);
+                for (int dayCounter = 1; dayCounter <= 10; dayCounter++)
+                {
+                    target.GetAccumulatedDayVolume(dayCounter).Should().BeApproximately(
+                        tradeVolumeHistory.GetAccumulatedDayVolume(dayCounter), precision,
+                        $"Day '{dayCounter}' value did not match on stock '{tradeVolumeHistory.StockId}'.");
+                }
             }
         }
 
@@ -67,7 +68,7 @@ namespace TestCode.FundTradeHistory
             tradeDataTableGateway.DeleteAll();
 
             var tradeDtoFaker = new Faker<TradeDto>()
-                .RuleFor(d => d.TradeDate, f => f.Date.Between(currentDate.AddDays(-15), currentDate.AddDays(-1)))
+                .RuleFor(d => d.TradeDate, f => f.Date.Between(currentDate.AddDays(-15), currentDate.AddDays(-1)).Date)
                 .RuleFor(d => d.BrokerCode, f => f.Lorem.Word().ToUpper())
                 .RuleFor(d => d.Shares, f => f.Random.Decimal(-500, 500));
 
