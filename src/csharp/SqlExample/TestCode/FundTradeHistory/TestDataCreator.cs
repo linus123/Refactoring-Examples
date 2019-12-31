@@ -82,6 +82,10 @@ namespace TestCode.FundTradeHistory
                 {
                     var tradeDto = tradeDtoFaker.Generate();
 
+                    while (tradeDto.TradeDate.DayOfWeek == DayOfWeek.Saturday
+                           || tradeDto.TradeDate.DayOfWeek == DayOfWeek.Sunday)
+                        tradeDto = tradeDtoFaker.Generate();
+
                     tradeDto.StockId = stockId;
 
                     tradeDtos.Add(tradeDto);
