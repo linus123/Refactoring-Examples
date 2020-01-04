@@ -44,8 +44,8 @@ namespace TestCode.FundTradeHistory
 
             for (int dayCounter = 1; dayCounter <= 10; dayCounter++)
             {
-                stock.GetAccumulatedDayVolume(dayCounter).Should()
-                    .BeApproximately(tradeDto.GetAbsoluteValueShares(), Precision);
+                stock.GetAccumulatedDayVolume(dayCounter)
+                    .Should().BeApproximately(tradeDto.GetAbsoluteValueShares(), Precision);
             }
         }
 
