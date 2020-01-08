@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-//TODO: Convert Switch to Polymorphism
-
 namespace ProductionCode.VideoStore
 {
     public class Customer
@@ -33,27 +31,10 @@ namespace ProductionCode.VideoStore
         private void SetTotalAmounts()
         {
             TotalAmount = 0;
+
             foreach (var rental in _rentals)
             {
-                decimal thisAmount = 0;
-                switch (rental.GetPriceCode())
-                {
-                    case Movie.Regular:
-                        thisAmount += 2;
-                        if (rental.DaysRented > 2)
-                            thisAmount += (rental.DaysRented - 2) * 1.5m;
-                        break;
-                    case Movie.NewRelease:
-                        thisAmount += rental.DaysRented * 3;
-                        break;
-                    case Movie.Childrens:
-                        thisAmount += 1.5m;
-
-                        // No test coverage on this condition
-                        if (rental.DaysRented > 3)
-                            thisAmount += (rental.DaysRented - 3) * 1.5m;
-                        break;
-                }
+                decimal thisAmount = rental.AddAmount();
 
                 // show figures for this rental
                 TotalAmount += thisAmount;
@@ -66,11 +47,7 @@ namespace ProductionCode.VideoStore
         {
             foreach (var rental in _rentals)
             {
-                FrequentRenterPoints++;
-                // add bonus for a two day new release rental
-                if ((rental.Movie.PriceCode == Movie.NewRelease) &&
-                    rental.DaysRented > 1)
-                    FrequentRenterPoints++;
+                FrequentRenterPoints += rental.GetFrequentRenterPoints();
             }
         }
         public string BuildStatementString()

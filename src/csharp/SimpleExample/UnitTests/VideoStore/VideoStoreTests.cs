@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using IoC;
 using ProductionCode.VideoStore;
 using Xunit;
 
@@ -13,10 +14,20 @@ namespace TestCode.VideoStore
             _customer = new Customer("Fred");
         }
 
-        private Movie CreateRelease(int movieRelease)
-        {
-            return new Movie("SomeMovie", movieRelease);
-        }
+        
+            NewReleaseMovie creatNewReleaseMovie()
+            {
+                return new NewReleaseMovie("SomeMovie");
+            }
+           ChildrensMovie CreateChildrensMovie()
+            {
+                return new ChildrensMovie("SomeMovie");
+            }
+            RegularMovie creaRegularMovie()
+            {
+                return new RegularMovie("SomeMovie");
+            }
+        
 
         [Theory]
         [InlineData(1, 3, 1)]
@@ -26,7 +37,7 @@ namespace TestCode.VideoStore
             decimal expectedTotalAmount,
             int expectedFrequentRenterPoints)
         {
-            var movie = CreateRelease(Movie.NewRelease);
+            var movie = creatNewReleaseMovie();
             _customer.AddRental(new Rental(movie, daysRented));
             _customer.Statement();
             _customer.TotalAmount.Should().BeApproximately(expectedTotalAmount, 0.0001m);
@@ -41,7 +52,7 @@ namespace TestCode.VideoStore
             decimal expectedTotalAmount,
             int expectedFrequentRenterPoints)
         {
-            var movie = CreateRelease(Movie.Regular);
+            var movie = creaRegularMovie();
             _customer.AddRental(new Rental(movie, daysRented));
             _customer.Statement();
             _customer.TotalAmount.Should().BeApproximately(expectedTotalAmount, 0.0001m);
@@ -51,9 +62,9 @@ namespace TestCode.VideoStore
         [Fact]
         public void DualNewReleaseStatement()
         {
-            var movie1 = CreateRelease(Movie.NewRelease);
+            var movie1 = creatNewReleaseMovie();
             _customer.AddRental(new Rental(movie1, 3));
-            var movie2 = CreateRelease(Movie.NewRelease);
+            var movie2 = creatNewReleaseMovie();
             _customer.AddRental(new Rental(movie2, 3));
             _customer.Statement();
             _customer.TotalAmount.Should().BeApproximately( 18.0m, 0.0001m);
@@ -69,7 +80,7 @@ namespace TestCode.VideoStore
             decimal totalAmount,
             int frequentRenterPoints)
         {
-            var movie = CreateRelease(Movie.Childrens);
+            var movie = CreateChildrensMovie();
             _customer.AddRental(new Rental(movie, daysRented));
             _customer.Statement();
             _customer.TotalAmount.Should().BeApproximately(totalAmount, 0.0001m);
@@ -79,11 +90,11 @@ namespace TestCode.VideoStore
         [Fact]
         public void MultipleRegularStatement()
         {
-            var movie1 = new Movie("Plan 9 from Outer Space", Movie.Regular);
+            var movie1 = new RegularMovie("Plan 9 from Outer Space");
             _customer.AddRental(new Rental(movie1, 1));
-            var movie2 = new Movie("8 1/2", Movie.Regular);
+            var movie2 = new RegularMovie("8 1/2");
             _customer.AddRental(new Rental(movie2, 2));
-            var movie3 = new Movie("Eraserhead", Movie.Regular);
+            var movie3 = new RegularMovie("Eraserhead");
             _customer.AddRental(new Rental(movie3, 3));
 
             _customer.Statement();

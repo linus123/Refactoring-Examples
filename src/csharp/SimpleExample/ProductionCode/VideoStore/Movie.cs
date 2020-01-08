@@ -1,18 +1,15 @@
 ﻿namespace ProductionCode.VideoStore
 {
-    public class Movie
+    public abstract class Movie : IMovie
     {
-        public const int Childrens = 2;
-        public const int Regular = 0;
-        public const int NewRelease = 1;
-
         public string Title { get; }
-        public int PriceCode { get; set; }
+        public abstract decimal AddAmount(int daysRented);
 
-        public Movie(string title, int priceCode)
+        public abstract int GetFrequentRenterPoints(int daysRented);
+        
+        protected Movie(string title)
         {
             Title = title;
-            PriceCode = priceCode;
         }
     }
 }
