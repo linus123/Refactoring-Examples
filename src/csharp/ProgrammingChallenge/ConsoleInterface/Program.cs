@@ -1,4 +1,5 @@
 ﻿using System;
+using ProductionCode;
 
 namespace ConsoleInterface
 {
@@ -6,6 +7,8 @@ namespace ConsoleInterface
     {
         static void Main(string[] args)
         {
+            new BusinessLogicClass1();
+
             var line = Console.ReadLine();
 
             while (!string.IsNullOrEmpty(line))
