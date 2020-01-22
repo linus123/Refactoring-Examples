@@ -21,4 +21,11 @@
     <ProjectReference Include="..\ProductionCode\ProductionCode.csproj" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <None Update="PrintPrime\gold.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
