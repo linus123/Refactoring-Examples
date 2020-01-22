@@ -28,19 +28,31 @@ namespace TestCode.PrintPrime
 
                 var underTestReader = new StreamReader(memoryStream);
 
-                var fileInfo = new FileInfo(GetGoldFilePath());
-                var goldFileReader = fileInfo.OpenText();
+                var goldFileReader = GetGoldFileReader();
 
-                var lineUnderTest = goldFileReader.ReadLine();
-                var expectedLine = underTestReader.ReadLine();
+                AssertStreamsMatch(goldFileReader, underTestReader);
+            }
+        }
 
-                while (expectedLine != null)
-                {
-                    lineUnderTest.Should().Be(expectedLine);
+        private StreamReader GetGoldFileReader()
+        {
+            var fileInfo = new FileInfo(GetGoldFilePath());
+            return fileInfo.OpenText();
+        }
 
-                    lineUnderTest = goldFileReader.ReadLine();
-                    expectedLine = underTestReader.ReadLine();
-                }
+        private static void AssertStreamsMatch(
+            StreamReader expectedReader,
+            StreamReader underTestReader)
+        {
+            var lineUnderTest = expectedReader.ReadLine();
+            var expectedLine = underTestReader.ReadLine();
+
+            while (expectedLine != null)
+            {
+                lineUnderTest.Should().Be(expectedLine);
+
+                lineUnderTest = expectedReader.ReadLine();
+                expectedLine = underTestReader.ReadLine();
             }
         }
 
