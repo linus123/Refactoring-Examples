@@ -12,24 +12,41 @@ namespace ProductionCode.PrintPrime
             int numberOfPrimes)
         {
             var pageNumber = 1;
-            var linesPerPage = 1;
-            while (linesPerPage <= numberOfPrimes)
+            var pageOffset = 1;
+            while (pageOffset <= numberOfPrimes)
             {
-                Console.WriteLine("The First " + numberOfPrimes +
-                                  " Prime Numbers --- Page " + pageNumber);
+                Console.WriteLine(GetPageHeader(numberOfPrimes, pageNumber));
                 Console.WriteLine("");
-                for (var rowOffset = linesPerPage; rowOffset < linesPerPage + LinesPerPage; rowOffset++)
+                for (var rowOffset = pageOffset; rowOffset < pageOffset + LinesPerPage; rowOffset++)
                 {
-                    for (var column = 0; column < Columns; column++)
-                        if (rowOffset + column * LinesPerPage <= numberOfPrimes)
-                            Console.Write("{0, 10}", primes[rowOffset + column * LinesPerPage]);
-                    Console.WriteLine("");
+                    var line = GetSingleLine(primes, numberOfPrimes, rowOffset);
+                    Console.WriteLine(line);
                 }
 
                 Console.WriteLine();
                 pageNumber = pageNumber + 1;
-                linesPerPage = linesPerPage + LinesPerPage * Columns;
+                pageOffset = pageOffset + LinesPerPage * Columns;
             }
+        }
+
+        private string GetSingleLine(
+            int[] primes,
+            int numberOfPrimes,
+            int rowOffset)
+        {
+            string line = "";
+
+            for (var column = 0; column < Columns; column++)
+                if (rowOffset + column * LinesPerPage <= numberOfPrimes)
+                    line += string.Format("{0, 10}", primes[rowOffset + column * LinesPerPage]);
+
+            return line;
+        }
+
+        private static string GetPageHeader(int numberOfPrimes, int pageNumber)
+        {
+            return "The First " + numberOfPrimes +
+                   " Prime Numbers --- Page " + pageNumber;
         }
     }
 }
