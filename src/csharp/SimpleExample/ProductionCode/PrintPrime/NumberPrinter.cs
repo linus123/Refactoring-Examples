@@ -7,33 +7,28 @@ namespace ProductionCode.PrintPrime
         private const int LinesPerPage = 50;
         private const int Columns = 4;
 
-        private int _pageNumber;
-        private int _linesPerPage;
-        private int _rowOffset;
-        private int _column;
-
         public void PrintNumbers(
             int[] primes,
             int numberOfPrimes)
         {
-            _pageNumber = 1;
-            _linesPerPage = 1;
-            while (_linesPerPage <= numberOfPrimes)
+            var pageNumber = 1;
+            var linesPerPage = 1;
+            while (linesPerPage <= numberOfPrimes)
             {
                 Console.WriteLine("The First " + numberOfPrimes +
-                                  " Prime Numbers --- Page " + _pageNumber);
+                                  " Prime Numbers --- Page " + pageNumber);
                 Console.WriteLine("");
-                for (_rowOffset = _linesPerPage; _rowOffset < _linesPerPage + LinesPerPage; _rowOffset++)
+                for (var rowOffset = linesPerPage; rowOffset < linesPerPage + LinesPerPage; rowOffset++)
                 {
-                    for (_column = 0; _column < Columns; _column++)
-                        if (_rowOffset + _column * LinesPerPage <= numberOfPrimes)
-                            Console.Write("{0, 10}", primes[_rowOffset + _column * LinesPerPage]);
+                    for (var column = 0; column < Columns; column++)
+                        if (rowOffset + column * LinesPerPage <= numberOfPrimes)
+                            Console.Write("{0, 10}", primes[rowOffset + column * LinesPerPage]);
                     Console.WriteLine("");
                 }
 
                 Console.WriteLine();
-                _pageNumber = _pageNumber + 1;
-                _linesPerPage = _linesPerPage + LinesPerPage * Columns;
+                pageNumber = pageNumber + 1;
+                linesPerPage = linesPerPage + LinesPerPage * Columns;
             }
         }
     }
