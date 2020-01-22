@@ -24,19 +24,32 @@ namespace ProductionCode.PrintPrime
 
             while (pageOffset <= numberOfPrimes)
             {
-                Console.WriteLine(GetPageHeader(pageNumber));
-                Console.WriteLine();
-
-                var lines = GetNumberLines(pageOffset);
-
-                foreach (var line in lines)
-                    Console.WriteLine(line);
-
-                Console.WriteLine();
+                WritePageHeader(pageNumber);
+                WritePageBody(pageOffset);
+                WritePageFooter();
 
                 pageNumber = pageNumber + 1;
                 pageOffset = pageOffset + LinesPerPage * Columns;
             }
+        }
+
+        private void WritePageHeader(int pageNumber)
+        {
+            Console.WriteLine(CreateHeaderLine(pageNumber));
+            Console.WriteLine();
+        }
+
+        private void WritePageBody(int pageOffset)
+        {
+            var lines = GetNumberLines(pageOffset);
+
+            foreach (var line in lines)
+                Console.WriteLine(line);
+        }
+
+        private static void WritePageFooter()
+        {
+            Console.WriteLine();
         }
 
         private IEnumerable<string> GetNumberLines(
@@ -68,7 +81,7 @@ namespace ProductionCode.PrintPrime
             return $"{number, 10}";
         }
 
-        private string GetPageHeader(int pageNumber)
+        private string CreateHeaderLine(int pageNumber)
         {
             return "The First "
                    + _numberOfPrimes
