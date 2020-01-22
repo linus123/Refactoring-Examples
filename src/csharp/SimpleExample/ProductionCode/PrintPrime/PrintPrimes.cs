@@ -8,7 +8,7 @@ namespace ProductionCode.PrintPrime
 
         public void Run()
         {
-            var primePrinterHelper = new PrimePrinterHelper();
+            var primePrinterHelper = new PrimePrinterGenerator();
 
             var primes = primePrinterHelper.GeneratePrimes(NumberOfPrimes);
 

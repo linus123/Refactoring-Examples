@@ -2,13 +2,9 @@
 
 namespace ProductionCode.PrintPrime
 {
-    public class PrimePrinterHelper
+    public class PrimePrinterGenerator
     {
         private int[] _primes;
-        private int _pageNumber;
-        private int _linesPerPage;
-        private int _rowOffset;
-        private int _column;
         private int _candidate;
         private int _primeIndex;
         private bool _possiblyPrime;
@@ -16,8 +12,6 @@ namespace ProductionCode.PrintPrime
         private int _square;
         private int _i;
         private int[] _multiples;
-        private const int LinesPerPage = 50;
-        private const int Columns = 4;
         private const int Ordmax = 30;
 
         public int[] GeneratePrimes(
