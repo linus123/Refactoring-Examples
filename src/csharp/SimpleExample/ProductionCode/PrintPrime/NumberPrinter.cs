@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace ProductionCode.PrintPrime
 {
@@ -34,13 +35,13 @@ namespace ProductionCode.PrintPrime
             int numberOfPrimes,
             int rowOffset)
         {
-            string line = "";
+            var line = new StringBuilder();
 
             for (var column = 0; column < Columns; column++)
                 if (rowOffset + column * LinesPerPage <= numberOfPrimes)
-                    line += string.Format("{0, 10}", primes[rowOffset + column * LinesPerPage]);
+                    line.AppendFormat("{0, 10}", primes[rowOffset + column * LinesPerPage]);
 
-            return line;
+            return line.ToString();
         }
 
         private static string GetPageHeader(int numberOfPrimes, int pageNumber)
