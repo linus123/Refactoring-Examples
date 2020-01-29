@@ -11,10 +11,6 @@ namespace ProductionCode.PrintPrime
             const int columns = 4;
             const int ordmax = 30;
             int[] primes = new int[numberOfPrimes + 1];
-            int pageNumber;
-            int pageOffset;
-            int rowOffset;
-            int column;
             int candidate;
             int primeIndex;
             bool possiblyPrime;
@@ -54,25 +50,27 @@ namespace ProductionCode.PrintPrime
                 primeIndex = primeIndex + 1;
                 primes[primeIndex] = candidate;
             }
+
+            var pageNumber = 1;
+            var pageOffset = 1;
+            while (pageOffset <= numberOfPrimes)
             {
-                pageNumber = 1;
-                pageOffset = 1;
-                while (pageOffset <= numberOfPrimes)
+                Console.WriteLine("The First " + numberOfPrimes +
+                                  " Prime Numbers --- Page " + pageNumber);
+                Console.WriteLine("");
+                int rowOffset;
+                for (rowOffset = pageOffset; rowOffset < pageOffset + linesPerPage; rowOffset++)
                 {
-                    Console.WriteLine("The First " + numberOfPrimes +
-                                       " Prime Numbers --- Page " + pageNumber);
+                    int column;
+                    for (column = 0; column < columns; column++)
+                        if (rowOffset + column * linesPerPage <= numberOfPrimes)
+                            Console.Write("{0, 10}", primes[rowOffset + column * linesPerPage]);
                     Console.WriteLine("");
-                    for (rowOffset = pageOffset; rowOffset < pageOffset + linesPerPage; rowOffset++)
-                    {
-                        for (column = 0; column < columns; column++)
-                            if (rowOffset + column * linesPerPage <= numberOfPrimes)
-                                Console.Write("{0, 10}", primes[rowOffset + column * linesPerPage]);
-                        Console.WriteLine("");
-                    }
-                    Console.WriteLine();
-                    pageNumber = pageNumber + 1;
-                    pageOffset = pageOffset + linesPerPage * columns;
                 }
+
+                Console.WriteLine();
+                pageNumber = pageNumber + 1;
+                pageOffset = pageOffset + linesPerPage * columns;
             }
         }
     }
