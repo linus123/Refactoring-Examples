@@ -14,8 +14,8 @@ namespace ProductionCode.PrintPrime
             var calculatePrime = new CalculatePrimes();
             var primes = calculatePrime.CalculatePrime(numberOfPrimes);
 
-            var printPrimeNumbers = new PrintPrimeNumbers();
-            printPrimeNumbers.Print(numberOfPrimes, linesPerPage, columns, primes);
+            var printPrimeNumbers = new PrintPrimeNumbers(numberOfPrimes, linesPerPage, columns, primes);
+            printPrimeNumbers.Print();
         }
     }
 }
